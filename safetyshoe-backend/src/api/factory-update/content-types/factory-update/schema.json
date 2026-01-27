@@ -1,0 +1,63 @@
+{
+  "kind": "collectionType",
+  "collectionName": "factory_updates",
+  "info": {
+    "singularName": "factory-update",
+    "pluralName": "factory-updates",
+    "displayName": "Factory Update",
+    "description": "工厂新闻和动态"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "excerpt": {
+      "type": "text"
+    },
+    "content": {
+      "type": "richtext",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "author": {
+      "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Company News",
+        "Product Launch",
+        "Certification",
+        "Exhibition",
+        "Case Study",
+        "Industry Insight"
+      ]
+    },
+    "media_type": {
+      "type": "enumeration",
+      "enum": [
+        "Article",
+        "Video"
+      ],
+      "default": "Article"
+    },
+    "video_url": {
+      "type": "string"
+    }
+  }
+}
+

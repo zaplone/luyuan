@@ -1,0 +1,87 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 图片配置
+  images: {
+    unoptimized: true, // 静态导出必须开启此项
+    domains: ['localhost', 'your-oss-domain.com'], // 添加图片域名
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+  },
+  
+  // 环境变量
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://dtwz.zhiyuansafety.com',
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://dtwz.zhiyuansafety.com',
+  },
+  
+  // 重写规则（用于API代理，可选）
+  async rewrites() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${apiUrl}/api/:path*`,
+      },
+    ];
+  },
+  
+  // 输出配置（静态导出）
+  // output: 'export', // 暂时注释掉，以便在开发模式下支持动态路由
+  // trailingSlash: true,
+  
+  // 压缩配置
+  compress: true,
+  
+  // 性能优化
+  poweredByHeader: false,
+  
+  // 国际化配置（静态导出不支持i18n）
+  // i18n: {
+  //   locales: ['en', 'es', 'de'], // 英语、西班牙语、德语
+  //   defaultLocale: 'en',
+  // },
+  
+  // 重定向配置
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
+  
+  // 头部配置
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin',
+          },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;

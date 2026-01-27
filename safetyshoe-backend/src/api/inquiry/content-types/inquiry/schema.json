@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inquiries",
+  "info": {
+    "singularName": "inquiry",
+    "pluralName": "inquiries",
+    "displayName": "Inquiry",
+    "description": "客户询盘记录"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["New", "Contacted", "Closed"],
+      "default": "New"
+    }
+  }
+}
+

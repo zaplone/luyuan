@@ -1,0 +1,38 @@
+# System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node Modules
+node_modules/
+**/node_modules/
+
+# Next.js build
+.next/
+**/out/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Legacy/Backup Folders (Ignoring old backend projects to keep repo clean)
+safetyshoe-admin/
+safetyshoe-api/
+database/
+dengtai-website/
+temp_server_deploy/
+作废-1015/
+*.tar.gz
+
+# Strapi
+.tmp/
+**/build/
+**/dist/
