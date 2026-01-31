@@ -1,0 +1,61 @@
+{
+  "Navigation": {
+    "home": "Startseite",
+    "products": "Produktkatalog",
+    "oem": "OEM Service",
+    "about": "Über Uns",
+    "contact": "Kontakt",
+    "getQuote": "Angebot Anfordern",
+    "searchPlaceholder": "Produkte suchen..."
+  },
+  "Hero": {
+    "badge": "Schwerlastschutz",
+    "title": "Schutz ohne Gewicht",
+    "highlight": "Verbundstoff-Technologie",
+    "description": "Metallfreier Zehenschutz aus Verbundstoff. 30% leichter als herkömmliche Stiefel, perfekt für Flughafensicherheit und Elektriker.",
+    "cta_primary": "Kollektion Ansehen",
+    "cta_secondary": "Kundenspezifische OEM"
+  },
+  "WhyChooseUs": {
+    "title": "Exzellente Fertigung",
+    "subtitle": "Datenbasiert.",
+    "label": "Warum Partner Werden",
+    "stats": {
+      "capacity": "Jahreskapazität",
+      "countries": "Exportländer",
+      "sampleTime": "Musterzeit",
+      "defectRate": "Fehlerquote"
+    },
+    "cards": {
+      "manufacturing": {
+        "title": "Intelligente Fertigung",
+        "desc": "Automatisierte Desma-Spritzgießmaschinen gewährleisten gleichbleibende Bindungsfestigkeit und präzise Sohlendichte."
+      },
+      "quality": {
+        "title": "Laborgeprüfte Qualität",
+        "desc": "Jede Charge durchläuft vor dem Versand strenge Aufprall-, Druck- und Antistatiktests in unserem internen Labor."
+      },
+      "logistics": {
+        "title": "Globale Logistik",
+        "desc": "Nahtloser FOB/CIF-Versand in über 50 Länder. Wir kümmern uns um Zolldokumente und Sendungsverfolgung."
+      }
+    },
+    "videoBanner": {
+      "liveView": "LIVE-ANSICHT",
+      "title": "Sehen heißt Glauben",
+      "desc": "Transparenz ist unsere Politik. Machen Sie einen virtuellen Rundgang durch unsere ISO 9001 zertifizierten Produktionslinien und Testlabore.",
+      "button": "Virtuellen Rundgang Starten"
+    }
+  },
+  "Footer": {
+    "about": "Professioneller Hersteller von Sicherheitsschuhen seit 1990. Wir verbinden traditionelles Handwerk mit moderner Technologie zum Schutz von Arbeitern weltweit.",
+    "quickLinks": "Schnelllinks",
+    "products": "Unsere Produkte",
+    "contact": "Kontakt",
+    "rights": "Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "sitemap": "Sitemap",
+    "designedFor": "Entwickelt für den Welthandel"
+  }
+}

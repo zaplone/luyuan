@@ -1,0 +1,201 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "products": "Product Catalog",
+    "oem": "OEM Service",
+    "about": "About Factory",
+    "contact": "Contact Us",
+    "getQuote": "Get Quote",
+    "searchPlaceholder": "Search products..."
+  },
+  "About": {
+    "title": "About Our Factory",
+    "description": "Since 1995, we have been setting the standard for industrial safety footwear manufacturing. Learn more about our production capabilities and commitment to quality."
+  },
+  "Hero": {
+    "badge": "Heavy-Duty Protection",
+    "title": "Protection Without The Weight",
+    "highlight": "Composite Tech",
+    "description": "Metal-free composite toe protection. 30% lighter than traditional boots, perfect for airport security and electricians.",
+    "cta_primary": "View Collection",
+    "cta_secondary": "Custom OEM"
+  },
+  "WhyChooseUs": {
+    "title": "Manufacturing Excellence",
+    "subtitle": "Backed by Data.",
+    "label": "Why Partner With Us",
+    "stats": {
+      "capacity": "Annual Capacity",
+      "countries": "Export Countries",
+      "sampleTime": "Sample Time",
+      "defectRate": "Defect Rate"
+    },
+    "cards": {
+      "manufacturing": {
+        "title": "Intelligent Manufacturing",
+        "desc": "Automated Desma injection machines ensure consistent bonding strength and precise sole density."
+      },
+      "quality": {
+        "title": "Lab-Tested Quality",
+        "desc": "Every batch undergoes rigorous impact, compression, and anti-static testing in our internal lab before shipment."
+      },
+      "logistics": {
+        "title": "Global Logistics",
+        "desc": "Seamless FOB/CIF shipping to 50+ countries. We handle customs documentation and tracking."
+      }
+    },
+    "videoBanner": {
+      "liveView": "LIVE VIEW",
+      "title": "See It To Believe It",
+      "desc": "Transparency is our policy. Take a virtual walkthrough of our ISO 9001 certified production lines and testing labs.",
+      "button": "Start Virtual Tour"
+    }
+  },
+  "ProductCategories": {
+    "label": "Our Collection",
+    "title": "Professional Safety Footwear",
+    "subtitle": "Select by industry or browse our complete collection of certified safety shoes.",
+    "categories": {
+      "construction": "Construction",
+      "industrial": "Industrial",
+      "logistics": "Logistics",
+      "executive": "Executive"
+    },
+    "viewDetails": "View Details",
+    "loadMore": "View All Products",
+    "filter": {
+      "label": "Filter By:",
+      "reset": "Reset",
+      "standards": {
+        "all": "All Standards"
+      },
+      "features": {
+        "all": "All Features",
+        "waterproof": "Waterproof",
+        "metalFree": "Metal Free",
+        "insulated": "Insulated",
+        "slipResistant": "Slip Resistant"
+      },
+      "styles": {
+        "all": "All Styles",
+        "low": "Low Cut",
+        "mid": "Mid Cut",
+        "high": "High Boot"
+      }
+    }
+  },
+  "FactoryNews": {
+    "label": "Latest Updates",
+    "title": "Factory Insights",
+    "readMore": "Read Article",
+    "viewAll": "View All News"
+  },
+  "FAQ": {
+    "label": "Common Questions",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about our manufacturing and ordering process.",
+    "contactTitle": "Still have questions?",
+    "contactDesc": "Can't find the answer you're looking for? Please chat to our friendly team.",
+    "cta": {
+      "ready": "Ready to Start?",
+      "title": "Let's Build Your Safety Footwear Brand Together",
+      "desc": "Our engineers are ready to review your specs. Get a free consultation and quote within 24 hours.",
+      "email": "Email Sales Team",
+      "whatsapp": "Chat on WhatsApp",
+      "features": {
+        "noFees": "No Hidden Fees",
+        "nda": "NDA Protection",
+        "iso": "ISO 9001 Factory"
+      }
+    },
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "message": "Message",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Failed to send message."
+    },
+    "items": {
+      "moq": {
+        "q": "What is your MOQ?",
+        "a": "Our standard MOQ is 500 pairs per style. For first-time orders, we can discuss smaller trial quantities."
+      },
+      "leadTime": {
+        "q": "What is the production lead time?",
+        "a": "Standard lead time is 35-45 days after deposit and sample confirmation."
+      },
+      "customization": {
+        "q": "Can you put my logo on the shoes?",
+        "a": "Yes, we offer full OEM/ODM services including logo on tongue, side, insole, and custom box design."
+      },
+      "certifications": {
+        "q": "What safety certifications do you have?",
+        "a": "Our products are certified by CE (EN ISO 20345), ASTM F2413-18, and CSA Z195. We can provide test reports from Intertek or SGS upon request."
+      },
+      "samples": {
+        "q": "Do you provide free samples?",
+        "a": "We provide samples for quality checking. Sample fee is required but will be 100% refunded when you place the bulk order."
+      },
+      "payment": {
+        "q": "What payment terms do you accept?",
+        "a": "We accept T/T (30% deposit, 70% before shipment) and L/C at sight for large orders. For small sample payments, PayPal is available."
+      },
+      "shipping": {
+        "q": "Do you offer shipping assistance?",
+        "a": "Yes, we can arrange FOB, CIF, or DDP shipping terms. We work with reliable freight forwarders to deliver goods to your designated port or warehouse."
+      },
+      "visit": {
+        "q": "Can I visit your factory?",
+        "a": "Absolutely. We welcome clients to visit our facility in Gaomi, China. We can arrange airport pickup from Qingdao Liuting International Airport."
+      }
+    }
+  },
+  "Footer": {
+    "about": "Professional safety footwear manufacturer since 1990. We combine traditional craftsmanship with modern technology to protect workers worldwide.",
+    "quickLinks": "Quick Links",
+    "products": "Our Products",
+    "contact": "Contact Us",
+    "address": "No. 128, Industrial Park Road,<br />Gaomi City, Shandong, China",
+    "hours": "Mon - Sat: 8:00 - 18:00",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "sitemap": "Sitemap",
+    "designedFor": "Designed for Global Trade",
+    "productLinks": {
+      "steelToe": "Steel Toe Boots",
+      "composite": "Composite Safety Shoes",
+      "slipResistant": "Slip Resistant Shoes",
+      "winter": "Winter Work Boots"
+    }
+  },
+  "ProductQuickView": {
+    "materialSpecs": "Material Specifications",
+    "features": "Key Features",
+    "requestQuote": "Request Quote",
+    "inquirySent": "Inquiry Sent!",
+    "inquiryDesc": "Thank you for your interest. Our sales team has received your request and will contact you shortly.",
+    "closeWindow": "Close Window",
+    "back": "Back to Details",
+    "formTitle": "Request a Quote",
+    "formDesc": "Fill out the form below and we'll get back to you within 24 hours.",
+    "sending": "Sending...",
+    "send": "Send Inquiry",
+    "error": "Something went wrong. Please try again.",
+    "upper": "Upper",
+    "toeCap": "Toe Cap",
+    "midsole": "Midsole",
+    "outsole": "Outsole",
+    "lining": "Lining",
+    "moq": "MOQ",
+    "sizes": "Sizes",
+    "form": {
+        "name": "Full Name",
+        "email": "Email Address",
+        "company": "Company Name",
+        "message": "Message"
+    }
+  }
+}

@@ -2,26 +2,9 @@ import { X, Check, Truck, Layers, Activity, Ruler, ChevronLeft, Send, Loader2 } 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { submitInquiry } from '@/lib/strapi';
-
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  image: string;
-  images?: string[];
-  features: string[];
-  moq: string;
-  standards?: string[];
-  description?: string;
-  style?: string;
-  materials?: {
-    upper?: string;
-    outsole?: string;
-    lining?: string;
-    [key: string]: any;
-  };
-  price_range?: string;
-}
+import { ImageMagnifier } from './ImageMagnifier';
+import { useTranslations } from 'next-intl';
+import { Product } from '@/types';
 
 interface ProductQuickViewProps {
   product: Product | null;
@@ -30,6 +13,7 @@ interface ProductQuickViewProps {
 }
 
 export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewProps) {
+  const t = useTranslations('ProductQuickView');
   const [activeImage, setActiveImage] = useState<string>('');
   const [showForm, setShowForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,7 +44,13 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
   // Reset active image when product changes
   useEffect(() => {
     if (product) {
-      setActiveImage(product.image);
+      // Set initial image (use first from gallery or main image)
+      const initialImage = (product.images && product.images.length > 0) 
+        ? product.images[0] 
+        : product.image;
+      
+      setActiveImage(initialImage || '');
+      
       setFormData(prev => ({
         ...prev,
         message: `I am interested in ${product.name}. Please send me a quote for [Quantity] pairs.`
@@ -96,7 +86,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
   // Ensure we have a valid list of images
   const galleryImages = product.images && product.images.length > 0 
     ? product.images 
-    : [product.image];
+    : (product.image ? [product.image] : []);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
@@ -117,15 +107,14 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
           <X className="w-6 h-6" />
         </button>
 
-        {/* Left: Image Gallery (50%) */}
-        <div className="w-full md:w-1/2 bg-slate-100 relative h-1/2 md:h-full hidden md:block">
-          <Image
-            src={activeImage || product.image}
-            alt={product.name}
-            fill
-            className="object-cover"
-            priority
-          />
+        {/* Left: Image Gallery (58%) */}
+        <div className="w-full md:w-7/12 bg-slate-100 relative h-1/2 md:h-full hidden md:block group cursor-zoom-in">
+          {product.image && (
+            <ImageMagnifier
+              src={activeImage || product.image}
+              alt={product.name}
+            />
+          )}
           
           {/* Thumbnails Overlay */}
           {galleryImages.length > 1 && (
@@ -145,8 +134,8 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
           )}
         </div>
 
-        {/* Right: Product Details or Inquiry Form (50%) */}
-        <div className="w-full md:w-1/2 p-6 md:p-8 overflow-y-auto bg-white flex flex-col h-full relative">
+        {/* Right: Product Details or Inquiry Form (42%) */}
+        <div className="w-full md:w-5/12 p-6 md:p-8 overflow-y-auto bg-white flex flex-col h-full relative">
           
           {/* View Mode: Product Details */}
           {!showForm && (
@@ -154,50 +143,69 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
               {/* Header */}
               <div className="mb-6">
                 <div className="flex flex-wrap items-center gap-2 mb-3">
-                  <span className="text-xs font-bold text-primary-700 bg-primary-50 px-2 py-1 rounded-full uppercase tracking-wide">
-                    {product.category}
-                  </span>
+                  {product.industries?.map((ind) => (
+                    <span key={ind} className="text-xs font-bold text-primary-700 bg-primary-50 px-2 py-1 rounded-full uppercase tracking-wide">
+                      {ind}
+                    </span>
+                  ))}
                   {product.style && (
                     <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-full border border-slate-200">
                       {product.style}
                     </span>
                   )}
-                  {product.standards?.map((std) => (
-                    <span key={std} className="text-xs font-medium text-slate-500 border border-slate-200 px-2 py-1 rounded">
-                      {std}
+                  {product.safety_standard && (
+                    <span className="text-xs font-medium text-white bg-slate-800 border border-slate-800 px-2 py-1 rounded">
+                      {product.safety_standard}
+                    </span>
+                  )}
+                  {product.additional_certs?.map((cert) => (
+                    <span key={cert} className="text-xs font-medium text-slate-500 border border-slate-200 px-2 py-1 rounded">
+                      {cert}
                     </span>
                   ))}
                 </div>
 
                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight">{product.name}</h2>
-                {product.price_range && (
-                   <div className="text-lg font-semibold text-slate-700">{product.price_range}</div>
+                {product.model_code && (
+                   <div className="text-sm text-slate-500 font-mono mb-2">Model: {product.model_code}</div>
                 )}
               </div>
 
-              {/* Material Specs */}
-              {product.materials && Object.keys(product.materials).length > 0 && (
+              {/* Material Specs (NEW STRUCTURE) */}
+              {product.materials && (
                 <div className="mb-6 p-4 bg-slate-50 rounded-xl border border-slate-100">
                   <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <Layers className="w-4 h-4" /> Material Specifications
+                    <Layers className="w-4 h-4" /> {t('materialSpecs')}
                   </h3>
                   <div className="space-y-2">
                     {product.materials.upper && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Upper</span>
+                        <span className="text-slate-500">{t('upper')}</span>
                         <span className="font-semibold text-slate-900">{product.materials.upper}</span>
                       </div>
                     )}
-                    {product.materials.lining && (
+                    {product.materials.toe_cap && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Lining</span>
-                        <span className="font-semibold text-slate-900">{product.materials.lining}</span>
+                        <span className="text-slate-500">{t('toeCap')}</span>
+                        <span className="font-semibold text-slate-900">{product.materials.toe_cap}</span>
+                      </div>
+                    )}
+                    {product.materials.midsole && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500">{t('midsole')}</span>
+                        <span className="font-semibold text-slate-900">{product.materials.midsole}</span>
                       </div>
                     )}
                     {product.materials.outsole && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-500">Outsole</span>
+                        <span className="text-slate-500">{t('outsole')}</span>
                         <span className="font-semibold text-slate-900">{product.materials.outsole}</span>
+                      </div>
+                    )}
+                    {product.materials.lining && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500">{t('lining')}</span>
+                        <span className="font-semibold text-slate-900">{product.materials.lining}</span>
                       </div>
                     )}
                   </div>
@@ -207,10 +215,10 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
               {/* Features */}
               <div className="mb-6">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <Activity className="w-4 h-4" /> Key Features
+                  <Activity className="w-4 h-4" /> {t('features')}
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {product.features.map((feature, idx) => (
+                  {product.features?.map((feature, idx) => (
                     <span key={idx} className="inline-flex items-center text-xs font-medium text-slate-700 bg-white border border-slate-200 px-2 py-1.5 rounded-md shadow-sm">
                       <Check className="w-3 h-3 text-green-500 mr-1.5" />
                       {feature}
@@ -223,11 +231,11 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                  <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
                     <div className="flex items-center gap-2">
                        <Truck className="w-4 h-4" />
-                       <span>MOQ: <strong className="text-slate-900">{product.moq}</strong></span>
+                       <span>{t('moq')}: <strong className="text-slate-900">{product.moq || 'Negotiable'}</strong></span>
                     </div>
                     <div className="flex items-center gap-2">
                        <Ruler className="w-4 h-4" />
-                       <span>Sizes: 36-48</span>
+                       <span>{t('sizes')}: 36-48 (EU)</span>
                     </div>
                  </div>
 
@@ -235,7 +243,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                   onClick={() => setShowForm(true)}
                   className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-slate-900/10 transition-all hover:translate-y-[-2px] active:translate-y-0 flex items-center justify-center gap-2"
                 >
-                  Request Quote
+                  {t('requestQuote')}
                   <Send className="w-4 h-4" />
                 </button>
               </div>
@@ -251,10 +259,10 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                   className="flex items-center text-sm text-slate-500 hover:text-slate-900 mb-4 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4 mr-1" />
-                  Back to Details
+                  {t('back')}
                 </button>
-                <h2 className="text-2xl font-bold text-slate-900 mb-1">Request a Quote</h2>
-                <p className="text-slate-600 text-sm">Fill out the form below and we'll get back to you within 24 hours.</p>
+                <h2 className="text-2xl font-bold text-slate-900 mb-1">{t('formTitle')}</h2>
+                <p className="text-slate-600 text-sm">{t('formDesc')}</p>
               </div>
 
               {submitStatus === 'success' ? (
@@ -262,21 +270,21 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                   <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
                     <Check className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Inquiry Sent!</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">{t('inquirySent')}</h3>
                   <p className="text-slate-600 mb-6">
-                    Thank you for your interest in <strong>{product.name}</strong>. Our sales team has received your request and will contact you shortly.
+                    {t('inquiryDesc')}
                   </p>
                   <button 
                     onClick={onClose}
                     className="px-6 py-2 bg-white border border-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors"
                   >
-                    Close Window
+                    {t('closeWindow')}
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Full Name *</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">{t('form.name')} *</label>
                     <input 
                       type="text" 
                       required
@@ -287,7 +295,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Email Address *</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">{t('form.email')} *</label>
                     <input 
                       type="email" 
                       required
@@ -298,7 +306,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Company Name</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">{t('form.company')}</label>
                     <input 
                       type="text" 
                       value={formData.company}
@@ -308,7 +316,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                     />
                   </div>
                   <div className="flex-1">
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Message *</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">{t('form.message')} *</label>
                     <textarea 
                       required
                       value={formData.message}
@@ -319,7 +327,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
 
                   {submitStatus === 'error' && (
                     <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
-                      Something went wrong. Please try again.
+                      {t('error')}
                     </div>
                   )}
 
@@ -331,11 +339,11 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Sending...
+                        {t('sending')}
                       </>
                     ) : (
                       <>
-                        Send Inquiry
+                        {t('send')}
                         <Send className="w-4 h-4" />
                       </>
                     )}

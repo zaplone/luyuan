@@ -30,7 +30,7 @@ const newsItems = [
     media_type: 'Article'
   },
   {
-    title: 'Factory Tour: Inside Dengtai Shoes',
+    title: 'Factory Tour: Inside Luyuan Shoes',
     excerpt: 'Take a virtual tour of our 50,000 sqm manufacturing facility in Shandong.',
     content: 'Tour description...',
     category: 'Company News',

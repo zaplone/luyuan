@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Calendar, ArrowRight, User, Play, X } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface FactoryNewsProps {
   initialNews?: any[];
@@ -12,6 +13,7 @@ interface FactoryNewsProps {
 const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:1337';
 
 export function FactoryNews({ initialNews }: FactoryNewsProps) {
+  const t = useTranslations('FactoryNews');
   const [newsItems, setNewsItems] = useState<any[]>(initialNews || []);
   const [loading, setLoading] = useState(!initialNews || initialNews.length === 0);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
@@ -121,12 +123,12 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
         
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
            <div>
-             <span className="text-primary-600 font-bold uppercase tracking-wider text-sm">Latest Updates</span>
-             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">Factory News & Insights</h2>
+             <span className="text-primary-600 font-bold uppercase tracking-wider text-sm">{t('label')}</span>
+             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">{t('title')}</h2>
            </div>
            
            <Link href="/news" className="hidden md:inline-flex items-center font-bold text-slate-600 hover:text-primary-600 transition-colors">
-             View All News <ArrowRight className="w-4 h-4 ml-2" />
+             {t('viewAll')} <ArrowRight className="w-4 h-4 ml-2" />
            </Link>
         </div>
 
@@ -186,7 +188,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
                   className="inline-flex items-center text-sm font-bold text-primary-600 hover:underline mt-auto"
                   onClick={(e) => handleNewsClick(e, item)}
                 >
-                  {item.media_type === 'Video' && item.video_url ? 'Watch Video' : 'Read More'} 
+                  {item.media_type === 'Video' && item.video_url ? 'Watch Video' : t('readMore')} 
                   {item.media_type === 'Video' && item.video_url ? <Play className="w-3.5 h-3.5 ml-1 fill-current" /> : <ArrowRight className="w-3.5 h-3.5 ml-1" />}
                 </Link>
               </div>
@@ -196,7 +198,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
 
         <div className="mt-8 text-center md:hidden">
           <Link href="/news" className="inline-block bg-white border border-slate-200 text-slate-700 px-6 py-3 rounded-lg font-bold">
-            View All News
+            {t('viewAll')}
           </Link>
         </div>
 
@@ -245,4 +247,3 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
     </section>
   );
 }
-

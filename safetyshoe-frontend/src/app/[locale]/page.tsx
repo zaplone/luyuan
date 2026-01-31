@@ -1,34 +1,41 @@
 import { Metadata } from 'next';
 import { Hero } from '@/components/Hero';
 import { ProductCategories } from '@/components/ProductCategories';
-import { CompanyCapabilities } from '@/components/CompanyCapabilities';
+import { WhyChooseUs } from '@/components/WhyChooseUs';
 import { FAQAndContact } from '@/components/FAQAndContact';
 import { FactoryNews } from '@/components/FactoryNews';
 import { fetchProducts, transformProduct, fetchLatestNews, transformNews } from '@/lib/strapi';
 
 export const metadata: Metadata = {
-  title: 'SafeStep Industrial Footwear - Professional Safety Shoes',
+  title: 'Luyuan Safety Shoes - Professional Industrial Footwear',
   description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
   openGraph: {
-    title: 'SafeStep Industrial Footwear - Professional Safety Shoes',
+    title: 'Luyuan Safety Shoes - Professional Industrial Footwear',
     description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
     images: ['/images/og-image.jpg'],
   },
 };
 
-// 首页使用静态生成（SSG）- 构建时获取数据，用户访问时已经是静态 HTML，速度最快
-export const revalidate = 3600; // 每 1 小时重新生成一次（可选，如果不需要实时更新可以设为 false）
+type HomePageProps = { params: Promise<{ locale: string }> };
 
-export default async function HomePage() {
-  // 1. 获取产品数据
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale } = await params;
+
+  // 1. 获取产品数据（按当前语言）
   let featuredProducts: any[] | undefined = undefined;
   try {
-    const strapiProducts = await fetchProducts();
+    const strapiProducts = await fetchProducts(locale);
     if (strapiProducts.length > 0) {
       const transformed = strapiProducts
         .map(transformProduct)
-        .filter(p => p.is_hot || p.is_new)
-        .slice(0, 9);
+        .sort((a, b) => {
+          // 排序权重：Hot > New > 普通
+          // 如果 a 是 Hot (10分)，b 不是 (0分) -> b-a = -10 -> a 排前面
+          const scoreA = (a.featured ? 10 : 0) + (a.is_new ? 5 : 0); // 注意：transformProduct 把 is_hot 映射为了 featured
+          const scoreB = (b.featured ? 10 : 0) + (b.is_new ? 5 : 0);
+          return scoreB - scoreA;
+        })
+        .slice(0, 6); // 始终取前 6 个最优质的产品
       
       featuredProducts = transformed.length > 0 
         ? transformed 
@@ -54,11 +61,11 @@ export default async function HomePage() {
       {/* Hero Section */}
       <Hero />
 
-      {/* Company Capabilities */}
-      <CompanyCapabilities />
+      {/* Why Choose Us (Replaces CompanyCapabilities) */}
+      <WhyChooseUs />
 
       {/* Safety Shoe Categories - 传入预加载的产品数据（如果 API 成功） */}
-      <ProductCategories initialProducts={featuredProducts} />
+      <ProductCategories initialProducts={featuredProducts} hideFilters={true} />
 
       {/* Factory News - 传入真实新闻数据 */}
       <FactoryNews initialNews={latestNews} />

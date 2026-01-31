@@ -8,9 +8,11 @@ import { fetchProducts, transformProduct } from '@/lib/strapi';
 
 interface ProductGridProps {
   viewMode?: 'grid' | 'list';
+  filters?: Record<string, string[]>;
+  searchQuery?: string | null;
 }
 
-export function ProductGrid({ viewMode: initialViewMode }: ProductGridProps) {
+export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQuery = '' }: ProductGridProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(initialViewMode || 'grid');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState('newest');
@@ -22,6 +24,11 @@ export function ProductGrid({ viewMode: initialViewMode }: ProductGridProps) {
   // Quick View State
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Reset pagination when filters or search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, searchQuery]);
 
   const ITEMS_PER_PAGE = 12;
 
@@ -47,8 +54,60 @@ export function ProductGrid({ viewMode: initialViewMode }: ProductGridProps) {
     loadData();
   }, []);
 
-  // Sort logic
-  const sortedProducts = [...products].sort((a, b) => {
+  // Filter & Sort logic
+  const filteredProducts = products.filter(product => {
+    // 1. Search Query
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const matchName = product.name?.toLowerCase().includes(q);
+      const matchDesc = product.description?.toLowerCase().includes(q);
+      const matchCat = product.category?.toLowerCase().includes(q);
+      if (!matchName && !matchDesc && !matchCat) return false;
+    }
+
+    // 2. Sidebar Filters
+    for (const [key, values] of Object.entries(filters)) {
+      if (!values || values.length === 0) continue;
+
+      // Handle each filter group
+      if (key === 'category') {
+        // Simple string match for category (assuming product.category is string)
+        // Adjust logic if category mapping is different (e.g. slug vs label)
+        const productCat = product.category?.toLowerCase();
+        // Since the filter values are like 'construction', 'mining' etc.
+        // And product.category might be 'Safety Shoes' or specific industry.
+        // For now, let's assume loose matching or exact if structured data matches.
+        // If product data structure for category is simple string:
+        const hasMatch = values.some(v => productCat?.includes(v) || v.includes(productCat));
+        if (!hasMatch) return false;
+      }
+      
+      if (key === 'standard') {
+        // product.standards is string[]
+        const hasMatch = values.some(v => product.standards?.some((s: string) => s.toLowerCase().includes(v)));
+        if (!hasMatch) return false;
+      }
+
+      if (key === 'feature') {
+         // product.features is string[]
+         // map filter values to feature strings if needed, or simple partial match
+         const hasMatch = values.some(v => product.features?.some((f: string) => f.toLowerCase().includes(v)));
+         if (!hasMatch) return false;
+      }
+
+      if (key === 'material') {
+        // product.material or product.materials object
+        // Let's check both simple string and detailed object
+        const matString = JSON.stringify(product.materials || {}).toLowerCase() + (product.material || '').toLowerCase();
+        const hasMatch = values.some(v => matString.includes(v.split('-')[0])); // simple heuristic
+        if (!hasMatch) return false;
+      }
+    }
+
+    return true;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case 'newest':
         // Assuming id is roughly chronological, or use createdAt if available

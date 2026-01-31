@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { ArrowRight, Check, Zap } from 'lucide-react';
-import { ProcessTimeline } from '@/components/ProcessTimeline';
 import { CustomizationOptions } from '@/components/CustomizationOptions';
 import { FAQAndContact } from '@/components/FAQAndContact';
+
+import { OemCaseStudies } from '@/components/OemCaseStudies';
+import { InteractiveOemCase } from '@/components/InteractiveOemCase';
 
 export default function OemServicePage() {
   return (
@@ -93,6 +95,7 @@ export default function OemServicePage() {
                   </div>
 
                   {/* Hotspot 4: Logo Area */}
+                  {/*
                   <div className="absolute top-[20%] left-[20%] group cursor-pointer">
                     <div className="w-4 h-4 bg-white rounded-full shadow-[0_0_0_4px_rgba(255,255,255,0.2)] animate-pulse group-hover:animate-none"></div>
                     <div className="absolute right-6 top-1/2 -translate-y-1/2 bg-white text-slate-900 px-3 py-2 rounded-lg shadow-lg text-sm font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 w-40 z-20 text-right">
@@ -100,17 +103,33 @@ export default function OemServicePage() {
                       <p className="text-xs font-normal text-slate-600">Embroidery, printing, or rubber patch options.</p>
                     </div>
                   </div>
+                  */}
 
                </div>
-               <p className="text-center text-slate-500 text-xs mt-4">Hover over points to see customization options</p>
+               
+               {/* New: Customization Montage Overlay */}
+               <div className="absolute -bottom-6 -right-6 w-64 bg-white p-4 rounded-xl shadow-2xl animate-fade-in-up border border-slate-100 transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <div className="flex items-center gap-2 mb-3">
+                     <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                     <span className="text-xs font-bold text-slate-500 uppercase">Infinite Possibilities</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                     <div className="bg-slate-100 h-16 rounded-lg flex items-center justify-center text-xs text-slate-400 font-medium">Logos</div>
+                     <div className="bg-slate-100 h-16 rounded-lg flex items-center justify-center text-xs text-slate-400 font-medium">Materials</div>
+                     <div className="bg-slate-100 h-16 rounded-lg flex items-center justify-center text-xs text-slate-400 font-medium">Soles</div>
+                     <div className="bg-slate-100 h-16 rounded-lg flex items-center justify-center text-xs text-slate-400 font-medium">Boxes</div>
+                  </div>
+               </div>
+
+               {/* <p className="text-center text-slate-500 text-xs mt-4">Hover over points to see customization options</p> */}
             </div>
 
           </div>
         </div>
       </section>
 
-      {/* 2. Process Timeline */}
-      <ProcessTimeline />
+      {/* 2. Interactive Case Study (Replaces Timeline) */}
+      <InteractiveOemCase />
 
       {/* 3. Customization Options */}
       <CustomizationOptions />

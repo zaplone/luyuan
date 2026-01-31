@@ -1,26 +1,90 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useTransition } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu, X, MessageCircle, Mail, Phone, ArrowRight } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Menu, X, MessageCircle, Mail, Phone, ArrowRight, Search, MessageSquare, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Product Catalog', href: '/products' },
-  { name: 'OEM Service', href: '/services/oem' },
-  { name: 'About Factory', href: '/about' },
-  { name: 'Contact Us', href: '/#contact' },
-];
+import { useTranslations, useLocale } from 'next-intl';
 
 export function Header() {
+  const t = useTranslations('Navigation');
+  const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isPending, startTransition] = useTransition();
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const navigation = [
+    { name: t('home'), href: '/' },
+    { name: t('products'), href: '/products' },
+    { name: t('oem'), href: '/services/oem' },
+    { name: t('about'), href: '/about' },
+    { name: t('contact'), href: '/#contact' },
+  ];
+
+  const languages = [
+    { code: 'en', label: 'English' },
+    { code: 'zh', label: '中文' },
+  ];
+
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchInputRef.current && !searchInputRef.current.contains(event.target as Node) && isSearchOpen) {
+        setTimeout(() => setIsSearchOpen(false), 100);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSearchOpen]);
+
+  // Focus input when opened
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/${locale}/products?search=${encodeURIComponent(searchQuery)}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
+
+  const handleLanguageChange = (newLocale: string) => {
+    startTransition(() => {
+      // Replace the locale in the pathname
+      // e.g. /en/products -> /zh/products
+      // Handle root path specially
+      const pathSegments = pathname.split('/');
+      // pathSegments[0] is empty string
+      // pathSegments[1] is the locale
+      pathSegments[1] = newLocale;
+      const newPath = pathSegments.join('/');
+      
+      router.replace(newPath);
+      setIsLangMenuOpen(false);
+    });
+  };
 
   // Check if we are on the homepage or OEM page or About page (which has dark hero)
-  const isDarkHeroPage = pathname === '/' || pathname === '/services/oem' || pathname === '/about';
+  // Remove the locale prefix to check the path safely
+  const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+  
+  const isDarkHeroPage = 
+    pathWithoutLocale === '/' || 
+    pathWithoutLocale === '/services/oem' || 
+    pathWithoutLocale === '/about';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,12 +96,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Determine styles based on scroll state AND current page
-  // If scrolled: always white bg, dark text
-  // If not scrolled:
-  //    - Dark Hero Page: transparent bg, white text
-  //    - Light Page (Products, etc): white bg (or transparent), DARK text
-  
   const isTransparent = !isScrolled && isDarkHeroPage;
 
   const headerClass = isTransparent
@@ -68,15 +126,15 @@ export function Header() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center space-x-2 group">
+              <Link href={`/${locale}`} className="flex items-center space-x-2 group">
                 <div className={cn(
                   "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
                   isTransparent ? "bg-white text-slate-900" : "bg-primary-600 text-white"
                 )}>
-                  <span className="font-bold text-xl">D</span>
+                  <span className="font-bold text-xl">L</span>
                 </div>
                 <span className={cn("text-xl font-bold transition-colors", logoColor)}>
-                  Dengtai
+                  Luyuan
                 </span>
               </Link>
             </div>
@@ -87,10 +145,10 @@ export function Header() {
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={`/${locale}${item.href === '/' ? '' : item.href}`}
                     className={cn(
                       'text-sm font-medium transition-colors',
-                      pathname === item.href ? navItemActiveColor : navItemColor
+                      pathname === `/${locale}${item.href === '/' ? '' : item.href}` ? navItemActiveColor : navItemColor
                     )}
                   >
                     {item.name}
@@ -99,21 +157,100 @@ export function Header() {
               </div>
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden md:flex items-center">
+            {/* Search, Lang, and CTA */}
+            <div className="hidden md:flex items-center gap-4">
+              {/* Search Button */}
+              <div className="relative">
+                {isSearchOpen ? (
+                   <form onSubmit={handleSearch} className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
+                     <input
+                       ref={searchInputRef}
+                       type="text"
+                       value={searchQuery}
+                       onChange={(e) => setSearchQuery(e.target.value)}
+                       placeholder={t('searchPlaceholder')}
+                       className="w-60 px-4 py-2 rounded-full border border-slate-200 shadow-sm text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 animate-in fade-in slide-in-from-right-10 duration-200"
+                     />
+                     <button 
+                       type="button"
+                       onClick={() => setIsSearchOpen(false)}
+                       className="absolute right-3 text-slate-400 hover:text-slate-600"
+                     >
+                       <X className="w-4 h-4" />
+                     </button>
+                   </form>
+                ) : (
+                  <button
+                    onClick={() => setIsSearchOpen(true)}
+                    className={cn(
+                      "p-2 rounded-full transition-colors",
+                      isTransparent ? "text-white/90 hover:bg-white/10" : "text-slate-500 hover:bg-slate-100 text-slate-600"
+                    )}
+                    aria-label="Search"
+                  >
+                    <Search className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Language Switcher */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                  className={cn(
+                    "p-2 rounded-full transition-colors flex items-center gap-1",
+                    isTransparent ? "text-white/90 hover:bg-white/10" : "text-slate-500 hover:bg-slate-100 text-slate-600"
+                  )}
+                >
+                  <Globe className="w-5 h-5" />
+                  <span className="text-xs font-bold uppercase">{locale}</span>
+                </button>
+                
+                {isLangMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden py-1 animate-in fade-in zoom-in-95 duration-200">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        className={cn(
+                          "w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition-colors flex items-center justify-between",
+                          locale === lang.code ? "text-primary-600 font-bold bg-primary-50" : "text-slate-700"
+                        )}
+                        disabled={isPending}
+                      >
+                        {lang.label}
+                        {locale === lang.code && <div className="w-1.5 h-1.5 rounded-full bg-primary-600"></div>}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CTA Button */}
               <Link
-                href="/#contact"
+                href={`/${locale}/#contact`}
                 className={cn(
                   "px-6 py-2.5 rounded-full font-bold text-sm transition-all transform hover:-translate-y-0.5 shadow-sm",
                   buttonClass
                 )}
               >
-                Get Quote
+                {t('getQuote')}
               </Link>
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center gap-4">
+               {/* Mobile Lang Switcher (Simplified) */}
+               <button
+                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                  className={cn(
+                    "text-sm font-bold uppercase",
+                    isTransparent ? "text-white" : "text-slate-900"
+                  )}
+                >
+                  {locale}
+                </button>
+
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
@@ -132,10 +269,10 @@ export function Header() {
               {navigation.map((item) => (
                 <Link
                   key={item.name}
-                  href={item.href}
+                  href={`/${locale}${item.href === '/' ? '' : item.href}`}
                   className={cn(
                     'block px-4 py-3 rounded-lg text-base font-medium transition-colors',
-                    pathname === item.href
+                    pathname === `/${locale}${item.href === '/' ? '' : item.href}`
                       ? 'bg-slate-50 text-primary-600'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   )}
@@ -144,13 +281,38 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
+              
+              {/* Mobile Language Selection List */}
+              <div className="border-t border-slate-100 pt-4 px-4">
+                <p className="text-xs font-bold text-slate-400 mb-2 uppercase">Select Language</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        handleLanguageChange(lang.code);
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        "text-sm py-2 rounded-md border text-center transition-colors",
+                        locale === lang.code 
+                          ? "border-primary-500 bg-primary-50 text-primary-700 font-bold" 
+                          : "border-slate-200 text-slate-600"
+                      )}
+                    >
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="pt-2">
                 <Link
-                  href="/#contact"
+                  href={`/${locale}/#contact`}
                   className="block w-full text-center bg-primary-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  Get Quote
+                  {t('getQuote')}
                 </Link>
               </div>
             </div>
@@ -161,9 +323,9 @@ export function Header() {
       {/* Floating Contact Buttons (Optimized) */}
       <div className="fixed right-6 bottom-8 z-40 flex flex-col space-y-4">
         {[
-          { icon: MessageCircle, label: 'WeChat: 18669794582', color: 'bg-[#07C160]', href: '#' },
-          { icon: Mail, label: 'sales@dengtaishoes.com', color: 'bg-blue-500', href: 'mailto:sales@dengtaishoes.com' },
-          { icon: Phone, label: '+86 186 6979 4582', color: 'bg-accent-500', href: 'tel:+8618669794582' },
+          { icon: MessageSquare, label: 'WhatsApp: +86 156 1021 4670', color: 'bg-[#25D366]', href: 'https://wa.me/8615610214670' },
+          { icon: Mail, label: '84082280@qq.com', color: 'bg-blue-500', href: 'mailto:84082280@qq.com' },
+          { icon: Phone, label: '+86 156 1021 4670', color: 'bg-accent-500', href: 'tel:+8615610214670' },
         ].map((item, idx) => {
            const Icon = item.icon;
            return (

@@ -5,32 +5,53 @@ const STRAPI_URL =
     ? (process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337')
     : (process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337');
 
-// Strapi v5 响应结构（扁平化）
-export interface StrapiProduct {
-  id: number;
-  documentId: string;
+import { Product, SafetyStandard, Certification, MaterialSpec, ShoeStyle, Industry } from '@/types';
+
+// Strapi API 响应的原始接口
+export interface StrapiProductAttributes {
   name: string;
-  sku?: string;
+  model_code: string;
   description?: string;
-  // 图片字段在 v5 中可能直接是数组或对象，取决于 populate
-  images?: any[]; 
-  moq: number;
-  category?: string;
-  standards?: string[];
-  features?: string[];
-  price_range?: string;
+  // local_image_path removed
+  images?: { data: any[] }; // Strapi v4/v5 media structure
+  moq?: string;
+  safety_standard?: SafetyStandard;
+  additional_certs?: Certification[]; // JSON
+  style?: ShoeStyle;
+  industries?: Industry[]; // JSON
+  materials?: MaterialSpec; // Component
+  features?: string[]; // JSON
   is_hot?: boolean;
   is_new?: boolean;
+  price_range?: string;
   publishedAt?: string;
   createdAt?: string;
   updatedAt?: string;
-  style?: string; // 新增款式
-  materials?: { // 新增材质
-    upper?: string;
-    outsole?: string;
-    lining?: string;
-    [key: string]: any;
-  };
+}
+
+export interface StrapiProduct {
+  id: number;
+  documentId: string;
+  // Strapi v5 可能会直接把 attributes 展平，也可能不会。我们这里兼容两种情况。
+  // 但目前 fetchProducts 返回的是 data: [...]，每个 item 是 { id, documentId, ...attributes }
+  name?: string; 
+  // ... 其他属性如果展平
+  // 或者
+  attributes?: StrapiProductAttributes;
+  // 直接定义展平的属性更安全，因为我们会在 fetch 时 populate=*
+  model_code?: string;
+  // local_image_path removed
+  description?: string;
+  images?: any;
+  moq?: string;
+  safety_standard?: SafetyStandard;
+  additional_certs?: Certification[];
+  style?: ShoeStyle;
+  industries?: Industry[];
+  materials?: MaterialSpec;
+  features?: string[];
+  is_hot?: boolean;
+  is_new?: boolean;
 }
 
 export interface StrapiResponse<T> {
@@ -44,6 +65,8 @@ export interface StrapiResponse<T> {
     };
   };
 }
+
+// ... (News related interfaces kept as is) ...
 
 export interface StrapiNews {
   id: number;
@@ -67,15 +90,10 @@ export async function fetchLatestNews(): Promise<StrapiNews[]> {
   try {
     const response = await fetch(
       `${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=3`,
-      {
-        cache: 'no-store',
-      }
+      { cache: 'no-store' }
     );
 
-    if (!response.ok) {
-      return [];
-    }
-
+    if (!response.ok) return [];
     const data = await response.json();
     return data.data || [];
   } catch (error) {
@@ -88,24 +106,12 @@ export async function fetchLatestNews(): Promise<StrapiNews[]> {
  * 获取单条新闻详情
  */
 export async function fetchNewsItem(documentId: string): Promise<StrapiNews | null> {
-  console.log(`[Strapi] Fetching news item documentId: ${documentId}`);
   try {
     const url = `${STRAPI_URL}/api/factory-updates/${documentId}?populate=*`;
-    console.log(`[Strapi] Request URL: ${url}`);
-    
-    const response = await fetch(url, {
-      cache: 'no-store',
-    });
+    const response = await fetch(url, { cache: 'no-store' });
 
-    console.log(`[Strapi] Response status: ${response.status}`);
-
-    if (!response.ok) {
-      console.error(`[Strapi] Failed to fetch news item ${documentId}: ${response.statusText}`);
-      return null;
-    }
-
+    if (!response.ok) return null;
     const data = await response.json();
-    console.log(`[Strapi] Data received:`, data);
     return data.data || null;
   } catch (error) {
     console.error('Error fetching news item:', error);
@@ -119,18 +125,14 @@ export async function fetchNewsItem(documentId: string): Promise<StrapiNews | nu
 export function transformNews(item: StrapiNews) {
   if (!item) return null;
 
-  // 处理图片
-  let imageUrl = 'https://images.unsplash.com/photo-1565514020176-db792f4b6d96?auto=format&fit=crop&q=80'; // 默认图
+  let imageUrl = 'https://images.unsplash.com/photo-1565514020176-db792f4b6d96?auto=format&fit=crop&q=80';
   
-  // 尝试解析 Strapi 图片
   const imgData = item.image;
   if (imgData) {
-     // 如果是数组
      if (Array.isArray(imgData) && imgData.length > 0) {
         const url = imgData[0].url;
         imageUrl = url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
      } 
-     // 如果是对象
      else if (imgData.url) {
         const url = imgData.url;
         imageUrl = url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
@@ -138,7 +140,7 @@ export function transformNews(item: StrapiNews) {
   }
 
   return {
-    id: item.documentId, // 使用 documentId 而不是 id
+    id: item.documentId,
     title: item.title || 'Untitled News',
     excerpt: item.excerpt || '',
     content: item.content || '',
@@ -164,14 +166,9 @@ export async function submitInquiry(data: {
   try {
     const response = await fetch(`${STRAPI_URL}/api/inquiries`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data: data
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: data }),
     });
-
     return response.ok;
   } catch (error) {
     console.error('Error submitting inquiry:', error);
@@ -181,14 +178,14 @@ export async function submitInquiry(data: {
 
 /**
  * 从 Strapi 获取所有产品
+ * @param locale 前端 locale（'en', 'zh'）
  */
-export async function fetchProducts(): Promise<StrapiProduct[]> {
+export async function fetchProducts(locale: string = 'en'): Promise<StrapiProduct[]> {
   try {
+    // 直接使用前端的 locale，因为后端现在使用 'zh' 而不是 'zh-Hant'
     const response = await fetch(
-      `${STRAPI_URL}/api/products?populate=*&sort=createdAt:desc`,
-      {
-        cache: 'no-store', // 开发时总是获取最新数据
-      }
+      `${STRAPI_URL}/api/products?populate=*&sort=createdAt:desc&locale=${locale}`,
+      { cache: 'no-store' }
     );
 
     if (!response.ok) {
@@ -205,89 +202,64 @@ export async function fetchProducts(): Promise<StrapiProduct[]> {
 }
 
 /**
- * 从 Strapi 获取单个产品
+ * 转换 Strapi 产品格式为前端使用的格式 (New Schema)
  */
-export async function fetchProduct(id: number): Promise<StrapiProduct | null> {
-  try {
-    const response = await fetch(
-      `${STRAPI_URL}/api/products/${id}?populate=*`,
-      {
-        cache: 'no-store',
-      }
-    );
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data: { data: StrapiProduct } = await response.json();
-    return data.data || null;
-  } catch (error) {
-    console.error('Error fetching product:', error);
-    return null;
-  }
-}
-
-/**
- * 转换 Strapi 产品格式为前端使用的格式
- */
-export function transformProduct(product: StrapiProduct) {
+export function transformProduct(product: StrapiProduct): Product {
   // 安全检查
   if (!product) {
+    // Return dummy valid product to avoid crashes
     return {
       id: 0,
-      name: 'Unknown Product',
-      sku: '',
-      category: 'construction',
+      name: 'Error Loading',
+      slug: 'error',
+      safety_standard: 'SB',
       image: '/images/products/placeholder.jpg',
-      images: [],
-      features: [],
-      moq: '500 Pairs',
-      standards: [],
-      description: '',
-      price_range: 'Contact for price',
-      is_hot: false,
-      is_new: false,
-      style: 'Low Cut',
-      materials: {},
-    };
+    } as Product;
   }
 
-  // 处理图片：Strapi 5 返回的图片通常直接是数组（如果 populate=*）
-  // 或者是 { url: ... } 对象
-  let images: string[] = [];
+  // 1. 处理图片
+  // 优先级: images (API) > placeholder
   let mainImage = '/images/products/placeholder.jpg';
+  let gallery: string[] = [];
 
-  // 尝试解析图片
-  // 这里的逻辑需要兼容可能的数据结构
+  // A. 优先解析 Strapi Media (用户在后台手动上传的图片)
   const rawImages = product.images;
-  
   if (Array.isArray(rawImages) && rawImages.length > 0) {
-    images = rawImages.map((img: any) => {
-      // 检查 url 是否已经是完整的（有些云存储插件会返回完整 URL）
+    gallery = rawImages.map((img: any) => {
       const url = img.url || '';
       return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
     });
-    if (images.length > 0) {
-      mainImage = images[0];
-    }
-  }
+    if (gallery.length > 0) mainImage = gallery[0];
+  } 
 
+
+  // 2. 构建符合 TypeScript 接口的 Product 对象
   return {
     id: product.id,
+    documentId: product.documentId,
     name: product.name || 'Untitled Product',
-    sku: product.sku || `PROD-${product.id}`,
-    category: (product.category || 'construction').toLowerCase(),
-    image: mainImage,
-    images: images,
-    features: product.features || [],
-    moq: `${product.moq || 500} Pairs`,
-    standards: product.standards || [],
+    slug: (product.model_code || `prod-${product.id}`).toLowerCase().replace(/\s+/g, '-'),
+    model_code: product.model_code,
     description: product.description || '',
-    price_range: product.price_range || 'Contact for price',
-    is_hot: product.is_hot || false,
-    is_new: product.is_new || false,
-    style: product.style || 'Low Cut',
+    
+    // 核心结构化字段
+    safety_standard: product.safety_standard,
+    additional_certs: product.additional_certs || [],
+    style: product.style,
+    industries: product.industries || [],
+    
     materials: product.materials || {},
+    
+    // 业务字段
+    moq: product.moq || '500 Pairs',
+    features: product.features || [],
+    
+    // 图片
+    image: mainImage,
+    images: gallery,
+    
+    // 元数据
+    featured: product.is_hot || false,
+    is_new: product.is_new || false,
   };
 }

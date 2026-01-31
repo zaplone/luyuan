@@ -1,172 +1,197 @@
-import { Shield, Award, Truck, Users, Clock, Globe } from 'lucide-react';
+'use client';
 
-const features = [
-  {
-    icon: Shield,
-    title: 'Certified Safety Standards',
-    description: 'All our products meet ANSI Z41, ASTM F2413-18, and CE EN ISO 20345 standards. Your workers\' safety is our top priority.',
-    stats: '100% Certified',
-  },
-  {
-    icon: Award,
-    title: 'Premium Quality Materials',
-    description: 'We use only the finest leather, composite materials, and advanced sole technologies for maximum durability and comfort.',
-    stats: '5-Year Warranty',
-  },
-  {
-    icon: Truck,
-    title: 'Global Shipping Network',
-    description: 'Fast, reliable delivery to over 50 countries. Express shipping available for urgent orders with tracking included.',
-    stats: '50+ Countries',
-  },
-  {
-    icon: Users,
-    title: 'OEM Manufacturing',
-    description: 'Custom solutions for large orders. Private labeling, custom colors, and specialized requirements available.',
-    stats: '10K+ MOQ',
-  },
-  {
-    icon: Clock,
-    title: 'Fast Turnaround',
-    description: 'Quick production times without compromising quality. Standard orders ship within 7-14 business days.',
-    stats: '7-14 Days',
-  },
-  {
-    icon: Globe,
-    title: 'Worldwide Support',
-    description: '24/7 customer support in multiple languages. Technical assistance and product guidance available.',
-    stats: '24/7 Support',
-  },
-];
-
-const testimonials = [
-  {
-    name: 'Michael Rodriguez',
-    company: 'Construction Solutions Inc.',
-    content: 'SafeStep boots have been our go-to choice for over 3 years. The quality is exceptional and our workers love the comfort.',
-    rating: 5,
-  },
-  {
-    name: 'Sarah Chen',
-    company: 'Industrial Safety Corp.',
-    content: 'Outstanding customer service and fast delivery. The custom OEM solution they provided exceeded our expectations.',
-    rating: 5,
-  },
-  {
-    name: 'David Thompson',
-    company: 'Manufacturing Works',
-    content: 'Best safety footwear we\'ve used. The slip-resistant technology has significantly reduced workplace accidents.',
-    rating: 5,
-  },
-];
+import { useState } from 'react';
+import { Shield, Settings, Truck, Award, CheckCircle2, TrendingUp, Users, Factory, Play, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 export function WhyChooseUs() {
+  const t = useTranslations('WhyChooseUs');
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
+  const pillars = [
+    {
+      id: 'manufacturing',
+      title: t('cards.manufacturing.title'),
+      icon: Factory,
+      iconColor: 'bg-accent-500 text-slate-900',
+      desc: t('cards.manufacturing.desc'),
+      bgImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", // Demo video
+      points: [
+        { text: 'ISO 9001', color: 'text-accent-500' }, // Simplified for demo as point translation keys are needed
+        { text: '12 Lines', color: 'text-accent-500' }
+      ]
+    },
+    {
+      id: 'quality',
+      title: t('cards.quality.title'),
+      icon: Shield,
+      iconColor: 'bg-blue-500 text-white',
+      desc: t('cards.quality.desc'),
+      bgImage: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", 
+      points: [
+        { text: 'Lab Testing', color: 'text-blue-400' },
+        { text: 'SGS Reports', color: 'text-blue-400' },
+        { text: 'Zero-Defect', color: 'text-blue-400' }
+      ]
+    },
+    {
+      id: 'logistics',
+      title: t('cards.logistics.title'),
+      icon: Truck,
+      iconColor: 'bg-green-500 text-white',
+      desc: t('cards.logistics.desc'),
+      bgImage: "https://images.unsplash.com/photo-1494412574643-35d324698420?q=80&w=2072&auto=format&fit=crop",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
+      points: [
+        { text: 'On-Time', color: 'text-green-400' },
+        { text: 'DDP Service', color: 'text-green-400' }
+      ]
+    }
+  ];
+
   return (
-    <section className="section-padding bg-white">
-      <div className="container-custom">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Why Choose SafeStep?
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            With over 15 years of experience in safety footwear manufacturing, we've built a reputation 
-            for quality, reliability, and innovation that industrial companies trust worldwide.
-          </p>
+    <section className="bg-white py-24">
+      <div className="container mx-auto px-4">
+        
+        {/* 1. The Big Numbers Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 border-b border-slate-100 pb-8">
+          <div className="max-w-2xl">
+            <span className="text-accent-500 font-bold tracking-wider uppercase text-sm">{t('label')}</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 leading-tight">
+              {t('title')} <br/>
+              <span className="text-slate-400">{t('subtitle')}</span>
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-12 w-full md:w-auto">
+            <div>
+              <div className="text-3xl font-bold text-slate-900">2M+</div>
+              <div className="text-xs text-slate-500 uppercase tracking-wide mt-1">{t('stats.capacity')}</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-slate-900">50+</div>
+              <div className="text-xs text-slate-500 uppercase tracking-wide mt-1">{t('stats.countries')}</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-slate-900">7<span className="text-lg">Days</span></div>
+              <div className="text-xs text-slate-500 uppercase tracking-wide mt-1">{t('stats.sampleTime')}</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-slate-900">0.2<span className="text-lg">%</span></div>
+              <div className="text-xs text-slate-500 uppercase tracking-wide mt-1">{t('stats.defectRate')}</div>
+            </div>
+          </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
+        {/* 2. The 3 Pillars (Visual Cards with Video) */}
+        <div className="grid lg:grid-cols-3 gap-8 mb-20">
+          {pillars.map((pillar) => {
+            const Icon = pillar.icon;
             return (
-              <div
-                key={index}
-                className="group text-center p-6 rounded-lg hover:shadow-medium transition-all duration-300 hover:-translate-y-1"
+              <div 
+                key={pillar.id}
+                className="group relative overflow-hidden rounded-3xl bg-slate-900 shadow-xl transition-all duration-500 h-[420px]"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-6 group-hover:bg-primary-600 transition-colors">
-                  <Icon className="h-8 w-8 text-primary-600 group-hover:text-white transition-colors" />
+                {/* Background Image */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-40 transition-all duration-700 transform group-hover:scale-110"
+                  style={{ backgroundImage: `url('${pillar.bgImage}')` }}
+                ></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+                
+                {/* Play Button Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button 
+                    onClick={() => setActiveVideo(pillar.videoUrl)}
+                    className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group/btn"
+                  >
+                    <Play className="w-6 h-6 text-white fill-white group-hover/btn:text-slate-900 group-hover/btn:fill-slate-900" />
+                  </button>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">{feature.description}</p>
-                <div className="inline-block bg-primary-50 text-primary-600 px-3 py-1 rounded-full text-sm font-semibold">
-                  {feature.stats}
+
+                <div className="relative z-10 p-8 h-full flex flex-col justify-end">
+                  <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-lg", pillar.iconColor)}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2 text-2xl">{pillar.title}</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed mb-6">
+                    {pillar.desc}
+                  </p>
+                  <ul className="space-y-2">
+                    {pillar.points.map((point, idx) => (
+                      <li key={idx} className="flex items-center text-xs text-white/80">
+                        <CheckCircle2 className={cn("w-4 h-4 mr-2", point.color)}/> {point.text}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Statistics Section */}
-        <div className="bg-gray-50 rounded-2xl p-8 md:p-12 mb-16">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Trusted by Industry Leaders
-            </h3>
-            <p className="text-lg text-gray-600">
-              Our numbers speak for themselves
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">15+</div>
-              <div className="text-gray-600">Years Experience</div>
+        {/* 3. Factory Tour Banner (Restored "See It To Believe It" Style) */}
+        <div className="relative rounded-3xl overflow-hidden h-[300px] flex items-center group shadow-2xl">
+          {/* Background Image */}
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80')] bg-cover bg-fixed bg-center opacity-40 group-hover:opacity-50 transition-opacity duration-700"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
+          
+          <div className="relative z-10 w-full px-8 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="max-w-xl text-center md:text-left">
+               <div className="inline-flex items-center space-x-2 bg-accent-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold mb-4">
+                  <span className="relative flex h-2 w-2 mr-1">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-900 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-900"></span>
+                  </span>
+                  {t('videoBanner.liveView')}
+               </div>
+               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">{t('videoBanner.title')}</h2>
+               <p className="text-lg text-slate-300 leading-relaxed">
+                 {t('videoBanner.desc')}
+               </p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">500K+</div>
-              <div className="text-gray-600">Pairs Sold</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">50+</div>
-              <div className="text-gray-600">Countries Served</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">99%</div>
-              <div className="text-gray-600">Customer Satisfaction</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Testimonials */}
-        <div className="text-center mb-12">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-            What Our Customers Say
-          </h3>
-          <p className="text-lg text-gray-600">
-            Don't just take our word for it
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-soft p-6 border border-gray-100"
+            
+            <button 
+              onClick={() => setActiveVideo('https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1')}
+              className="flex-shrink-0 px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-accent-500 hover:text-slate-900 transition-all shadow-xl hover:scale-105 flex items-center group/btn"
             >
-              <div className="flex items-center mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="h-5 w-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
+              {t('videoBanner.button')}
+              <div className="ml-3 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center group-hover/btn:bg-white transition-colors">
+                <Play className="w-4 h-4 text-slate-900 fill-slate-900" />
               </div>
-              <blockquote className="text-gray-600 mb-4 italic">
-                "{testimonial.content}"
-              </blockquote>
-              <div className="border-t border-gray-100 pt-4">
-                <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                <div className="text-sm text-gray-500">{testimonial.company}</div>
-              </div>
-            </div>
-          ))}
+            </button>
+          </div>
         </div>
+
       </div>
+
+      {/* Video Modal Overlay */}
+      {activeVideo && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
+            <button 
+              onClick={() => setActiveVideo(null)}
+              className="absolute top-4 right-4 z-10 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <div className="w-full h-full flex items-center justify-center">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src={activeVideo} 
+                title="Video Player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

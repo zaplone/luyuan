@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_product_material_specs",
+  "info": {
+    "displayName": "Material Spec",
+    "description": "Product material specifications"
+  },
+  "options": {},
+  "attributes": {
+    "upper": {
+      "type": "string"
+    },
+    "outsole": {
+      "type": "string"
+    },
+    "toe_cap": {
+      "type": "string"
+    },
+    "midsole": {
+      "type": "string"
+    },
+    "lining": {
+      "type": "string"
+    }
+  }
+}

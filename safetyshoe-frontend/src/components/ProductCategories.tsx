@@ -5,207 +5,154 @@ import Image from 'next/image';
 import { ArrowRight, ChevronRight, Shield, Zap, Droplets, Snowflake, HardHat, Factory, Utensils, Hammer, Filter } from 'lucide-react';
 import { ProductQuickView } from './ProductQuickView';
 import { fetchProducts, transformProduct } from '@/lib/strapi';
-
-// Industry Categories for Visual Navigation
-const INDUSTRIES = [
-  { 
-    id: 'construction', 
-    name: 'Construction', 
-    icon: HardHat,
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80', // Construction Site
-    desc: 'Heavy-duty protection for sites'
-  },
-  { 
-    id: 'oil-gas', 
-    name: 'Oil & Gas', 
-    icon: Factory,
-    image: 'https://images.unsplash.com/photo-1516937941348-c09e554b9631?auto=format&fit=crop&q=80', // Refinery
-    desc: 'Chemical & Slip resistant'
-  },
-  { 
-    id: 'food', 
-    name: 'Food Service', 
-    icon: Utensils,
-    image: 'https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?auto=format&fit=crop&q=80', // Commercial Kitchen
-    desc: 'Hygiene & Anti-slip'
-  },
-  { 
-    id: 'heavy-duty', 
-    name: 'Heavy Industry', 
-    icon: Hammer,
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80', // Manufacturing
-    desc: 'Extreme condition gear'
-  },
-];
-
-const MOCK_PRODUCTS = [
-  {
-    id: 101,
-    name: 'Titan Pro Steel Toe',
-    category: 'construction',
-    image: '/images/products/steel-toe-boot.jpg',
-    features: ['S3 Certified', 'Anti-Puncture', 'Waterproof'],
-    moq: '500 Pairs',
-    standards: ['S3', 'SRC'],
-    description: 'Our best-selling steel toe boot for construction sites. Reinforced heel and toe cap.'
-  },
-  {
-    id: 102,
-    name: 'VoltGuard Composite',
-    category: 'oil-gas',
-    image: '/images/products/composite-shoe.jpg',
-    features: ['EH Rated', 'Metal Free', 'Oil Resistant'],
-    moq: '500 Pairs',
-    standards: ['SB', 'E', 'FO'],
-    description: 'Designed for electricians and engineers. 100% metal free and electrical hazard protection.'
-  },
-  {
-    id: 103,
-    name: 'ChefSafe Grip',
-    category: 'food',
-    image: '/images/products/slip-resistant.jpg',
-    features: ['SRC Slip Resistant', 'Easy Clean', 'Lightweight'],
-    moq: '1000 Pairs',
-    standards: ['OB', 'SRC'],
-    description: 'Maximum slip resistance for oily kitchen floors. Easy to clean microfiber upper.'
-  },
-  {
-    id: 104,
-    name: 'Arctic Force',
-    category: 'heavy-duty',
-    image: '/images/products/winter-boot.jpg',
-    features: ['-40°C Rated', 'Thinsulate', 'Vibram Sole'],
-    moq: '300 Pairs',
-    standards: ['S3', 'CI', 'WR'],
-    description: 'Extreme cold weather protection. 3M Thinsulate insulation keeps feet warm in freezing conditions.'
-  },
-  {
-    id: 105,
-    name: 'Construct Max',
-    category: 'construction',
-    image: '/images/products/steel-toe-boot.jpg',
-    features: ['Steel Toe', 'Ankle Support', 'Breathable'],
-    moq: '500 Pairs',
-    standards: ['S1P', 'SRA'],
-    description: 'Affordable and durable. The perfect choice for large crew outfitting.'
-  },
-  {
-    id: 106,
-    name: 'RigMaster Pro',
-    category: 'oil-gas',
-    image: '/images/products/composite-shoe.jpg',
-    features: ['Chemical Resistant', 'Side Zip', 'Heat Resistant'],
-    moq: '500 Pairs',
-    standards: ['S3', 'HRO'],
-    description: 'Heavy duty oil and gas boot with side zipper for easy on/off.'
-  },
-];
-
-// 筛选选项
-const FILTERS = {
-  standard: ['All Standards', 'S3', 'S1P', 'SB', 'OB'],
-  feature: ['All Features', 'Waterproof', 'Metal Free', 'Insulated', 'Slip Resistant'],
-  style: ['All Styles', 'Low Cut', 'Mid Cut', 'High Boot']
-};
+import { useTranslations, useLocale } from 'next-intl';
+import { Product } from '@/types'; // Import the new type
 
 interface ProductCategoriesProps {
-  initialProducts?: any[]; // 首页传入的预加载产品数据（SSG）
+  initialProducts?: any[]; // Keep any[] for compatibility with raw Strapi response for now
+  hideFilters?: boolean; // New prop to hide filters on homepage
 }
 
-export function ProductCategories({ initialProducts }: ProductCategoriesProps = {}) {
+export function ProductCategories({ initialProducts, hideFilters = false }: ProductCategoriesProps = {}) {
+  const t = useTranslations('ProductCategories');
+  const locale = useLocale();
+
+  // Industry Categories
+  const INDUSTRIES = [
+    { 
+      id: 'Construction', // Updated to match new industry values
+      name: t('categories.construction'), 
+      icon: HardHat,
+      image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80',
+      desc: t('categories.construction')
+    },
+    { 
+      id: 'Oil & Gas', 
+      name: t('categories.industrial'), 
+      icon: Factory,
+      image: 'https://images.unsplash.com/photo-1516937941348-c09e554b9631?auto=format&fit=crop&q=80',
+      desc: t('categories.industrial')
+    },
+    { 
+      id: 'Food Industry', // Corrected ID to match Seeding Data
+      name: t('categories.executive'), 
+      icon: Utensils,
+      image: 'https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?auto=format&fit=crop&q=80',
+      desc: t('categories.executive')
+    },
+    { 
+      id: 'Logistics', 
+      name: t('categories.logistics'), 
+      icon: Hammer,
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80',
+      desc: t('categories.logistics')
+    },
+  ];
+
+  // Filter Options
+  const FILTER_OPTIONS = {
+    standard: [
+      { value: 'All Standards', label: t('filter.standards.all') },
+      { value: 'S3', label: 'S3' },
+      { value: 'S1P', label: 'S1P' },
+      { value: 'SB', label: 'SB' },
+      { value: 'OB', label: 'OB' }
+    ],
+    feature: [
+      { value: 'All Features', label: t('filter.features.all') },
+      { value: 'Waterproof', label: t('filter.features.waterproof') }, // Need mapping logic
+      { value: 'Metal Free', label: t('filter.features.metalFree') },
+      { value: 'Insulated', label: t('filter.features.insulated') },
+      { value: 'Slip Resistant', label: t('filter.features.slipResistant') }
+    ],
+    style: [
+      { value: 'All Styles', label: t('filter.styles.all') },
+      { value: 'Low Cut', label: t('filter.styles.low') },
+      { value: 'Mid Cut', label: t('filter.styles.mid') },
+      { value: 'High Boot', label: t('filter.styles.high') }
+    ]
+  };
+
   const [activeTab, setActiveTab] = useState('all');
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
   
-  // 产品数据状态
-  // 如果有预加载数据且不为空，使用预加载数据；否则初始化为空数组，等待 API 或使用 mock
-  const [products, setProducts] = useState<any[]>(
-    initialProducts && initialProducts.length > 0 ? initialProducts : []
+  const [products, setProducts] = useState<Product[]>(
+    initialProducts ? initialProducts.map(p => p.id ? p : transformProduct(p)) : []
   );
-  const [isLoading, setIsLoading] = useState(
-    !initialProducts || initialProducts.length === 0
-  );
-  
-  // 筛选状态
+  const [isLoading, setIsLoading] = useState(!initialProducts || initialProducts.length === 0);
+
   const [filters, setFilters] = useState({
     standard: 'All Standards',
     feature: 'All Features',
     style: 'All Styles'
   });
 
-  // Modal 状态
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 从 Strapi API 获取产品数据（仅在未提供预加载数据或预加载数据为空时执行）
+  // Data Loading
   useEffect(() => {
-    // 如果已经有有效的预加载数据（首页 SSG），跳过 API 请求
+    // If we have initial products, we don't need to fetch immediately
+    // BUT we should re-fetch if locale changes and we are not relying on parent re-render
+    
+    // In App Router, page.tsx re-runs on locale change, passing new initialProducts.
+    // So we can sync props to state.
     if (initialProducts && initialProducts.length > 0) {
+      setProducts(initialProducts.map(p => p.id ? p : transformProduct(p)));
       setIsLoading(false);
       return;
     }
 
-    async function loadProducts() {
+    async function loadData() {
       setIsLoading(true);
       try {
-        const strapiProducts = await fetchProducts();
-        if (strapiProducts.length > 0) {
-          const transformedProducts = strapiProducts.map(transformProduct);
-          setProducts(transformedProducts);
-        } else {
-          // 如果 API 返回空，使用 mock 数据作为后备
-          console.log('No products from API');
-          // setProducts(MOCK_PRODUCTS); // 暂时禁用 mock 数据，方便调试
-          setProducts([]); 
-        }
+        const strapiProducts = await fetchProducts(locale);
+        const transformedProducts = strapiProducts.map(transformProduct);
+        setProducts(transformedProducts);
       } catch (error) {
         console.error('Failed to load products:', error);
-        // 如果 API 失败，使用 mock 数据作为后备
-        // setProducts(MOCK_PRODUCTS); // 暂时禁用 mock 数据，方便调试
         setProducts([]);
       } finally {
         setIsLoading(false);
       }
     }
-    loadProducts();
-  }, [initialProducts]);
+    loadData();
+  }, [locale, initialProducts]); // Add initialProducts dependency
 
-  // Filter products based on active tab AND filters
+  // Filter Logic (Updated for new Schema)
   const filteredProducts = products.filter(p => {
-    // 1. Category Filter - 改进匹配逻辑
+    // 1. Industry Filter (Active Tab)
     if (activeTab !== 'all') {
-      // 转换 API 里的 category (如 "Oil & Gas") 为 ID 格式 (如 "oil-gas")
-      const productCat = (p.category || '').toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
-      // 也要处理前端定义的 ID (如 "oil-gas")
-      const tabId = activeTab.toLowerCase();
-      
-      // 如果不匹配，则过滤掉
-      if (productCat !== tabId && p.category?.toLowerCase() !== tabId) return false;
+      if (!p.industries?.includes(activeTab as any)) return false;
     }
     
-    // 2. Standard Filter (Mock logic)
-    if (filters.standard !== 'All Standards' && !p.standards?.includes(filters.standard)) return false;
+    // 2. Standard Filter
+    if (filters.standard !== 'All Standards' && p.safety_standard !== filters.standard) return false;
 
     // 3. Style Filter
     if (filters.style !== 'All Styles' && p.style !== filters.style) return false;
 
-    // 4. Feature Filter (Mock logic - simple string match)
+    // 4. Feature Filter (Complex Logic)
     if (filters.feature !== 'All Features') {
-       // 简单的模拟匹配逻辑
-       const featureMap: Record<string, string> = {
-         'Waterproof': 'Waterproof',
-         'Metal Free': 'Metal Free',
-         'Insulated': 'Thinsulate',
-         'Slip Resistant': 'Slip Resistant'
-       };
-       const targetFeature = featureMap[filters.feature] || filters.feature;
-       const hasFeature = p.features.some(f => f.includes(targetFeature));
-       if (!hasFeature) return false;
+       if (filters.feature === 'Waterproof') {
+         // Logic: WR cert OR S3 standard OR description keyword
+         return p.additional_certs?.includes('WR') || p.safety_standard === 'S3' || p.materials?.upper?.toLowerCase().includes('waterproof');
+       }
+       if (filters.feature === 'Metal Free') {
+         return p.materials?.toe_cap !== 'Steel' && p.materials?.midsole !== 'Steel Plate';
+       }
+       if (filters.feature === 'Insulated') {
+         return p.additional_certs?.includes('CI');
+       }
+       if (filters.feature === 'Slip Resistant') {
+         return p.additional_certs?.includes('SRC');
+       }
     }
 
     return true;
   });
 
-  const handleProductClick = (product: any) => {
+  const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
@@ -213,7 +160,7 @@ export function ProductCategories({ initialProducts }: ProductCategoriesProps = 
   return (
     <>
       <section className="py-24 bg-slate-50 relative" id="products">
-        {/* Background Pattern */}
+        {/* ... Background ... */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
              style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
         </div>
@@ -223,94 +170,104 @@ export function ProductCategories({ initialProducts }: ProductCategoriesProps = 
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-block px-3 py-1 bg-white border border-slate-200 text-slate-500 rounded-full text-sm font-semibold mb-4 shadow-sm">
-              Product Catalog
+              {t('label')}
             </div>
             <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Professional Safety Footwear
+              {t('title')}
             </h2>
             <p className="text-lg text-slate-600">
-              Select by industry or browse our complete collection of certified safety shoes.
+              {t('subtitle')}
             </p>
           </div>
 
           {/* Industry Visual Navigation */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            {INDUSTRIES.map((ind) => (
-              <div 
-                key={ind.id}
-                onClick={() => setActiveTab(ind.id)}
-                className={`relative h-40 rounded-xl overflow-hidden cursor-pointer group border-2 transition-all ${
-                  activeTab === ind.id ? 'border-primary-600 ring-2 ring-primary-600 ring-offset-2' : 'border-transparent hover:border-slate-300'
-                }`}
-              >
-                <Image 
-                  src={ind.image} 
-                  alt={ind.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className={`absolute inset-0 transition-colors ${
-                  activeTab === ind.id ? 'bg-primary-900/80' : 'bg-slate-900/60 group-hover:bg-slate-900/70'
-                }`} />
-                
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                  <ind.icon className={`w-8 h-8 mb-2 ${activeTab === ind.id ? 'text-accent-500' : 'text-white'}`} />
-                  <h3 className="text-white font-bold text-lg leading-tight">{ind.name}</h3>
-                  <p className="text-white/70 text-xs mt-1 hidden md:block">{ind.desc}</p>
+          {!hideFilters && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+              {INDUSTRIES.map((ind) => (
+                <div 
+                  key={ind.id}
+                  onClick={() => setActiveTab(ind.id)}
+                  className={`relative h-40 rounded-xl overflow-hidden cursor-pointer group border-2 transition-all ${
+                    activeTab === ind.id ? 'border-primary-600 ring-2 ring-primary-600 ring-offset-2' : 'border-transparent hover:border-slate-300'
+                  }`}
+                >
+                  <Image 
+                    src={ind.image} 
+                    alt={ind.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className={`absolute inset-0 transition-colors ${
+                    activeTab === ind.id ? 'bg-primary-900/80' : 'bg-slate-900/60 group-hover:bg-slate-900/70'
+                  }`} />
+                  
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                    <ind.icon className={`w-8 h-8 mb-2 ${activeTab === ind.id ? 'text-accent-500' : 'text-white'}`} />
+                    <h3 className="text-white font-bold text-lg leading-tight">{ind.name}</h3>
+                    <p className="text-white/70 text-xs mt-1 hidden md:block">{ind.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Filter Bar */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-12 flex flex-col md:flex-row items-center justify-between gap-4">
-             <div className="flex items-center gap-2 text-slate-700 font-semibold">
-               <Filter className="w-5 h-5 text-primary-600" />
-               <span>Filter By:</span>
-             </div>
-             
-             <div className="flex flex-wrap gap-3 flex-1 justify-end">
-               <select 
-                 className="form-select bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 py-2.5 px-4"
-                 value={filters.standard}
-                 onChange={(e) => setFilters({...filters, standard: e.target.value})}
-               >
-                 {FILTERS.standard.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-               </select>
+          {!hideFilters && (
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-12 flex flex-col md:flex-row items-center justify-between gap-4">
+               <div className="flex items-center gap-2 text-slate-700 font-semibold">
+                 <Filter className="w-5 h-5 text-primary-600" />
+                 <span>{t('filter.label')}</span>
+               </div>
+               
+               <div className="flex flex-wrap gap-3 flex-1 justify-end">
+                 <select 
+                   className="form-select bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 py-2.5 pl-4 pr-10 min-w-[140px]"
+                   value={filters.standard}
+                   onChange={(e) => setFilters({...filters, standard: e.target.value})}
+                 >
+                   {FILTER_OPTIONS.standard.map(opt => (
+                     <option key={opt.value} value={opt.value}>{opt.label}</option>
+                   ))}
+                 </select>
 
-               <select 
-                 className="form-select bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 py-2.5 px-4"
-                 value={filters.feature}
-                 onChange={(e) => setFilters({...filters, feature: e.target.value})}
-               >
-                 {FILTERS.feature.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-               </select>
+                 <select 
+                   className="form-select bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 py-2.5 pl-4 pr-10 min-w-[140px]"
+                   value={filters.feature}
+                   onChange={(e) => setFilters({...filters, feature: e.target.value})}
+                 >
+                   {FILTER_OPTIONS.feature.map(opt => (
+                     <option key={opt.value} value={opt.value}>{opt.label}</option>
+                   ))}
+                 </select>
 
-               <select 
-                 className="form-select bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 py-2.5 px-4"
-                 value={filters.style}
-                 onChange={(e) => setFilters({...filters, style: e.target.value})}
-               >
-                 {FILTERS.style.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-               </select>
+                 <select 
+                   className="form-select bg-slate-50 border-slate-200 rounded-lg text-sm focus:ring-primary-500 focus:border-primary-500 py-2.5 pl-4 pr-10 min-w-[140px]"
+                   value={filters.style}
+                   onChange={(e) => setFilters({...filters, style: e.target.value})}
+                 >
+                   {FILTER_OPTIONS.style.map(opt => (
+                     <option key={opt.value} value={opt.value}>{opt.label}</option>
+                   ))}
+                 </select>
 
-               <button 
-                 onClick={() => {
-                   setActiveTab('all');
-                   setFilters({ standard: 'All Standards', feature: 'All Features', style: 'All Styles' });
-                 }}
-                 className="text-sm text-slate-500 hover:text-red-500 underline px-2"
-               >
-                 Reset
-               </button>
-             </div>
-          </div>
+                 <button 
+                   onClick={() => {
+                     setActiveTab('all');
+                     setFilters({ standard: 'All Standards', feature: 'All Features', style: 'All Styles' });
+                   }}
+                   className="text-sm text-slate-500 hover:text-red-500 underline px-2"
+                 >
+                   {t('filter.reset')}
+                 </button>
+               </div>
+            </div>
+          )}
 
           {/* Product Grid */}
           {isLoading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-              <p className="text-slate-600">正在加载产品...</p>
+              <p className="text-slate-600">Loading products...</p>
             </div>
           ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -324,39 +281,54 @@ export function ProductCategories({ initialProducts }: ProductCategoriesProps = 
                 >
                   {/* Product Image */}
                   <div className="relative h-3/4 w-full bg-slate-100">
-                    <Image 
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className={`object-cover transition-transform duration-700 ${
-                        hoveredProduct === product.id ? 'scale-110' : 'scale-100'
-                      }`}
-                    />
+                    {product.image && (
+                      <Image 
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className={`object-cover transition-transform duration-700 ${
+                          hoveredProduct === product.id ? 'scale-110' : 'scale-100'
+                        }`}
+                      />
+                    )}
                     
-                    {/* Standards Badges */}
+                    {/* Standards Badges (UPDATED) */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2">
-                      {product.standards?.map((std, idx) => (
+                      {/* Safety Standard Badge */}
+                      {product.safety_standard && (
+                        <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-primary-500">
+                          {product.safety_standard}
+                        </span>
+                      )}
+                      {/* Additional Certs Badges */}
+                      {product.additional_certs?.map((cert, idx) => (
                         <span key={idx} className="bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-slate-200">
-                          {std}
+                          {cert}
                         </span>
                       ))}
                     </div>
 
-                    {/* Hover Overlay */}
+                    {/* Hover Overlay (UPDATED) */}
                     <div className={`absolute inset-0 bg-slate-900/95 flex flex-col justify-center items-center p-8 text-center transition-all duration-300 ${
                       hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                     }`}>
                       <div className="space-y-3 mb-6">
-                        {product.features.map((feature, idx) => (
-                          <div key={idx} className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
-                            {feature}
+                        {/* Display core materials instead of random features */}
+                        {product.materials?.toe_cap && (
+                          <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
+                            Toe: {product.materials.toe_cap}
                           </div>
-                        ))}
+                        )}
+                        {product.materials?.upper && (
+                          <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
+                            {product.materials.upper}
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
                         <button className="w-full py-3 bg-accent-500 hover:bg-accent-400 text-slate-900 font-bold rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-accent-500/20 text-sm">
-                          Quick View
+                          {t('viewDetails')}
                           <ChevronRight className="ml-2 w-4 h-4" />
                         </button>
                       </div>
@@ -371,7 +343,7 @@ export function ProductCategories({ initialProducts }: ProductCategoriesProps = 
                 </div>
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-slate-500">MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
-                        <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-1 rounded">Wholesale Only</span>
+                        <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-1 rounded">Wholesale</span>
                     </div>
                   </div>
                 </div>
@@ -398,7 +370,7 @@ export function ProductCategories({ initialProducts }: ProductCategoriesProps = 
           {filteredProducts.length > 0 && (
             <div className="mt-16 text-center">
               <a href="/products" className="inline-flex items-center px-8 py-3 border-2 border-slate-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white text-slate-600 font-bold rounded-lg transition-all">
-                View Full Catalog
+                {t('loadMore')}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </a>
             </div>

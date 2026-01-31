@@ -1,0 +1,251 @@
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+import { PenTool, Hammer, FlaskConical, Package, Ship, ArrowRight, Quote } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+// Demo Data: A single deep-dive case study
+const CASE_STUDY = {
+  title: "Project: X-Guard Mining Boot",
+  client: "Australian Mining Corp",
+  summary: "A 6-month journey from a rough sketch to 50,000 pairs delivered. Solving the challenge of extreme heat resistance and metatarsal protection.",
+  stats: [
+    { label: "Development Time", value: "45 Days" },
+    { label: "Defect Rate", value: "< 0.1%" },
+    { label: "First Order", value: "50,000 Pairs" }
+  ],
+  steps: [
+    {
+      id: 'design',
+      label: 'Consultation',
+      time: 'Day 1',
+      icon: PenTool,
+      title: "Translating Requirements into Blueprints",
+      desc: "The client needed a boot that could withstand 300°C surfaces and 200J impacts. Our R&D team spent 3 days analyzing the mining terrain in Pilbara. We proposed a hybrid Kevlar-Leather upper design that reduced weight by 15% without compromising safety.",
+      image: "/images/products/composite-shoe.jpg", // Placeholder
+      quote: "The 3D rendering was spot on. They understood our safety needs better than we did."
+    },
+    {
+      id: 'mold',
+      label: 'Design & CAD',
+      time: 'Day 2-3',
+      icon: Hammer,
+      title: "Precision Tooling for Custom Outsoles",
+      desc: "To ensure maximum grip on loose gravel, we opened a new dual-density PU/Rubber mold. The tread pattern was engineered with self-cleaning channels. The mold opening took just 12 days, 30% faster than industry average.",
+      image: "/images/products/steel-toe-boot.jpg", // Placeholder
+      quote: "Fastest mold opening we've seen in 10 years of sourcing."
+    },
+    {
+      id: 'sample',
+      label: 'Prototyping',
+      time: 'Day 7-10',
+      icon: Package,
+      title: "From Digital to Physical",
+      desc: "First samples were produced within 7 days. We identified a potential pressure point on the ankle and adjusted the collar padding density immediately. The second version (V2) was approved instantly for lab testing.",
+      image: "/images/products/slip-resistant.jpg", // Placeholder
+      quote: "V2 sample fit perfectly. The comfort level was beyond expectation."
+    },
+    {
+      id: 'test',
+      label: 'Mass Production',
+      time: 'Day 30-45',
+      icon: FlaskConical,
+      title: "Rigorous ISO 20345 Validation",
+      desc: "Every batch underwent 15 critical tests in our in-house lab: Impact resistance, Antistatic discharge, and Flexing durability (50,000 cycles). We also sent samples to Intertek for third-party certification.",
+      image: "/images/products/winter-boot.jpg", // Placeholder
+      quote: "Having an in-house lab saved us weeks of waiting for 3rd party reports."
+    },
+    {
+      id: 'delivery',
+      label: 'Global Delivery',
+      time: 'Arrival',
+      icon: Ship,
+      title: "On-Time Delivery, Every Time",
+      desc: "Production lines ran at full capacity. We implemented a 5-checkpoint QC system. The final container was loaded with custom retail packaging, barcoded for their warehouse system, and shipped FOB Qingdao.",
+      image: "/images/products/composite-shoe.jpg", // Placeholder
+      quote: "Goods arrived in perfect condition. Packaging was retail-ready as promised."
+    }
+  ]
+};
+
+export function InteractiveOemCase() {
+  const [activeStep, setActiveStep] = useState(0);
+
+  const currentStep = CASE_STUDY.steps[activeStep];
+
+  return (
+    <section className="py-24 bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
+      <div className="container mx-auto px-4">
+        
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-accent-500 font-bold tracking-wider uppercase text-sm">Featured Case Study</span>
+          <h2 className="text-3xl md:text-5xl font-bold mt-3 mb-6">
+            Inside the Process: <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-200">{CASE_STUDY.title}</span>
+          </h2>
+          <p className="text-slate-400 text-lg">
+            {CASE_STUDY.summary}
+          </p>
+        </div>
+
+        {/* Timeline Navigation (Re-styled to match ProcessTimeline) */}
+        <div className="relative mb-12 hidden md:block">
+           {/* Connecting Line */}
+           <div className="absolute top-12 left-0 w-full h-0.5 bg-slate-700 z-0"></div>
+           
+           <div className="grid grid-cols-5 gap-4 relative z-10">
+              {CASE_STUDY.steps.map((step, idx) => {
+                 const Icon = step.icon;
+                 const isActive = idx === activeStep;
+                 return (
+                   <button
+                     key={step.id}
+                     onClick={() => setActiveStep(idx)}
+                     className="flex flex-col items-center text-center group focus:outline-none"
+                   >
+                     {/* Step Number/Icon Bubble */}
+                     <div className={cn(
+                       "w-24 h-24 rounded-full flex items-center justify-center mb-4 transition-all duration-300 relative border-4",
+                       isActive 
+                         ? "bg-slate-800 border-accent-500 shadow-[0_0_20px_rgba(245,158,11,0.4)] scale-110" 
+                         : "bg-slate-900 border-slate-700 hover:border-slate-500"
+                     )}>
+                       <Icon className={cn(
+                         "w-8 h-8 transition-colors",
+                         isActive ? "text-accent-500" : "text-slate-500 group-hover:text-slate-300"
+                       )} />
+                       
+                       {/* Number Badge */}
+                       <div className={cn(
+                         "absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-4 border-slate-900 transition-colors",
+                         isActive ? "bg-accent-500 text-slate-900" : "bg-slate-700 text-slate-400"
+                       )}>
+                         {idx + 1}
+                       </div>
+                     </div>
+
+                     <h3 className={cn("text-lg font-bold mb-1 transition-colors", isActive ? "text-white" : "text-slate-500")}>
+                       {step.label}
+                     </h3>
+                     <div className={cn("text-xs font-bold px-2 py-1 rounded transition-colors", isActive ? "bg-accent-500/20 text-accent-400" : "bg-slate-800 text-slate-600")}>
+                       {step.time}
+                     </div>
+                   </button>
+                 );
+              })}
+           </div>
+        </div>
+
+        {/* Mobile Navigation (Simple Dots) */}
+        <div className="flex md:hidden justify-center gap-2 mb-8">
+           {CASE_STUDY.steps.map((_, idx) => (
+             <button
+               key={idx}
+               onClick={() => setActiveStep(idx)}
+               className={cn(
+                 "w-3 h-3 rounded-full transition-all",
+                 idx === activeStep ? "bg-accent-500 w-8" : "bg-slate-700"
+               )}
+             />
+           ))}
+           <div className="text-center text-accent-400 text-sm font-bold ml-2 py-0.5">
+             Step {activeStep + 1}: {CASE_STUDY.steps[activeStep].label}
+           </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="bg-slate-900/50 rounded-3xl border border-slate-700/50 overflow-hidden shadow-2xl backdrop-blur-md relative min-h-[500px]">
+          <div className="grid lg:grid-cols-2 h-full">
+            
+            {/* Left: Image (Animated) */}
+            <div className="relative h-[300px] lg:h-auto overflow-hidden group">
+              {CASE_STUDY.steps.map((step, idx) => (
+                <div 
+                  key={step.id}
+                  className={cn(
+                    "absolute inset-0 transition-opacity duration-500 ease-in-out",
+                    idx === activeStep ? "opacity-100 z-10" : "opacity-0 z-0"
+                  )}
+                >
+                   <Image
+                    src={step.image}
+                    alt={step.title}
+                    fill
+                    className="object-cover transition-transform duration-[3000ms] ease-out scale-100 group-hover:scale-110"
+                  />
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-slate-900/50"></div>
+                </div>
+              ))}
+              
+              {/* Badge */}
+              <div className="absolute top-6 left-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg">
+                Step {activeStep + 1} of 5
+              </div>
+            </div>
+
+            {/* Right: Text Content */}
+            <div className="p-8 md:p-12 flex flex-col justify-center relative z-10">
+              
+              {/* Animated Text Container */}
+              <div key={activeStep} className="animate-fade-in-up">
+                <div className="flex items-center gap-3 mb-6 text-accent-400">
+                  <div className="p-2 bg-accent-500/10 rounded-lg">
+                    {(() => {
+                      const Icon = currentStep.icon;
+                      return <Icon className="w-6 h-6" />;
+                    })()}
+                  </div>
+                  <span className="font-bold tracking-wider text-sm uppercase">Phase {activeStep + 1}</span>
+                </div>
+
+                <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                  {currentStep.title}
+                </h3>
+                
+                <p className="text-slate-300 text-lg leading-relaxed mb-8 border-l-2 border-slate-600 pl-6">
+                  {currentStep.desc}
+                </p>
+
+                {/* Client Quote Box */}
+                <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700/50 relative">
+                  <Quote className="w-8 h-8 text-slate-600 absolute -top-4 -left-2 fill-slate-800" />
+                  <p className="text-slate-400 italic text-sm relative z-10">
+                    "{currentStep.quote}"
+                  </p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-slate-700"></div>
+                    <span className="text-xs font-bold text-slate-500">Client Feedback</span>
+                  </div>
+                </div>
+
+                {/* Navigation Buttons (Bottom) */}
+                <div className="flex items-center gap-4 mt-8 pt-8 border-t border-slate-700/50">
+                  <button 
+                    onClick={() => setActiveStep((prev) => (prev + 1) % CASE_STUDY.steps.length)}
+                    className="flex items-center text-white font-bold hover:text-accent-400 transition-colors"
+                  >
+                    Next Phase <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Footer */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
+          {CASE_STUDY.stats.map((stat, idx) => (
+            <div key={idx} className="bg-slate-800 rounded-xl p-6 text-center border border-slate-700">
+              <div className="text-slate-400 text-sm uppercase tracking-wider mb-2">{stat.label}</div>
+              <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}

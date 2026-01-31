@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+const createNextIntlPlugin = require('next-intl/plugin');
+
+const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
+
 const nextConfig = {
   // 图片配置
   images: {
@@ -33,32 +37,22 @@ const nextConfig = {
     ];
   },
   
-  // 输出配置（静态导出）
-  // output: 'export', // 暂时注释掉，以便在开发模式下支持动态路由
-  // trailingSlash: true,
-  
   // 压缩配置
   compress: true,
   
   // 性能优化
   poweredByHeader: false,
   
-  // 国际化配置（静态导出不支持i18n）
-  // i18n: {
-  //   locales: ['en', 'es', 'de'], // 英语、西班牙语、德语
-  //   defaultLocale: 'en',
-  // },
-  
   // 重定向配置
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/home',
+  //       destination: '/',
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
   
   // 头部配置
   async headers() {
@@ -84,4 +78,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

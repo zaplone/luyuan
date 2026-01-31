@@ -1,0 +1,201 @@
+{
+  "Navigation": {
+    "home": "首页",
+    "products": "产品目录",
+    "oem": "OEM 定制服务",
+    "about": "关于工厂",
+    "contact": "联系我们",
+    "getQuote": "获取报价",
+    "searchPlaceholder": "搜索产品..."
+  },
+  "About": {
+    "title": "关于我们的工厂",
+    "description": "自1995年以来，我们一直致力于制定工业安全鞋制造标准。了解更多关于我们的生产能力和对质量的承诺。"
+  },
+  "Hero": {
+    "badge": "重型防护",
+    "title": "轻量化防护",
+    "highlight": "复合材料科技",
+    "description": "非金属复合鞋头保护。比传统钢头靴轻30%，非常适合机场安检和电工作业。",
+    "cta_primary": "浏览产品",
+    "cta_secondary": "OEM 定制"
+  },
+  "WhyChooseUs": {
+    "title": "卓越制造",
+    "subtitle": "数据见证实力",
+    "label": "为什么选择我们要",
+    "stats": {
+      "capacity": "年产能",
+      "countries": "出口国家",
+      "sampleTime": "打样时间",
+      "defectRate": "次品率"
+    },
+    "cards": {
+      "manufacturing": {
+        "title": "智能制造",
+        "desc": "自动化 Desma 注塑机确保一致的粘合强度和精确的鞋底密度。"
+      },
+      "quality": {
+        "title": "实验室级品控",
+        "desc": "每批次在发货前均在内部实验室经过严格的冲击、压缩和防静电测试。"
+      },
+      "logistics": {
+        "title": "全球物流",
+        "desc": "无缝 FOB/CIF 发货至 50 多个国家。我们要处理海关文件和追踪。"
+      }
+    },
+    "videoBanner": {
+      "liveView": "实时视角",
+      "title": "眼见为实",
+      "desc": "透明是我们的原则。虚拟参观我们经过 ISO 9001 认证的生产线和实验室。",
+      "button": "开始虚拟看厂"
+    }
+  },
+  "ProductCategories": {
+    "label": "产品系列",
+    "title": "专业安全鞋",
+    "subtitle": "按行业选择或浏览我们完整的认证安全鞋系列。",
+    "categories": {
+      "construction": "建筑工程",
+      "industrial": "工业制造",
+      "logistics": "物流仓储",
+      "executive": "行政管理"
+    },
+    "viewDetails": "查看详情",
+    "loadMore": "查看所有产品",
+    "filter": {
+      "label": "筛选：",
+      "reset": "重置",
+      "standards": {
+        "all": "所有标准"
+      },
+      "features": {
+        "all": "所有特性",
+        "waterproof": "防水",
+        "metalFree": "无金属",
+        "insulated": "保暖/绝缘",
+        "slipResistant": "防滑"
+      },
+      "styles": {
+        "all": "所有款式",
+        "low": "低帮",
+        "mid": "中帮",
+        "high": "高帮"
+      }
+    }
+  },
+  "FactoryNews": {
+    "label": "最新动态",
+    "title": "工厂资讯",
+    "readMore": "阅读全文",
+    "viewAll": "查看所有新闻"
+  },
+  "FAQ": {
+    "label": "常见问题",
+    "title": "常见问题解答",
+    "subtitle": "关于我们制造和订购流程的所有信息。",
+    "contactTitle": "还有疑问？",
+    "contactDesc": "找不到您想要的答案？请联系我们的团队。",
+    "cta": {
+      "ready": "准备好开始了吗？",
+      "title": "让我们携手打造您的安全鞋品牌",
+      "desc": "我们的工程师随时准备评估您的规格。24小时内获取免费咨询和报价。",
+      "email": "邮件联系销售",
+      "whatsapp": "WhatsApp 咨询",
+      "features": {
+        "noFees": "无隐形费用",
+        "nda": "NDA 保密协议",
+        "iso": "ISO 9001 认证工厂"
+      }
+    },
+    "form": {
+      "name": "您的姓名",
+      "email": "电子邮箱",
+      "message": "留言内容",
+      "submit": "发送留言",
+      "sending": "发送中...",
+      "success": "留言发送成功！",
+      "error": "发送失败，请重试。"
+    },
+    "items": {
+      "moq": {
+        "q": "起订量（MOQ）是多少？",
+        "a": "标准起订量为每款 500 双。对于首次订单，我们可以协商较小的试单数量。"
+      },
+      "leadTime": {
+        "q": "生产周期是多久？",
+        "a": "标准生产周期为收到定金和确认样品后的 35-45 天。"
+      },
+      "customization": {
+        "q": "可以在鞋子上印我的 Logo 吗？",
+        "a": "是的，我们提供全套 OEM/ODM 服务，包括在鞋舌、侧面、鞋垫上印制 Logo 以及定制鞋盒设计。"
+      },
+      "certifications": {
+        "q": "你们有哪些安全认证？",
+        "a": "我们的产品已通过 CE (EN ISO 20345)、ASTM F2413-18 和 CSA Z195 认证。如有需要，我们可以提供 Intertek 或 SGS 的检测报告。"
+      },
+      "samples": {
+        "q": "你们提供免费样品吗？",
+        "a": "我们提供样品供质量检查。需要收取样品费，但在您下大货订单时将 100% 退还。"
+      },
+      "payment": {
+        "q": "你们接受什么付款方式？",
+        "a": "对于大额订单，我们接受 T/T（30% 定金，发货前 70%）和即期信用证。对于小额样品付款，可以使用 PayPal。"
+      },
+      "shipping": {
+        "q": "你们提供运输协助吗？",
+        "a": "是的，我们可以安排 FOB、CIF 或 DDP 运输条款。我们与可靠的货运代理合作，将货物运送到您指定的港口或仓库。"
+      },
+      "visit": {
+        "q": "我可以参观你们的工厂吗？",
+        "a": "当然可以。我们欢迎客户参观位于中国高密的工厂。我们可以安排从青岛流亭国际机场的接机服务。"
+      }
+    }
+  },
+  "Footer": {
+    "about": "自1990年以来的专业安全鞋制造商。我们将传统工艺与现代技术相结合，保护全球工人。",
+    "quickLinks": "快速链接",
+    "products": "产品系列",
+    "contact": "联系方式",
+    "address": "中国山东省高密市<br />工业园路128号",
+    "hours": "周一至周六：8:00 - 18:00",
+    "rights": "版权所有。",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "sitemap": "网站地图",
+    "designedFor": "专为全球贸易设计",
+    "productLinks": {
+      "steelToe": "钢头安全靴",
+      "composite": "复合材料安全鞋",
+      "slipResistant": "防滑安全鞋",
+      "winter": "冬季防寒靴"
+    }
+  },
+  "ProductQuickView": {
+    "materialSpecs": "材质规格",
+    "features": "核心特性",
+    "requestQuote": "询价",
+    "inquirySent": "询盘已发送！",
+    "inquiryDesc": "感谢您的关注。我们的销售团队已收到您的请求，并将很快与您联系。",
+    "closeWindow": "关闭窗口",
+    "back": "返回详情",
+    "formTitle": "申请报价",
+    "formDesc": "填写下方表格，我们将在 24 小时内给您回复。",
+    "sending": "发送中...",
+    "send": "发送询盘",
+    "error": "出错了，请重试。",
+    "upper": "鞋面",
+    "toeCap": "鞋头",
+    "midsole": "中底",
+    "outsole": "大底",
+    "lining": "内里",
+    "moq": "起订量",
+    "sizes": "尺码",
+    "form": {
+        "name": "姓名",
+        "email": "邮箱地址",
+        "company": "公司名称",
+        "message": "留言内容"
+    }
+  }
+}

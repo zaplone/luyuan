@@ -517,7 +517,7 @@ export interface ApiInquiryInquiry extends Struct.CollectionTypeSchema {
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
-    description: '\u4EA7\u54C1\u4FE1\u606F';
+    description: '\u4EA7\u54C1\u4FE1\u606F (New Standard)';
     displayName: 'Product';
     pluralName: 'products';
     singularName: 'product';
@@ -531,18 +531,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    category: Schema.Attribute.Enumeration<
-      [
-        'Construction',
-        'Oil & Gas',
-        'Manufacturing',
-        'Logistics',
-        'Mining',
-        'Food Industry',
-        'Other',
-      ]
-    > &
-      Schema.Attribute.Required &
+    additional_certs: Schema.Attribute.JSON &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -569,6 +558,12 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
+    industries: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     is_hot: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -588,19 +583,26 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::product.product'
     >;
-    materials: Schema.Attribute.JSON &
+    materials: Schema.Attribute.Component<'product.material-spec', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    moq: Schema.Attribute.Integer &
+    model_code: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    moq: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
         };
       }> &
-      Schema.Attribute.DefaultTo<500>;
+      Schema.Attribute.DefaultTo<'500 Pairs'>;
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -615,19 +617,18 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
-    sku: Schema.Attribute.String &
+    safety_standard: Schema.Attribute.Enumeration<
+      ['SB', 'S1', 'S1P', 'S2', 'S3', 'OB']
+    > &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
         };
       }>;
-    standards: Schema.Attribute.JSON &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    style: Schema.Attribute.Enumeration<['Low Cut', 'Mid Cut', 'High Boot']> &
+    style: Schema.Attribute.Enumeration<
+      ['Low Cut', 'Mid Cut', 'High Boot', 'Sandal', 'Sporty']
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;

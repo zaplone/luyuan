@@ -1,14 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ProductFilterSidebar } from '@/components/ProductFilterSidebar';
 import { ProductGrid } from '@/components/ProductGrid';
-import { Filter, ChevronRight, Home } from 'lucide-react';
+import { Filter, ChevronRight, Home, Search, X } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ProductsPage() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search');
 
   const handleFilterChange = (groupId: string, value: string) => {
     setSelectedFilters(prev => {
@@ -46,6 +50,18 @@ export default function ProductsPage() {
                 Browse our complete collection of certified industrial safety footwear. 
                 Use the filters to find the perfect match for your workplace requirements.
               </p>
+              
+              {/* Show active search query */}
+              {searchQuery && (
+                <div className="mt-4 flex items-center gap-2 text-sm">
+                  <span className="text-slate-500">Search results for:</span>
+                  <span className="font-bold text-slate-900 bg-yellow-100 px-2 py-0.5 rounded">"{searchQuery}"</span>
+                  <Link href="/products" className="text-primary-600 hover:underline flex items-center text-xs ml-2">
+                    <X className="w-3 h-3 mr-1" />
+                    Clear Search
+                  </Link>
+                </div>
+              )}
             </div>
             
             {/* Mobile Filter Toggle */}
@@ -106,7 +122,7 @@ export default function ProductsPage() {
 
           {/* Main Content */}
           <main className="flex-1">
-            <ProductGrid />
+            <ProductGrid filters={selectedFilters} searchQuery={searchQuery} />
           </main>
 
         </div>

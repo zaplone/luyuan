@@ -5,7 +5,7 @@
     "singularName": "product",
     "pluralName": "products",
     "displayName": "Product",
-    "description": "产品信息"
+    "description": "产品信息 (New Standard)"
   },
   "options": {
     "draftAndPublish": true
@@ -25,8 +25,9 @@
         }
       }
     },
-    "sku": {
+    "model_code": {
       "type": "string",
+      "required": true,
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -55,24 +56,23 @@
       }
     },
     "moq": {
-      "type": "integer",
-      "default": 500,
+      "type": "string",
+      "default": "500 Pairs",
       "pluginOptions": {
         "i18n": {
           "localized": false
         }
       }
     },
-    "category": {
+    "safety_standard": {
       "type": "enumeration",
       "enum": [
-        "Construction",
-        "Oil & Gas",
-        "Manufacturing",
-        "Logistics",
-        "Mining",
-        "Food Industry",
-        "Other"
+        "SB",
+        "S1",
+        "S1P",
+        "S2",
+        "S3",
+        "OB"
       ],
       "required": true,
       "pluginOptions": {
@@ -81,11 +81,44 @@
         }
       }
     },
-    "standards": {
+    "additional_certs": {
       "type": "json",
       "pluginOptions": {
         "i18n": {
           "localized": false
+        }
+      }
+    },
+    "style": {
+      "type": "enumeration",
+      "enum": [
+        "Low Cut",
+        "Mid Cut",
+        "High Boot",
+        "Sandal",
+        "Sporty"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "industries": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "materials": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.material-spec",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
         }
       }
     },
@@ -94,14 +127,6 @@
       "pluginOptions": {
         "i18n": {
           "localized": true
-        }
-      }
-    },
-    "price_range": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
         }
       }
     },
@@ -123,27 +148,13 @@
         }
       }
     },
-    "style": {
-      "type": "enumeration",
-      "enum": [
-        "Low Cut",
-        "Mid Cut",
-        "High Boot"
-      ],
+    "price_range": {
+      "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": false
         }
       }
-    },
-    "materials": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
     }
   }
 }
-
