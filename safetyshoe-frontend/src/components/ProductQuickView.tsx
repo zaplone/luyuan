@@ -86,9 +86,9 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
   if (!isOpen || !product) return null;
 
   // Ensure we have a valid list of images
-  const galleryImages = product.images && product.images.length > 0 
-    ? product.images.filter(isValidImageUrl)
-    : (isValidImageUrl(product.image) ? [product.image] : []);
+  const galleryImages: string[] = product.images && product.images.length > 0 
+    ? product.images.filter(isValidImageUrl) as string[]
+    : (isValidImageUrl(product.image) ? [product.image!] : []);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
