@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { ProductFilterSidebar } from '@/components/ProductFilterSidebar';
@@ -8,7 +8,7 @@ import { ProductGrid } from '@/components/ProductGrid';
 import { Filter, ChevronRight, Home, X } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const t = useTranslations('ProductsPage');
   const tNav = useTranslations('Navigation');
   const locale = useLocale();
@@ -134,3 +134,10 @@ export default function ProductsPage() {
   );
 }
 
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 pt-20"><div className="container mx-auto px-4 py-20 text-center">Loading...</div></div>}>
+      <ProductsPageContent />
+    </Suspense>
+  );
+}
