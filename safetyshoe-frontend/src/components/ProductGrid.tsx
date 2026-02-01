@@ -255,12 +255,18 @@ export function ProductGrid({ locale = 'en', viewMode: initialViewMode, filters 
               onClick={() => handleQuickView(product)}
             >
               <div className="relative h-64 bg-slate-100 overflow-hidden">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-400">
+                    <span className="text-sm">No Image</span>
+                  </div>
+                )}
                 
                 {/* Badges */}
                 <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -309,12 +315,18 @@ export function ProductGrid({ locale = 'en', viewMode: initialViewMode, filters 
               onClick={() => handleQuickView(product)}
             >
               <div className="relative w-full sm:w-48 h-48 sm:h-auto bg-slate-100 flex-shrink-0">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-400">
+                    <span className="text-sm">No Image</span>
+                  </div>
+                )}
               </div>
               <div className="p-6 flex flex-col justify-center flex-1">
                 <div className="flex flex-wrap items-center gap-2 mb-2">

@@ -191,12 +191,18 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                     activeTab === ind.id ? 'border-primary-600 ring-2 ring-primary-600 ring-offset-2' : 'border-transparent hover:border-slate-300'
                   }`}
                 >
-                  <Image 
-                    src={ind.image} 
-                    alt={ind.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  {ind.image && (ind.image.startsWith('http') || ind.image.startsWith('/')) ? (
+                    <Image 
+                      src={ind.image} 
+                      alt={ind.name}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-slate-200 flex items-center justify-center">
+                      <ind.icon className="w-12 h-12 text-slate-400" />
+                    </div>
+                  )}
                   <div className={`absolute inset-0 transition-colors ${
                     activeTab === ind.id ? 'bg-primary-900/80' : 'bg-slate-900/60 group-hover:bg-slate-900/70'
                   }`} />
@@ -281,7 +287,7 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                 >
                   {/* Product Image */}
                   <div className="relative h-3/4 w-full bg-slate-100">
-                    {product.image && (
+                    {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
                       <Image 
                         src={product.image}
                         alt={product.name}
@@ -290,6 +296,10 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                           hoveredProduct === product.id ? 'scale-110' : 'scale-100'
                         }`}
                       />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400">
+                        <span className="text-sm">No Image</span>
+                      </div>
                     )}
                     
                     {/* Standards Badges (UPDATED) */}

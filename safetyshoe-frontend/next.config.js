@@ -13,11 +13,15 @@ const nextConfig = {
   // 图片配置
   images: {
     unoptimized: true, // 静态导出必须开启此项
-    domains: ['localhost', 'your-oss-domain.com'], // 添加图片域名
+    domains: ['localhost', '43.165.0.206', 'pub-9a6ce20adf6d44c499aad464d60190a1.r2.dev'], // Strapi 服务器和 R2 存储
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '43.165.0.206',
       },
     ],
     formats: ['image/webp', 'image/avif'],

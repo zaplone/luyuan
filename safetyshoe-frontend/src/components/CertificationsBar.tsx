@@ -65,12 +65,18 @@ export function CertificationsBar() {
         <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 mb-20">
           {CERTIFICATIONS.map((cert) => (
             <div key={cert.name} className="relative h-14 w-28 md:h-20 md:w-40 hover:scale-110 transition-transform cursor-help group">
-              <Image
-                src={cert.logo}
-                alt={cert.name}
-                fill
-                className="object-contain"
-              />
+              {cert.logo && cert.logo.startsWith('http') ? (
+                <Image
+                  src={cert.logo}
+                  alt={cert.name}
+                  fill
+                  className="object-contain"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-slate-100 rounded text-slate-400 text-xs">
+                  {cert.name}
+                </div>
+              )}
               <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
                 {cert.name}
               </div>

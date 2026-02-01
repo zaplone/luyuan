@@ -214,22 +214,31 @@ export function transformProduct(product: StrapiProduct): Product {
       name: 'Error Loading',
       slug: 'error',
       safety_standard: 'SB',
-      image: '/images/products/placeholder.jpg',
+      image: '/images/placeholder.svg',  // 使用实际存在的占位图
     } as Product;
   }
 
   // 1. 处理图片
   // 优先级: images (API) > placeholder
-  let mainImage = '/images/products/placeholder.jpg';
+  let mainImage = '/images/placeholder.svg';  // 使用实际存在的占位图
   let gallery: string[] = [];
 
   // A. 优先解析 Strapi Media (用户在后台手动上传的图片)
   const rawImages = product.images;
   if (Array.isArray(rawImages) && rawImages.length > 0) {
     gallery = rawImages.map((img: any) => {
-      const url = img.url || '';
+      let url = img.url || '';
+      
+      // 修复 undefined URL 问题
+      if (url.includes('undefined/')) {
+        // 如果 URL 包含 undefined，说明 publicUrl 没配置，使用 R2 公共 URL
+        const R2_PUBLIC_URL = 'https://pub-9a6ce20adf6d44c499aad464d60190a1.r2.dev';
+        url = url.replace('undefined/', `${R2_PUBLIC_URL}/`);
+      }
+      
       return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
-    });
+    }).filter(url => url && url.startsWith('http')); // 过滤掉无效URL
+    
     if (gallery.length > 0) mainImage = gallery[0];
   } 
 

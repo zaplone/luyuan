@@ -122,7 +122,7 @@ export function InteractiveOemCase() {
           <div className="grid lg:grid-cols-2 h-full">
             
             {/* Left: Image (Animated) */}
-            <div className="relative h-[300px] lg:h-auto overflow-hidden group">
+            <div className="relative h-[300px] lg:h-auto overflow-hidden group bg-slate-800">
               {steps.map((step, idx) => (
                 <div 
                   key={step.id}
@@ -131,12 +131,18 @@ export function InteractiveOemCase() {
                     idx === activeStep ? "opacity-100 z-10" : "opacity-0 z-0"
                   )}
                 >
+                  {step.image && (step.image.startsWith('http') || step.image.startsWith('/')) ? (
                    <Image
                     src={step.image}
                     alt={step.title}
                     fill
                     className="object-cover transition-transform duration-[3000ms] ease-out scale-100 group-hover:scale-110"
                   />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-600">
+                      <span className="text-sm">Image Loading...</span>
+                    </div>
+                  )}
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-slate-900/50"></div>
                 </div>

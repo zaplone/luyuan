@@ -63,12 +63,18 @@ export function OemCaseStudies() {
                 {/* Image Side (55%) */}
                 <div className="w-full lg:w-[55%] relative group">
                   <div className="aspect-[4/3] relative rounded-2xl overflow-hidden shadow-xl bg-slate-200">
-                     <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
+                     {item.image && item.image.startsWith('/') ? (
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                     ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400">
+                        <span className="text-sm">No Image</span>
+                      </div>
+                     )}
                     {/* Overlay Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
                     

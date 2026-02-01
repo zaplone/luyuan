@@ -5,6 +5,7 @@ import { submitInquiry } from '@/lib/strapi';
 import { ImageMagnifier } from './ImageMagnifier';
 import { useTranslations } from 'next-intl';
 import { Product } from '@/types';
+import { isValidImageUrl, getSafeImageUrl } from '@/lib/imageUtils';
 
 interface ProductQuickViewProps {
   product: Product | null;
@@ -49,7 +50,8 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
         ? product.images[0] 
         : product.image;
       
-      setActiveImage(initialImage || '');
+      // 使用安全的图片 URL
+      setActiveImage(getSafeImageUrl(initialImage));
       
       setFormData(prev => ({
         ...prev,
@@ -85,8 +87,8 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
 
   // Ensure we have a valid list of images
   const galleryImages = product.images && product.images.length > 0 
-    ? product.images 
-    : (product.image ? [product.image] : []);
+    ? product.images.filter(isValidImageUrl)
+    : (isValidImageUrl(product.image) ? [product.image] : []);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
@@ -109,11 +111,15 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
 
         {/* Left: Image Gallery (58%) */}
         <div className="w-full md:w-7/12 bg-slate-100 relative h-1/2 md:h-full hidden md:block group cursor-zoom-in">
-          {product.image && (
+          {isValidImageUrl(activeImage) ? (
             <ImageMagnifier
-              src={activeImage || product.image}
+              src={activeImage}
               alt={product.name}
             />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-slate-400">
+              <span className="text-sm">No Image Available</span>
+            </div>
           )}
           
           {/* Thumbnails Overlay */}

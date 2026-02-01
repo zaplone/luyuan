@@ -3,6 +3,7 @@
 import { useState, MouseEvent, useRef } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { isValidImageUrl } from '@/lib/imageUtils';
 
 interface ImageMagnifierProps {
   src: string;
@@ -26,6 +27,15 @@ export function ImageMagnifier({
   const [showMagnifier, setShowMagnifier] = useState(false);
   const [xy, setXY] = useState({ x: 0, y: 0 });
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // 验证 src 是否有效
+  if (!isValidImageUrl(src)) {
+    return (
+      <div className={cn("relative inline-block w-full h-full bg-slate-200 flex items-center justify-center", className)}>
+        <span className="text-slate-400 text-sm">Invalid Image URL</span>
+      </div>
+    );
+  }
 
   const handleMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
     setShowMagnifier(true);

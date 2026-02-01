@@ -72,13 +72,19 @@ export function GlobalFootprint() {
               <div key={item.id} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col h-full">
                 
                 {/* Image Area */}
-                <div className="h-56 relative overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                <div className="h-56 relative overflow-hidden bg-slate-200">
+                  {item.image && item.image.startsWith('/') ? (
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-400">
+                      <span className="text-sm">No Image</span>
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 text-white">
                     <div className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">{item.region}</div>

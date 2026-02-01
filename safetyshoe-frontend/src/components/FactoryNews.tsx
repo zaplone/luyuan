@@ -138,12 +138,18 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
               
               {/* Image */}
               <div className="relative h-48 overflow-hidden group/image cursor-pointer" onClick={(e) => handleNewsClick(e, item)}>
-                <Image 
-                  src={item.image} 
-                  alt={item.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+                {item.image && (item.image.startsWith('http') || item.image.startsWith('/')) ? (
+                  <Image 
+                    src={item.image} 
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+                    <span className="text-sm">No Image</span>
+                  </div>
+                )}
                 
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-slate-900 shadow-sm z-10">
