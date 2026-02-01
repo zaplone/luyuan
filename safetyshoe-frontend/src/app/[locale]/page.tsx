@@ -18,8 +18,15 @@ export const metadata: Metadata = {
 
 type HomePageProps = { params: Promise<{ locale: string }> };
 
+// 强制生成静态路径
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
+  console.log('>>> Generating HomePage for locale:', locale);
+
 
   // 1. 获取产品数据（按当前语言）
   let featuredProducts: any[] | undefined = undefined;

@@ -91,7 +91,7 @@ export async function fetchLatestNews(): Promise<StrapiNews[]> {
   try {
     const response = await fetch(
       `${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=3`,
-      { cache: 'no-store' }
+      { next: { revalidate: 60 } }
     );
 
     if (!response.ok) return [];
@@ -109,7 +109,7 @@ export async function fetchLatestNews(): Promise<StrapiNews[]> {
 export async function fetchNewsItem(documentId: string): Promise<StrapiNews | null> {
   try {
     const url = `${STRAPI_URL}/api/factory-updates/${documentId}?populate=*`;
-    const response = await fetch(url, { cache: 'no-store' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) return null;
     const data = await response.json();
@@ -186,7 +186,7 @@ export async function fetchProducts(locale: string = 'en'): Promise<StrapiProduc
     // 直接使用前端的 locale，因为后端现在使用 'zh' 而不是 'zh-Hant'
     const response = await fetch(
       `${STRAPI_URL}/api/products?populate=*&sort=createdAt:desc&locale=${locale}`,
-      { cache: 'no-store' }
+      { next: { revalidate: 60 } }
     );
 
     if (!response.ok) {
