@@ -12,7 +12,7 @@ export default {
    * your application gets started.
    */
   async bootstrap({ strapi }) {
-    const FORCE_RESET = true;  // 改为 true 并重启才会清空并重新生成；平时保持 false 
+    const FORCE_RESET = false;  // 改为 true 并重启才会清空并重新生成；平时保持 false 
 
     try {
       // 1. 确保中文 (zh) 语言已启用
