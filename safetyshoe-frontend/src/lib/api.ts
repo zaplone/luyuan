@@ -12,7 +12,7 @@ import {
 } from '@/types';
 
 // API基础URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://dtwz.zhiyuansafety.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_STRAPI_URL || process.env.NEXT_PUBLIC_API_URL || 'https://dtwz.zhiyuansafety.com';
 
 // 通用API请求函数
 async function apiRequest<T>(
