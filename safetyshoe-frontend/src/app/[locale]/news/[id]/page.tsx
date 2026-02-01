@@ -30,6 +30,9 @@ export async function generateStaticParams() {
   }
 }
 
+// 在 output: export 模式下，必须设置为 false，表示仅支持静态生成的路径
+export const dynamicParams = false;
+
 export default async function NewsDetailPage({ params }: NewsPageProps) {
   const newsItem = await fetchNewsItem(params.id); // 直接传递 documentId 字符串
 
