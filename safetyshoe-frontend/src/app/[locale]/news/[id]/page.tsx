@@ -21,9 +21,17 @@ export async function generateStaticParams() {
     if (!response.ok) return [];
     
     const data = await response.json();
-    return data.data.map((post: any) => ({
-      id: post.documentId, // 使用 documentId
-    }));
+    const newsIds = data.data.map((post: any) => post.documentId);
+    
+    // 为每种语言生成路径（locale 来自父路由）
+    const locales = ['en', 'zh'];
+    const params = [];
+    for (const locale of locales) {
+      for (const id of newsIds) {
+        params.push({ locale, id });
+      }
+    }
+    return params;
   } catch (error) {
     console.error('Error generating news params:', error);
     return [];
