@@ -72,3 +72,14 @@ export interface ApiResponse<T> {
     pagination: Pagination;
   };
 }
+
+// 分类
+export interface Category {
+  id: number;
+  documentId?: string;
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  product_count: number;
+}
