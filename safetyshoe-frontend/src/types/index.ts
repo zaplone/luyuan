@@ -37,6 +37,7 @@ export interface Product {
   
   // 业务数据
   moq?: string; // e.g. "500 Pairs"
+  price_range?: string; // e.g. "$15-25"
   features?: string[]; // 兼容旧数据，或作为营销亮点 (e.g. "Best Seller")
   
   // 媒体

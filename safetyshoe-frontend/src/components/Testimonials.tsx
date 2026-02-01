@@ -259,12 +259,6 @@ export function Testimonials() {
               >
                 Browse Products
               </a>
-              <a
-                href="/contact"
-                className="btn border-2 border-white text-white hover:bg-white hover:text-primary-600"
-              >
-                Get Quote
-              </a>
             </div>
           </div>
         </div>

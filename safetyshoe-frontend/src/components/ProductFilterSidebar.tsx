@@ -1,60 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ChevronDown, ChevronUp, Filter, X } from 'lucide-react';
 
-// Filter Data Configuration
+// Filter structure: id + options[].value (labels from i18n)
 const FILTER_GROUPS = [
-  {
-    id: 'category',
-    label: 'Industry / Category',
-    options: [
-      { value: 'construction', label: 'Construction & Building' },
-      { value: 'mining', label: 'Mining & Quarrying' },
-      { value: 'oil-gas', label: 'Oil & Gas' },
-      { value: 'manufacturing', label: 'Manufacturing' },
-      { value: 'logistics', label: 'Logistics & Warehousing' },
-      { value: 'food', label: 'Food Industry' },
-      { value: 'medical', label: 'Medical & Healthcare' },
-    ]
-  },
-  {
-    id: 'standard',
-    label: 'Safety Standard',
-    options: [
-      { value: 'sb', label: 'SB (Basic Safety)' },
-      { value: 'sbp', label: 'SBP (SB + Puncture)' },
-      { value: 's1', label: 'S1 (Anti-static)' },
-      { value: 's1p', label: 'S1P (S1 + Puncture)' },
-      { value: 's2', label: 'S2 (S1 + Waterproof)' },
-      { value: 's3', label: 'S3 (S2 + Puncture)' },
-      { value: 'ob', label: 'OB (Occupational)' },
-    ]
-  },
-  {
-    id: 'feature',
-    label: 'Special Features',
-    options: [
-      { value: 'waterproof', label: 'Waterproof (WR)' },
-      { value: 'slip-resistant', label: 'Slip Resistant (SRC)' },
-      { value: 'metal-free', label: '100% Metal Free' },
-      { value: 'esd', label: 'ESD / Anti-static' },
-      { value: 'heat-resistant', label: 'Heat Resistant (HRO)' },
-      { value: 'cold-insulated', label: 'Cold Insulated (CI)' },
-      { value: 'metatarsal', label: 'Metatarsal Guard (M)' },
-    ]
-  },
-  {
-    id: 'material',
-    label: 'Upper Material',
-    options: [
-      { value: 'leather-full', label: 'Full Grain Leather' },
-      { value: 'leather-split', label: 'Split Leather' },
-      { value: 'microfiber', label: 'Microfiber' },
-      { value: 'mesh', label: 'Breathable Mesh' },
-      { value: 'pvc-rubber', label: 'PVC / Rubber' },
-    ]
-  }
+  { id: 'category', options: ['construction', 'mining', 'oil-gas', 'manufacturing', 'logistics', 'food', 'medical'] },
+  { id: 'standard', options: ['sb', 'sbp', 's1', 's1p', 's2', 's3', 'ob'] },
+  { id: 'feature', options: ['waterproof', 'slip-resistant', 'metal-free', 'esd', 'heat-resistant', 'cold-insulated', 'metatarsal'] },
+  { id: 'material', options: ['leather-full', 'leather-split', 'microfiber', 'mesh', 'pvc-rubber'] },
 ];
 
 interface FilterSidebarProps {
@@ -70,7 +25,7 @@ export function ProductFilterSidebar({
   onClearFilters,
   className = '' 
 }: FilterSidebarProps) {
-  // Manage collapse state for each group
+  const t = useTranslations('ProductFilterSidebar');
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
 
   const toggleGroup = (groupId: string) => {
@@ -91,14 +46,14 @@ export function ProductFilterSidebar({
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
         <div className="flex items-center gap-2 text-slate-900 font-bold">
           <Filter className="w-5 h-5" />
-          <span>Filters</span>
+          <span>{t('title')}</span>
         </div>
         {hasActiveFilters && (
           <button 
             onClick={onClearFilters}
             className="text-xs text-red-500 hover:text-red-700 font-medium flex items-center"
           >
-            Clear All
+            {t('clearAll')}
             <X className="w-3 h-3 ml-1" />
           </button>
         )}
@@ -109,6 +64,7 @@ export function ProductFilterSidebar({
         {FILTER_GROUPS.map((group) => {
           const isCollapsed = collapsedGroups.includes(group.id);
           const activeCount = selectedFilters[group.id]?.length || 0;
+          const groupLabelKey = `groups.${group.id}.label` as const;
 
           return (
             <div key={group.id} className="border-b border-slate-50 pb-6 last:border-0 last:pb-0">
@@ -117,7 +73,7 @@ export function ProductFilterSidebar({
                 className="flex items-center justify-between w-full text-left mb-3 group"
               >
                 <span className="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors text-sm">
-                  {group.label}
+                  {t(groupLabelKey)}
                   {activeCount > 0 && (
                     <span className="ml-2 bg-primary-100 text-primary-600 text-xs px-1.5 py-0.5 rounded-full">
                       {activeCount}
@@ -133,11 +89,12 @@ export function ProductFilterSidebar({
 
               {!isCollapsed && (
                 <div className="space-y-2 animate-fade-in">
-                  {group.options.map((option) => {
-                    const isSelected = selectedFilters[group.id]?.includes(option.value);
+                  {group.options.map((value) => {
+                    const isSelected = selectedFilters[group.id]?.includes(value);
+                    const optionLabelKey = `groups.${group.id}.options.${value}` as const;
                     return (
                       <label 
-                        key={option.value} 
+                        key={value} 
                         className="flex items-start gap-3 cursor-pointer group hover:bg-slate-50 p-1.5 rounded transition-colors"
                       >
                         <div className="relative flex items-center mt-0.5">
@@ -145,11 +102,11 @@ export function ProductFilterSidebar({
                             type="checkbox"
                             className="peer h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 cursor-pointer"
                             checked={isSelected}
-                            onChange={() => onFilterChange(group.id, option.value)}
+                            onChange={() => onFilterChange(group.id, value)}
                           />
                         </div>
                         <span className={`text-sm ${isSelected ? 'text-slate-900 font-medium' : 'text-slate-600 group-hover:text-slate-900'}`}>
-                          {option.label}
+                          {t(optionLabelKey)}
                         </span>
                       </label>
                     );

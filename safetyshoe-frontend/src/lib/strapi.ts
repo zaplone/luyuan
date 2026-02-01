@@ -52,6 +52,7 @@ export interface StrapiProduct {
   features?: string[];
   is_hot?: boolean;
   is_new?: boolean;
+  price_range?: string;
 }
 
 export interface StrapiResponse<T> {
@@ -252,6 +253,7 @@ export function transformProduct(product: StrapiProduct): Product {
     
     // 业务字段
     moq: product.moq || '500 Pairs',
+    price_range: product.price_range || '',
     features: product.features || [],
     
     // 图片

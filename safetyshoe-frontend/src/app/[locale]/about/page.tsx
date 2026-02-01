@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
 import { CompanyCapabilities } from '@/components/CompanyCapabilities';
-import { FactoryNews } from '@/components/FactoryNews';
 import { FAQAndContact } from '@/components/FAQAndContact';
+import { BrandStory } from '@/components/BrandStory';
+import { GlobalFootprint } from '@/components/GlobalFootprint';
+import { CertificationsBar } from '@/components/CertificationsBar';
 import { useTranslations } from 'next-intl';
 
 export default function AboutPage() {
@@ -36,16 +38,18 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <CompanyCapabilities />
-      
-      {/* News Section */}
-      <FactoryNews />
+      {/* Brand Story & Timeline */}
+      <BrandStory />
 
-      {/* Contact Section */}
-      <FAQAndContact />
+      {/* Main Content: Capabilities */}
+      <CompanyCapabilities />
+
+      {/* Global Case Studies */}
+      <GlobalFootprint />
+      
+      {/* Certifications Bar */}
+      <CertificationsBar />
 
     </div>
   );
 }
-

@@ -16,19 +16,19 @@ export function Hero() {
   const SLIDES_CONFIG = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1542838686-37da4a5fd44e?q=80&w=2500&auto=format&fit=crop', 
+      image: '/images/hero-banner.png',
       badgeIcon: Hammer,
       translationKey: 'slide1'
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1603970222129-23c44883d6a2?q=80&w=2500&auto=format&fit=crop',
+      image: '/images/hero-slide2.png',
       badgeIcon: Shield,
       translationKey: 'slide2'
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1516961642265-531546e84af2?q=80&w=2500&auto=format&fit=crop',
+      image: '/images/hero-slide3.png',
       badgeIcon: Thermometer,
       translationKey: 'slide3'
     },
@@ -42,21 +42,8 @@ export function Hero() {
     return () => clearInterval(timer);
   }, []);
 
-  // Helper to get text for current slide safely
-  // We assume the translation structure is flat under 'Hero' for now, 
-  // but let's adapt it to support multiple slides if the JSON supports it.
-  // 
-  // Since our current JSON only has one set of keys (title, highlight, etc.), 
-  // I will map the single JSON entry to Slide 2 (Composite Tech) as default,
-  // and mock the others or use the same keys if that was the intention.
-  //
-  // WAIT: To support multiple slides properly, we should update the JSON structure later.
-  // For now, I will use the existing keys for the "Composite Tech" slide (which seems to be the main one),
-  // and for the others I will fallback to hardcoded English OR duplication if JSON is not updated.
-  //
-  // BETTER APPROACH: I will update the JSON structure in the next step to support arrays or nested keys.
-  // For this step, I'll update the component to expect keys like 'slides.0.title', etc.
-  
+  const slideKey = SLIDES_CONFIG[currentSlide].translationKey;
+
   return (
     <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden bg-slate-900">
       
@@ -98,28 +85,20 @@ export function Hero() {
                 const Icon = SLIDES_CONFIG[currentSlide].badgeIcon;
                 return <Icon className="w-4 h-4" />;
               })()}
-              {/* 
-                  Temporary fallback logic: 
-                  If currentSlide is 1 (Composite), use the JSON keys we defined earlier.
-                  For others, we might need to add keys to JSON. 
-                  For now I'll use a switch to pick the right translation key suffix if we had them.
-                  Since we only defined ONE set of Hero keys in JSON, I will apply them to ALL slides temporarily
-                  to show it working, but ideally we need 'Hero.slides.0.title' etc.
-              */}
-              <span>{t('badge')}</span>
+              <span>{t(`${slideKey}.badge`)}</span>
             </div>
 
             {/* Dynamic Title */}
             <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight mb-6 tracking-tight drop-shadow-lg">
-              {t('title')} <br/>
+              {t(`${slideKey}.title`)} <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-white">
-                {t('highlight')}
+                {t(`${slideKey}.highlight`)}
               </span>
             </h1>
 
             {/* Dynamic Description */}
             <p className="text-xl text-slate-200 mb-10 leading-relaxed max-w-xl drop-shadow-md">
-              {t('description')}
+              {t(`${slideKey}.description`)}
             </p>
 
             {/* Dynamic Buttons */}

@@ -2,77 +2,40 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { PenTool, Hammer, FlaskConical, Package, Ship, ArrowRight, Quote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Demo Data: A single deep-dive case study
-const CASE_STUDY = {
-  title: "Project: X-Guard Mining Boot",
-  client: "Australian Mining Corp",
-  summary: "A 6-month journey from a rough sketch to 50,000 pairs delivered. Solving the challenge of extreme heat resistance and metatarsal protection.",
-  stats: [
-    { label: "Development Time", value: "45 Days" },
-    { label: "Defect Rate", value: "< 0.1%" },
-    { label: "First Order", value: "50,000 Pairs" }
-  ],
-  steps: [
-    {
-      id: 'design',
-      label: 'Consultation',
-      time: 'Day 1',
-      icon: PenTool,
-      title: "Translating Requirements into Blueprints",
-      desc: "The client needed a boot that could withstand 300°C surfaces and 200J impacts. Our R&D team spent 3 days analyzing the mining terrain in Pilbara. We proposed a hybrid Kevlar-Leather upper design that reduced weight by 15% without compromising safety.",
-      image: "/images/products/composite-shoe.jpg", // Placeholder
-      quote: "The 3D rendering was spot on. They understood our safety needs better than we did."
-    },
-    {
-      id: 'mold',
-      label: 'Design & CAD',
-      time: 'Day 2-3',
-      icon: Hammer,
-      title: "Precision Tooling for Custom Outsoles",
-      desc: "To ensure maximum grip on loose gravel, we opened a new dual-density PU/Rubber mold. The tread pattern was engineered with self-cleaning channels. The mold opening took just 12 days, 30% faster than industry average.",
-      image: "/images/products/steel-toe-boot.jpg", // Placeholder
-      quote: "Fastest mold opening we've seen in 10 years of sourcing."
-    },
-    {
-      id: 'sample',
-      label: 'Prototyping',
-      time: 'Day 7-10',
-      icon: Package,
-      title: "From Digital to Physical",
-      desc: "First samples were produced within 7 days. We identified a potential pressure point on the ankle and adjusted the collar padding density immediately. The second version (V2) was approved instantly for lab testing.",
-      image: "/images/products/slip-resistant.jpg", // Placeholder
-      quote: "V2 sample fit perfectly. The comfort level was beyond expectation."
-    },
-    {
-      id: 'test',
-      label: 'Mass Production',
-      time: 'Day 30-45',
-      icon: FlaskConical,
-      title: "Rigorous ISO 20345 Validation",
-      desc: "Every batch underwent 15 critical tests in our in-house lab: Impact resistance, Antistatic discharge, and Flexing durability (50,000 cycles). We also sent samples to Intertek for third-party certification.",
-      image: "/images/products/winter-boot.jpg", // Placeholder
-      quote: "Having an in-house lab saved us weeks of waiting for 3rd party reports."
-    },
-    {
-      id: 'delivery',
-      label: 'Global Delivery',
-      time: 'Arrival',
-      icon: Ship,
-      title: "On-Time Delivery, Every Time",
-      desc: "Production lines ran at full capacity. We implemented a 5-checkpoint QC system. The final container was loaded with custom retail packaging, barcoded for their warehouse system, and shipped FOB Qingdao.",
-      image: "/images/products/composite-shoe.jpg", // Placeholder
-      quote: "Goods arrived in perfect condition. Packaging was retail-ready as promised."
-    }
-  ]
-};
+const STEP_IDS = ['design', 'mold', 'sample', 'test', 'delivery'] as const;
+const STEP_ICONS = [PenTool, Hammer, Package, FlaskConical, Ship] as const;
+const STEP_IMAGES = [
+  '/images/products/composite-shoe.jpg',
+  '/images/products/steel-toe-boot.jpg',
+  '/images/products/slip-resistant.jpg',
+  '/images/products/winter-boot.jpg',
+  '/images/products/composite-shoe.jpg',
+];
 
 export function InteractiveOemCase() {
+  const t = useTranslations('InteractiveOemCase');
   const [activeStep, setActiveStep] = useState(0);
 
-  const currentStep = CASE_STUDY.steps[activeStep];
+  const steps = STEP_IDS.map((id, idx) => ({
+    id,
+    icon: STEP_ICONS[idx],
+    image: STEP_IMAGES[idx],
+    label: t(`steps.${id}.label`),
+    time: t(`steps.${id}.time`),
+    title: t(`steps.${id}.title`),
+    desc: t(`steps.${id}.desc`),
+    quote: t(`steps.${id}.quote`),
+  }));
+  const currentStep = steps[activeStep];
+  const stats = [
+    { label: t('stats.devTime'), value: t('stats.devValue') },
+    { label: t('stats.defectRate'), value: t('stats.defectValue') },
+    { label: t('stats.firstOrder'), value: t('stats.firstValue') },
+  ];
 
   return (
     <section className="py-24 bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
@@ -80,12 +43,12 @@ export function InteractiveOemCase() {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-accent-500 font-bold tracking-wider uppercase text-sm">Featured Case Study</span>
+          <span className="text-accent-500 font-bold tracking-wider uppercase text-sm">{t('badge')}</span>
           <h2 className="text-3xl md:text-5xl font-bold mt-3 mb-6">
-            Inside the Process: <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-200">{CASE_STUDY.title}</span>
+            {t('title')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-200">{t('caseTitle')}</span>
           </h2>
           <p className="text-slate-400 text-lg">
-            {CASE_STUDY.summary}
+            {t('summary')}
           </p>
         </div>
 
@@ -95,7 +58,7 @@ export function InteractiveOemCase() {
            <div className="absolute top-12 left-0 w-full h-0.5 bg-slate-700 z-0"></div>
            
            <div className="grid grid-cols-5 gap-4 relative z-10">
-              {CASE_STUDY.steps.map((step, idx) => {
+              {steps.map((step, idx) => {
                  const Icon = step.icon;
                  const isActive = idx === activeStep;
                  return (
@@ -139,7 +102,7 @@ export function InteractiveOemCase() {
 
         {/* Mobile Navigation (Simple Dots) */}
         <div className="flex md:hidden justify-center gap-2 mb-8">
-           {CASE_STUDY.steps.map((_, idx) => (
+           {steps.map((_, idx) => (
              <button
                key={idx}
                onClick={() => setActiveStep(idx)}
@@ -150,7 +113,7 @@ export function InteractiveOemCase() {
              />
            ))}
            <div className="text-center text-accent-400 text-sm font-bold ml-2 py-0.5">
-             Step {activeStep + 1}: {CASE_STUDY.steps[activeStep].label}
+             {t('stepOf', { n: activeStep + 1 })}: {currentStep.label}
            </div>
         </div>
 
@@ -160,7 +123,7 @@ export function InteractiveOemCase() {
             
             {/* Left: Image (Animated) */}
             <div className="relative h-[300px] lg:h-auto overflow-hidden group">
-              {CASE_STUDY.steps.map((step, idx) => (
+              {steps.map((step, idx) => (
                 <div 
                   key={step.id}
                   className={cn(
@@ -181,7 +144,7 @@ export function InteractiveOemCase() {
               
               {/* Badge */}
               <div className="absolute top-6 left-6 z-20 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg">
-                Step {activeStep + 1} of 5
+                {t('stepOf', { n: activeStep + 1 })}
               </div>
             </div>
 
@@ -197,7 +160,7 @@ export function InteractiveOemCase() {
                       return <Icon className="w-6 h-6" />;
                     })()}
                   </div>
-                  <span className="font-bold tracking-wider text-sm uppercase">Phase {activeStep + 1}</span>
+                  <span className="font-bold tracking-wider text-sm uppercase">{t('phase', { n: activeStep + 1 })}</span>
                 </div>
 
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
@@ -216,17 +179,17 @@ export function InteractiveOemCase() {
                   </p>
                   <div className="mt-3 flex items-center gap-2">
                     <div className="w-6 h-6 rounded-full bg-slate-700"></div>
-                    <span className="text-xs font-bold text-slate-500">Client Feedback</span>
+                    <span className="text-xs font-bold text-slate-500">{t('clientFeedback')}</span>
                   </div>
                 </div>
 
                 {/* Navigation Buttons (Bottom) */}
                 <div className="flex items-center gap-4 mt-8 pt-8 border-t border-slate-700/50">
                   <button 
-                    onClick={() => setActiveStep((prev) => (prev + 1) % CASE_STUDY.steps.length)}
+                    onClick={() => setActiveStep((prev) => (prev + 1) % steps.length)}
                     className="flex items-center text-white font-bold hover:text-accent-400 transition-colors"
                   >
-                    Next Phase <ArrowRight className="w-4 h-4 ml-2" />
+                    {t('nextPhase')} <ArrowRight className="w-4 h-4 ml-2" />
                   </button>
                 </div>
               </div>
@@ -237,7 +200,7 @@ export function InteractiveOemCase() {
 
         {/* Stats Footer */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
-          {CASE_STUDY.stats.map((stat, idx) => (
+          {stats.map((stat, idx) => (
             <div key={idx} className="bg-slate-800 rounded-xl p-6 text-center border border-slate-700">
               <div className="text-slate-400 text-sm uppercase tracking-wider mb-2">{stat.label}</div>
               <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>

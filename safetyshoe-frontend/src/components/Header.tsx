@@ -12,6 +12,9 @@ export function Header() {
   const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const mouseNearTopRef = useRef(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,7 +28,7 @@ export function Header() {
     { name: t('products'), href: '/products' },
     { name: t('oem'), href: '/services/oem' },
     { name: t('about'), href: '/about' },
-    { name: t('contact'), href: '/#contact' },
+    { name: t('faq'), href: '/faq' },
   ];
 
   const languages = [
@@ -88,12 +91,29 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 20);
+      const y = window.scrollY;
+      setIsScrolled(y > 20);
+      // 顶部 80px 内始终显示；向上滑显示；向下滑隐藏；鼠标在顶部区域时显示
+      const visible =
+        y <= 80 ||
+        y < lastScrollYRef.current ||
+        mouseNearTopRef.current;
+      setIsHeaderVisible(visible);
+      lastScrollYRef.current = y;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const nearTop = e.clientY <= 80;
+      mouseNearTopRef.current = nearTop;
+      if (nearTop) setIsHeaderVisible(true);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   const isTransparent = !isScrolled && isDarkHeroPage;
@@ -118,10 +138,15 @@ export function Header() {
 
   return (
     <>
-      <header className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-300 ease-in-out',
-        headerClass
-      )}>
+      <header
+        className={cn(
+          'fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ease-in-out',
+          headerClass
+        )}
+        style={{
+          transform: (isHeaderVisible || isOpen) ? 'translateY(0)' : 'translateY(-100%)',
+        }}
+      >
         <nav className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -147,7 +172,7 @@ export function Header() {
                     key={item.name}
                     href={`/${locale}${item.href === '/' ? '' : item.href}`}
                     className={cn(
-                      'text-sm font-medium transition-colors',
+                      'text-base font-medium transition-colors',
                       pathname === `/${locale}${item.href === '/' ? '' : item.href}` ? navItemActiveColor : navItemColor
                     )}
                   >
@@ -226,16 +251,6 @@ export function Header() {
                 )}
               </div>
 
-              {/* CTA Button */}
-              <Link
-                href={`/${locale}/#contact`}
-                className={cn(
-                  "px-6 py-2.5 rounded-full font-bold text-sm transition-all transform hover:-translate-y-0.5 shadow-sm",
-                  buttonClass
-                )}
-              >
-                {t('getQuote')}
-              </Link>
             </div>
 
             {/* Mobile menu button */}
@@ -306,15 +321,6 @@ export function Header() {
                 </div>
               </div>
 
-              <div className="pt-2">
-                <Link
-                  href={`/${locale}/#contact`}
-                  className="block w-full text-center bg-primary-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {t('getQuote')}
-                </Link>
-              </div>
             </div>
           )}
         </nav>

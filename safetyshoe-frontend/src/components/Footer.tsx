@@ -43,7 +43,6 @@ export function Footer() {
               <FooterLink href="/products" locale={locale}>{navT('products')}</FooterLink>
               <FooterLink href="/services/oem" locale={locale}>{navT('oem')}</FooterLink>
               <FooterLink href="/about" locale={locale}>{navT('about')}</FooterLink>
-              <FooterLink href="/#contact" locale={locale}>{navT('getQuote')}</FooterLink>
             </ul>
           </div>
 

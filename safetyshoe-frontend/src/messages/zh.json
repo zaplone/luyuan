@@ -4,6 +4,7 @@
     "products": "产品目录",
     "oem": "OEM 定制服务",
     "about": "关于工厂",
+    "faq": "常见问题",
     "contact": "联系我们",
     "getQuote": "获取报价",
     "searchPlaceholder": "搜索产品..."
@@ -12,13 +13,108 @@
     "title": "关于我们的工厂",
     "description": "自1995年以来，我们一直致力于制定工业安全鞋制造标准。了解更多关于我们的生产能力和对质量的承诺。"
   },
+  "BrandStory": {
+    "label": "我们的故事",
+    "title": "从小型作坊到全球制造商",
+    "p1": "这始于 1995 年的一个简单愿景：为当地工人制造一双真正舒适、耐用的安全鞋。创始人李先生意识到，市场上的安全鞋虽然坚固，但往往沉重且磨脚。他在高密的一个小型车间里，用一台老式缝纫机开始了他的探索。",
+    "p2": "三十年后的今天，虽然我们的工厂已经扩展到拥有 6 条自动化 Desma 生产线和 300 多名熟练工匠，但那份初心从未改变。我们不仅仅是在制造鞋子，我们是在保护每一位在极端环境下辛勤工作的劳动者的双脚。",
+    "quote": "安全不是奢侈品，而是每一位工人的基本权利。我们的工作就是确保他们在下班回家时，双脚依然舒适如初。",
+    "p3": "如今，我们的安全鞋远销全球 50 多个国家，从澳洲的炎热矿区到北欧的冰雪建筑工地，您都能看到我们产品的身影。我们将传统制鞋工艺与现代材料科技相结合，不断重新定义工业防护标准。",
+    "timelineTitle": "发展历程",
+    "milestones": {
+      "founded": {
+        "title": "工厂成立",
+        "desc": "在高密建立第一条半自动生产线，主要服务国内建筑市场。"
+      },
+      "expansion": {
+        "title": "国际化起步",
+        "desc": "获得出口许可证，第一批集装箱发往东南亚市场。"
+      },
+      "certification": {
+        "title": "质量认证体系",
+        "desc": "全面通过 ISO 9001 认证，并获得欧盟 CE 和美国 ASTM 认证。"
+      },
+      "global": {
+        "title": "全球化布局",
+        "desc": "引入 Desma 智能注射设备，年产能突破 150 万双，客户遍布全球。"
+      }
+    }
+  },
+  "GlobalFootprint": {
+    "badge": "全球足迹",
+    "title": "为世界而造",
+    "subtitle": "我们的足迹遍布全球 50+ 国家，针对不同地域气候与作业环境提供定制化解决方案。",
+    "viewMore": "查看更多案例",
+    "cases": {
+      "europe": {
+        "region": "欧洲 / 德国",
+        "title": "S3 标准环保安全靴",
+        "desc": "为德国知名建筑商开发的旗舰系列，不仅满足最严格的 S3 安全标准，还采用了环保可回收材料。",
+        "challenge": "需同时满足 S3 级防水与 REACH 环保法规，且重量不能超标。",
+        "solution": "开发新型超纤环保皮，配合德国进口防水膜，通过所有测试。",
+        "stats": "年返单量 10 万双"
+      },
+      "usa": {
+        "region": "北美 / 美国",
+        "title": "轻量化仓储物流鞋",
+        "desc": "针对亚马逊等大型仓库作业环境设计，重点解决长时间行走带来的足部疲劳问题。",
+        "challenge": "工人每天行走步数超 2 万步，传统钢头鞋太重太硬。",
+        "solution": "采用纳米碳头替代钢头，搭配高回弹 EVA 中底，单鞋减重 40%。",
+        "stats": "客户满意度 99%"
+      },
+      "middleEast": {
+        "region": "中东 / 沙特",
+        "title": "耐高温油田防护靴",
+        "desc": "专为沙漠油田极端环境设计，具备卓越的耐热性和防沙性能。",
+        "challenge": "地面温度可达 70°C，且伴有油污腐蚀。",
+        "solution": "研发 300°C 耐热橡胶大底配方，并设计防沙风箱舌结构。",
+        "stats": "零开胶记录"
+      }
+    }
+  },
+  "Certifications": {
+    "title": "权威认证与标准",
+    "standardsDesc": "我们的产品经过精心设计和测试，符合并超越全球主要市场的安全规范，确保您的工人在任何环境下都能得到保护。",
+    "standards": {
+      "sb": {
+        "title": "基础安全标准",
+        "desc": "配备 200J 抗冲击包头。适用于对防穿刺或防水没有特殊要求的轻工业环境。"
+      },
+      "s1": {
+        "title": "防静电保护",
+        "desc": "在 SB 基础上增加封闭式后跟吸能和抗静电性能。适合干燥环境下的车间作业。"
+      },
+      "s3": {
+        "title": "全面防护 (ISO 20345)",
+        "desc": "包括防穿刺钢/凯夫拉中底、防水鞋面和防滑大底。建筑与重工业的首选标准。"
+      },
+      "astm": {
+        "title": "美国 ASTM F2413",
+        "desc": "涵盖 M/I/C (抗冲击/压缩)、EH (电绝缘) 或 SD (静电耗散) 等特定防护等级。"
+      }
+    }
+  },
   "Hero": {
-    "badge": "重型防护",
-    "title": "轻量化防护",
-    "highlight": "复合材料科技",
-    "description": "非金属复合鞋头保护。比传统钢头靴轻30%，非常适合机场安检和电工作业。",
     "cta_primary": "浏览产品",
-    "cta_secondary": "OEM 定制"
+    "cta_secondary": "OEM 定制",
+    "slide1": {
+      "badge": "重型防护",
+      "title": "轻量化防护",
+      "highlight": "复合材料科技",
+      "description": "非金属复合鞋头保护。比传统钢头靴轻30%，非常适合机场安检和电工作业。"
+    },
+    "slide2": {
+      "badge": "认证品质",
+      "title": "值得信赖的标准。",
+      "highlight": "CE / ANSI / ISO",
+      "description": "每双鞋均达到或超越国际安全标准。冲击、压缩、防滑等实验室检测保障。"
+    },
+    "slide3": {
+      "badge": "您的品牌，我们的工厂",
+      "title": "与可靠伙伴一起做大。",
+      "highlight": "OEM & ODM",
+      "description": "从 500 双到 5 万双。定制设计、快速打样、FOB 发货至 50+ 国家。"
+    }
   },
   "WhyChooseUs": {
     "title": "卓越制造",
@@ -169,6 +265,141 @@
       "composite": "复合材料安全鞋",
       "slipResistant": "防滑安全鞋",
       "winter": "冬季防寒靴"
+    }
+  },
+  "ProductsPage": {
+    "breadcrumbProducts": "产品",
+    "title": "产品目录",
+    "description": "浏览我们完整的认证工业安全鞋系列。使用筛选器找到最适合您工作场所需求的产品。",
+    "searchResultsFor": "搜索结果：",
+    "clearSearch": "清除搜索",
+    "showFilters": "显示筛选",
+    "filterProducts": "筛选产品",
+    "close": "关闭",
+    "viewResults": "查看结果"
+  },
+  "ProductFilterSidebar": {
+    "title": "筛选",
+    "clearAll": "清除全部",
+    "groups": {
+      "category": {
+        "label": "行业 / 类别",
+        "options": {
+          "construction": "建筑工程",
+          "mining": "采矿与采石",
+          "oil-gas": "石油与天然气",
+          "manufacturing": "制造业",
+          "logistics": "物流与仓储",
+          "food": "食品行业",
+          "medical": "医疗与保健"
+        }
+      },
+      "standard": {
+        "label": "安全标准",
+        "options": {
+          "sb": "SB（基本安全）",
+          "sbp": "SBP（SB + 防刺穿）",
+          "s1": "S1（防静电）",
+          "s1p": "S1P（S1 + 防刺穿）",
+          "s2": "S2（S1 + 防水）",
+          "s3": "S3（S2 + 防刺穿）",
+          "ob": "OB（职业用）"
+        }
+      },
+      "feature": {
+        "label": "特殊功能",
+        "options": {
+          "waterproof": "防水 (WR)",
+          "slip-resistant": "防滑 (SRC)",
+          "metal-free": "100% 无金属",
+          "esd": "ESD / 防静电",
+          "heat-resistant": "耐热 (HRO)",
+          "cold-insulated": "防寒 (CI)",
+          "metatarsal": "跖骨保护 (M)"
+        }
+      },
+      "material": {
+        "label": "鞋面材质",
+        "options": {
+          "leather-full": "头层牛皮",
+          "leather-split": "二层皮",
+          "microfiber": "超纤",
+          "mesh": "透气网布",
+          "pvc-rubber": "PVC / 橡胶"
+        }
+      }
+    }
+  },
+  "ProductGrid": {
+    "loading": "加载产品中...",
+    "noProducts": "暂无产品",
+    "noProductsDesc": "请稍后再试或联系我们获取目录。",
+    "showing": "显示第 {from}-{to} 条，共 {total} 条结果",
+    "sortBy": "排序：",
+    "newest": "最新上架",
+    "priceLow": "价格从低到高",
+    "priceHigh": "价格从高到低",
+    "gridView": "网格视图",
+    "listView": "列表视图",
+    "viewDetails": "查看详情",
+    "quickView": "快速预览",
+    "prev": "上一页",
+    "next": "下一页"
+  },
+  "OemPage": {
+    "hero": {
+      "badge": "OEM & ODM 定制服务",
+      "title": "您的品牌。",
+      "titleHighlight": "我们的制造。",
+      "description": "与值得信赖的制造伙伴一起扩大您的鞋类业务。我们将您的概念转化为经过认证、可上市的产品，快速且精准。",
+      "cta": "开始您的项目",
+      "moq": "500 双起订",
+      "sampling": "7 天快速打样"
+    },
+    "hotspots": {
+      "toeProtection": "鞋头保护",
+      "toeProtectionDesc": "钢头 / 复合材料 / 纳米碳等定制可选。",
+      "upperMaterial": "鞋面材质",
+      "upperMaterialDesc": "头层皮、反绒皮或透气超纤网布。",
+      "outsoleTech": "大底科技",
+      "outsoleTechDesc": "双密度 PU/橡胶。防油防滑 (SRC)。"
+    },
+    "infinitePossibilities": "无限可能",
+    "montage": { "logos": "Logo", "materials": "材质", "soles": "鞋底", "boxes": "包装" },
+    "cooperation": {
+      "title": "灵活合作模式",
+      "subtitle": "选择适合您业务阶段的定制层级。",
+      "pairsStyle": "双 / 款",
+      "pairsMold": "双 / 模具",
+      "tier1": { "name": "贴牌生产", "subtitle": "适合初创与经销商", "moq": "500", "item1": "使用现有模具", "item2": "定制 Logo 与鞋盒", "item3": "标准材质", "button": "选择方案" },
+      "tier2": { "badge": "最受欢迎", "name": "ODM 定制", "subtitle": "适合成熟品牌", "moq": "1,000", "item1": "修改鞋面设计", "item2": "定制材质与配色", "item3": "升级鞋垫", "button": "立即开始" },
+      "tier3": { "name": "全案 OEM", "subtitle": "适合差异化市场领导者", "moq": "3,000+", "item1": "新开大底模具", "item2": "独家设计权", "item3": "含实验室检测", "button": "联系销售" }
+    }
+  },
+  "CustomizationOptions": {
+    "title": "完全定制自由",
+    "description": "不将就于通用成品。我们让您全面掌控安全鞋的每个细节，确保满足您目标市场和价格区间的需求。",
+    "logoBranding": { "title": "Logo 与品牌", "desc": "您的品牌，置于核心。我们提供多种 Logo 应用方式。", "items": ["刺绣", "橡胶标", "丝网印", "金属配件"] },
+    "materialsColors": { "title": "材质与配色", "desc": "从我们优质皮革与面料库中挑选。", "items": ["头层牛皮", "反绒/磨砂皮", "超纤", "定制潘通色"] },
+    "soleTech": { "title": "鞋底科技", "desc": "为您的市场地形选择合适的大底。", "items": ["双密度 PU", "橡胶 (300°C 耐热)", "TPU", "ESD 配方"] },
+    "packaging": { "title": "包装", "desc": "零售即用的陈列效果，在货架上脱颖而出。", "items": ["定制鞋盒", "吊牌", "说明书", "干燥剂"] }
+  },
+  "InteractiveOemCase": {
+    "badge": "精选案例",
+    "title": "流程内幕：",
+    "caseTitle": "X-Guard 矿用靴项目",
+    "stepOf": "第 {n} 步 / 共 5 步",
+    "phase": "阶段 {n}",
+    "nextPhase": "下一阶段",
+    "clientFeedback": "客户反馈",
+    "summary": "从草图到交付 5 万双的六个月历程。解决极端耐热与跖骨保护需求。",
+    "stats": { "devTime": "开发周期", "devValue": "45 天", "defectRate": "次品率", "defectValue": "< 0.1%", "firstOrder": "首单", "firstValue": "5 万双" },
+    "steps": {
+      "design": { "label": "需求沟通", "time": "第 1 天", "title": "从需求到蓝图", "desc": "客户需要能承受 300°C 表面和 200J 冲击的靴子。我们 R&D 团队用 3 天分析 Pilbara 矿区地形，提出 Kevlar-皮革混合鞋面方案，减重 15% 且不牺牲安全。", "quote": "3D 效果图非常准确，他们比我们更懂安全需求。" },
+      "mold": { "label": "设计与开模", "time": "第 2-3 天", "title": "定制大底精密模具", "desc": "为确保在松散砾石上抓地力，我们新开双密度 PU/橡胶模具，花纹带自清洁沟槽。开模仅用 12 天，比行业平均快 30%。", "quote": "十年来见过最快的开模速度。" },
+      "sample": { "label": "打样", "time": "第 7-10 天", "title": "从数字到实物", "desc": "首版样品 7 天内完成。我们发现脚踝处潜在压点并立即调整领口填充密度，第二版 (V2) 即刻通过实验室测试。", "quote": "V2 样品穿着感完美，舒适度超出预期。" },
+      "test": { "label": "量产", "time": "第 30-45 天", "title": "ISO 20345 严格验证", "desc": "每批次在内部实验室完成 15 项关键测试：冲击、防静电、弯折耐久 (5 万次)。并送 Intertek 第三方认证。", "quote": "自有实验室为我们节省了数周第三方报告等待时间。" },
+      "delivery": { "label": "全球交付", "time": "到货", "title": "准时交付，每次如此", "desc": "产线满负荷运转，我们实施 5 道质检。最终集装箱配备定制零售包装、条码，FOB 青岛出运。", "quote": "货物完好到达，包装可直接上架零售。" }
     }
   },
   "ProductQuickView": {

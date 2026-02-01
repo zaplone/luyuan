@@ -5,7 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieConsent } from '@/components/CookieConsent';
 import { Toaster } from 'react-hot-toast';
-import { NextIntlClientProvider } from 'next-intl';
+import { IntlProvider } from '@/components/IntlProvider';
 import { getMessages } from 'next-intl/server';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -166,7 +166,7 @@ export default async function RootLayout({
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
       </head>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning={true}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <IntlProvider locale={locale} messages={messages}>
           {/* Page Content */}
           <div className="flex min-h-screen flex-col">
             <Header />
@@ -228,7 +228,7 @@ export default async function RootLayout({
               />
             </>
           )}
-        </NextIntlClientProvider>
+        </IntlProvider>
       </body>
     </html>
   );

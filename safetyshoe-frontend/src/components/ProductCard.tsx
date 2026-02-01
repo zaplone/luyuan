@@ -133,13 +133,6 @@ export function ProductCard({ product, className }: ProductCardProps) {
           >
             View Details
           </Link>
-          <Link
-            href={`/contact?product=${product.slug}`}
-            className="btn btn-outline btn-sm px-3"
-            title="Get Quote"
-          >
-            Quote
-          </Link>
         </div>
       </div>
     </div>

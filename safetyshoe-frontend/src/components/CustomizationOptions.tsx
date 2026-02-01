@@ -1,63 +1,40 @@
 'use client';
 
-import { Layers, Scissors, Tag, Package, Palette, Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Layers, Tag, Package, Palette } from 'lucide-react';
 
-const OPTIONS = [
-  {
-    title: 'Logo & Branding',
-    desc: 'Your brand, front and center. We offer various logo applications.',
-    icon: Tag,
-    items: ['Embroidery', 'Rubber Patch', 'Screen Print', 'Metal Hardware']
-  },
-  {
-    title: 'Materials & Colors',
-    desc: 'Choose from our premium library of leathers and textiles.',
-    icon: Palette,
-    items: ['Full Grain Leather', 'Suede / Nubuck', 'Microfiber', 'Custom Pantone Colors']
-  },
-  {
-    title: 'Sole Technology',
-    desc: 'Select the right outsole for your market\'s terrain.',
-    icon: Layers,
-    items: ['Dual Density PU', 'Rubber (300°C HRO)', 'TPU', 'ESD Compounds']
-  },
-  {
-    title: 'Packaging',
-    desc: 'Retail-ready presentation that stands out on the shelf.',
-    icon: Package,
-    items: ['Custom Shoe Box', 'Hang Tags', 'User Manuals', 'Silica Gel']
-  }
-];
+const OPTION_KEYS = ['logoBranding', 'materialsColors', 'soleTech', 'packaging'] as const;
+const OPTION_ICONS = [Tag, Palette, Layers, Package];
 
 export function CustomizationOptions() {
+  const t = useTranslations('CustomizationOptions');
+
   return (
     <section className="py-24 bg-slate-50">
       <div className="container mx-auto px-4">
         
         <div className="grid md:grid-cols-2 gap-16 items-center">
           
-          {/* Left: Text Content */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-              Total Customization Freedom
+              {t('title')}
             </h2>
             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-              Don't settle for generic off-the-shelf products. We give you full control over 
-              every detail of your safety footwear, ensuring it meets your specific market demands 
-              and price points.
+              {t('description')}
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {OPTIONS.map((opt, idx) => {
-                const Icon = opt.icon;
+              {OPTION_KEYS.map((key, idx) => {
+                const Icon = OPTION_ICONS[idx];
+                const items = (t.raw(`${key}.items`) as string[]) || [];
                 return (
-                  <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                  <div key={key} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
                     <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center mb-4 text-primary-600">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <h3 className="font-bold text-slate-900 mb-2">{opt.title}</h3>
+                    <h3 className="font-bold text-slate-900 mb-2">{t(`${key}.title`)}</h3>
                     <ul className="space-y-2">
-                      {opt.items.map((item, i) => (
+                      {items.map((item, i) => (
                         <li key={i} className="flex items-center text-xs text-slate-500">
                           <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
                           {item}

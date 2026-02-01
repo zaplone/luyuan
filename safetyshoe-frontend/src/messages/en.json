@@ -4,6 +4,7 @@
     "products": "Product Catalog",
     "oem": "OEM Service",
     "about": "About Factory",
+    "faq": "FAQ",
     "contact": "Contact Us",
     "getQuote": "Get Quote",
     "searchPlaceholder": "Search products..."
@@ -12,13 +13,108 @@
     "title": "About Our Factory",
     "description": "Since 1995, we have been setting the standard for industrial safety footwear manufacturing. Learn more about our production capabilities and commitment to quality."
   },
+  "BrandStory": {
+    "label": "Our Story",
+    "title": "From Humble Beginnings to Global Manufacturer",
+    "p1": "It started in 1995 with a simple vision: to make a pair of safety shoes that were actually comfortable and durable for local workers. Our founder, Mr. Li, realized that while safety shoes on the market were tough, they were often heavy and painful to wear. He began his quest in a small workshop in Gaomi with just one vintage sewing machine.",
+    "p2": "Thirty years later, while our factory has expanded to 6 automated Desma lines and over 300 skilled craftsmen, that original intention has never changed. We aren't just making shoes; we are protecting the feet of workers laboring in extreme environments.",
+    "quote": "Safety is not a luxury, but a fundamental right for every worker. Our job is to ensure their feet are as comfortable as when they started, even after a long shift.",
+    "p3": "Today, our safety shoes are exported to over 50 countries worldwide. From the scorching mines of Australia to the icy construction sites of Northern Europe, you can find our products. We combine traditional shoemaking craftsmanship with modern material technology to continuously redefine industrial protection standards.",
+    "timelineTitle": "Our Journey",
+    "milestones": {
+      "founded": {
+        "title": "Factory Founded",
+        "desc": "Established the first semi-automatic production line in Gaomi, serving the domestic construction market."
+      },
+      "expansion": {
+        "title": "Going Global",
+        "desc": "Obtained export license and shipped the first containers to Southeast Asian markets."
+      },
+      "certification": {
+        "title": "Quality Certification",
+        "desc": "Achieved ISO 9001 certification and obtained EU CE and US ASTM certifications."
+      },
+      "global": {
+        "title": "Global Scale",
+        "desc": "Introduced Desma intelligent injection equipment, annual capacity exceeded 1.5 million pairs, serving clients globally."
+      }
+    }
+  },
+  "GlobalFootprint": {
+    "badge": "Global Footprint",
+    "title": "Built for the World",
+    "subtitle": "Our footprint spans over 50 countries, providing customized solutions for different regional climates and working environments.",
+    "viewMore": "View More Cases",
+    "cases": {
+      "europe": {
+        "region": "Europe / Germany",
+        "title": "S3 Eco-Friendly Safety Boot",
+        "desc": "Flagship series developed for a renowned German construction firm, meeting strict S3 safety standards while using eco-friendly recyclable materials.",
+        "challenge": "Meeting S3 waterproof ratings and REACH environmental regulations while keeping weight down.",
+        "solution": "Developed new eco-microfiber leather with German waterproof membrane, passing all tests.",
+        "stats": "100k Pairs Reorder/Year"
+      },
+      "usa": {
+        "region": "North America / USA",
+        "title": "Lightweight Logistics Shoe",
+        "desc": "Designed for warehouse environments like Amazon, focusing on solving foot fatigue from long hours of walking.",
+        "challenge": "Workers walk over 20k steps daily; traditional steel toes were too heavy and rigid.",
+        "solution": "Used Nano-carbon toe cap replacing steel, paired with high-rebound EVA midsole, reducing weight by 40%.",
+        "stats": "99% Client Satisfaction"
+      },
+      "middleEast": {
+        "region": "Middle East / Saudi Arabia",
+        "title": "Heat Resistant Oil Field Boot",
+        "desc": "Designed for extreme desert oil field environments, featuring superior heat resistance and sand protection.",
+        "challenge": "Ground temperatures can reach 70°C, with corrosive oil presence.",
+        "solution": "Developed 300°C heat-resistant rubber outsole formula and designed a sand-proof bellow tongue structure.",
+        "stats": "Zero Delamination Record"
+      }
+    }
+  },
+  "Certifications": {
+    "title": "Certifications & Standards",
+    "standardsDesc": "Our products are engineered and tested to meet and exceed safety regulations in major global markets, ensuring protection in any environment.",
+    "standards": {
+      "sb": {
+        "title": "Basic Safety (SB)",
+        "desc": "Equipped with 200J impact-resistant toe cap. Suitable for light industry with no puncture risks."
+      },
+      "s1": {
+        "title": "Anti-Static (S1/S1P)",
+        "desc": "Adds closed heel energy absorption and anti-static properties. S1P adds puncture resistance."
+      },
+      "s3": {
+        "title": "Full Protection (S3)",
+        "desc": "Includes penetration-resistant midsole, water-resistant upper, and cleated outsole. Top choice for construction."
+      },
+      "astm": {
+        "title": "USA ASTM F2413",
+        "desc": "Covers M/I/C (Impact/Compression), EH (Electrical Hazard), and SD (Static Dissipative) ratings."
+      }
+    }
+  },
   "Hero": {
-    "badge": "Heavy-Duty Protection",
-    "title": "Protection Without The Weight",
-    "highlight": "Composite Tech",
-    "description": "Metal-free composite toe protection. 30% lighter than traditional boots, perfect for airport security and electricians.",
     "cta_primary": "View Collection",
-    "cta_secondary": "Custom OEM"
+    "cta_secondary": "Custom OEM",
+    "slide1": {
+      "badge": "Heavy-Duty Protection",
+      "title": "Protection Without The Weight",
+      "highlight": "Composite Tech",
+      "description": "Metal-free composite toe protection. 30% lighter than traditional boots, perfect for airport security and electricians."
+    },
+    "slide2": {
+      "badge": "Certified Quality",
+      "title": "Standards You Can Trust.",
+      "highlight": "CE / ANSI / ISO",
+      "description": "Every pair meets or exceeds international safety standards. Lab-tested for impact, compression, and slip resistance."
+    },
+    "slide3": {
+      "badge": "Your Brand, Our Factory",
+      "title": "Scale With a Trusted Partner.",
+      "highlight": "OEM & ODM",
+      "description": "From 500 pairs to 50,000. Custom designs, rapid sampling, and FOB delivery to 50+ countries."
+    }
   },
   "WhyChooseUs": {
     "title": "Manufacturing Excellence",
@@ -169,6 +265,141 @@
       "composite": "Composite Safety Shoes",
       "slipResistant": "Slip Resistant Shoes",
       "winter": "Winter Work Boots"
+    }
+  },
+  "ProductsPage": {
+    "breadcrumbProducts": "Products",
+    "title": "Product Catalog",
+    "description": "Browse our complete collection of certified industrial safety footwear. Use the filters to find the perfect match for your workplace requirements.",
+    "searchResultsFor": "Search results for:",
+    "clearSearch": "Clear Search",
+    "showFilters": "Show Filters",
+    "filterProducts": "Filter Products",
+    "close": "Close",
+    "viewResults": "View Results"
+  },
+  "ProductFilterSidebar": {
+    "title": "Filters",
+    "clearAll": "Clear All",
+    "groups": {
+      "category": {
+        "label": "Industry / Category",
+        "options": {
+          "construction": "Construction & Building",
+          "mining": "Mining & Quarrying",
+          "oil-gas": "Oil & Gas",
+          "manufacturing": "Manufacturing",
+          "logistics": "Logistics & Warehousing",
+          "food": "Food Industry",
+          "medical": "Medical & Healthcare"
+        }
+      },
+      "standard": {
+        "label": "Safety Standard",
+        "options": {
+          "sb": "SB (Basic Safety)",
+          "sbp": "SBP (SB + Puncture)",
+          "s1": "S1 (Anti-static)",
+          "s1p": "S1P (S1 + Puncture)",
+          "s2": "S2 (S1 + Waterproof)",
+          "s3": "S3 (S2 + Puncture)",
+          "ob": "OB (Occupational)"
+        }
+      },
+      "feature": {
+        "label": "Special Features",
+        "options": {
+          "waterproof": "Waterproof (WR)",
+          "slip-resistant": "Slip Resistant (SRC)",
+          "metal-free": "100% Metal Free",
+          "esd": "ESD / Anti-static",
+          "heat-resistant": "Heat Resistant (HRO)",
+          "cold-insulated": "Cold Insulated (CI)",
+          "metatarsal": "Metatarsal Guard (M)"
+        }
+      },
+      "material": {
+        "label": "Upper Material",
+        "options": {
+          "leather-full": "Full Grain Leather",
+          "leather-split": "Split Leather",
+          "microfiber": "Microfiber",
+          "mesh": "Breathable Mesh",
+          "pvc-rubber": "PVC / Rubber"
+        }
+      }
+    }
+  },
+  "ProductGrid": {
+    "loading": "Loading products...",
+    "noProducts": "No products found",
+    "noProductsDesc": "Please check back later or contact us for catalog.",
+    "showing": "Showing {from}-{to} of {total} results",
+    "sortBy": "Sort by:",
+    "newest": "Newest Arrivals",
+    "priceLow": "Price: Low to High",
+    "priceHigh": "Price: High to Low",
+    "gridView": "Grid View",
+    "listView": "List View",
+    "viewDetails": "View Details",
+    "quickView": "Quick View",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "OemPage": {
+    "hero": {
+      "badge": "OEM & ODM SERVICES",
+      "title": "Your Brand.",
+      "titleHighlight": "Our Manufacturing.",
+      "description": "Scale your footwear business with a trusted manufacturing partner. We turn your concepts into certified, market-ready products with speed and precision.",
+      "cta": "Start Your Project",
+      "moq": "500 Pairs Low MOQ",
+      "sampling": "7-Day Rapid Sampling"
+    },
+    "hotspots": {
+      "toeProtection": "Toe Protection",
+      "toeProtectionDesc": "Steel / Composite / Nano-carbon customization available.",
+      "upperMaterial": "Upper Material",
+      "upperMaterialDesc": "Full grain leather, suede, or breathable microfiber mesh.",
+      "outsoleTech": "Outsole Tech",
+      "outsoleTechDesc": "Dual-density PU/PU or Rubber. Oil & Slip resistant (SRC)."
+    },
+    "infinitePossibilities": "Infinite Possibilities",
+    "montage": { "logos": "Logos", "materials": "Materials", "soles": "Soles", "boxes": "Boxes" },
+    "cooperation": {
+      "title": "Flexible Cooperation Models",
+      "subtitle": "Choose the level of customization that fits your business stage.",
+      "pairsStyle": "pairs / style",
+      "pairsMold": "pairs / mold",
+      "tier1": { "name": "Private Label", "subtitle": "Best for startups & distributors", "moq": "500", "item1": "Use our existing molds", "item2": "Custom Logo & Box", "item3": "Standard Materials", "button": "Select Plan" },
+      "tier2": { "badge": "Most Popular", "name": "ODM Customization", "subtitle": "For established brands", "moq": "1,000", "item1": "Modify Upper Design", "item2": "Custom Materials & Colors", "item3": "Upgraded Insoles", "button": "Get Started" },
+      "tier3": { "name": "Full OEM", "subtitle": "For unique market leaders", "moq": "3,000+", "item1": "New Outsole Mold", "item2": "Exclusive Design Rights", "item3": "Lab Testing Included", "button": "Contact Sales" }
+    }
+  },
+  "CustomizationOptions": {
+    "title": "Total Customization Freedom",
+    "description": "Don't settle for generic off-the-shelf products. We give you full control over every detail of your safety footwear, ensuring it meets your specific market demands and price points.",
+    "logoBranding": { "title": "Logo & Branding", "desc": "Your brand, front and center. We offer various logo applications.", "items": ["Embroidery", "Rubber Patch", "Screen Print", "Metal Hardware"] },
+    "materialsColors": { "title": "Materials & Colors", "desc": "Choose from our premium library of leathers and textiles.", "items": ["Full Grain Leather", "Suede / Nubuck", "Microfiber", "Custom Pantone Colors"] },
+    "soleTech": { "title": "Sole Technology", "desc": "Select the right outsole for your market's terrain.", "items": ["Dual Density PU", "Rubber (300°C HRO)", "TPU", "ESD Compounds"] },
+    "packaging": { "title": "Packaging", "desc": "Retail-ready presentation that stands out on the shelf.", "items": ["Custom Shoe Box", "Hang Tags", "User Manuals", "Silica Gel"] }
+  },
+  "InteractiveOemCase": {
+    "badge": "Featured Case Study",
+    "title": "Inside the Process:",
+    "caseTitle": "Project: X-Guard Mining Boot",
+    "stepOf": "Step {n} of 5",
+    "phase": "Phase {n}",
+    "nextPhase": "Next Phase",
+    "clientFeedback": "Client Feedback",
+    "summary": "A 6-month journey from a rough sketch to 50,000 pairs delivered. Solving the challenge of extreme heat resistance and metatarsal protection.",
+    "stats": { "devTime": "Development Time", "devValue": "45 Days", "defectRate": "Defect Rate", "defectValue": "< 0.1%", "firstOrder": "First Order", "firstValue": "50,000 Pairs" },
+    "steps": {
+      "design": { "label": "Consultation", "time": "Day 1", "title": "Translating Requirements into Blueprints", "desc": "The client needed a boot that could withstand 300°C surfaces and 200J impacts. Our R&D team spent 3 days analyzing the mining terrain in Pilbara. We proposed a hybrid Kevlar-Leather upper design that reduced weight by 15% without compromising safety.", "quote": "The 3D rendering was spot on. They understood our safety needs better than we did." },
+      "mold": { "label": "Design & CAD", "time": "Day 2-3", "title": "Precision Tooling for Custom Outsoles", "desc": "To ensure maximum grip on loose gravel, we opened a new dual-density PU/Rubber mold. The tread pattern was engineered with self-cleaning channels. The mold opening took just 12 days, 30% faster than industry average.", "quote": "Fastest mold opening we've seen in 10 years of sourcing." },
+      "sample": { "label": "Prototyping", "time": "Day 7-10", "title": "From Digital to Physical", "desc": "First samples were produced within 7 days. We identified a potential pressure point on the ankle and adjusted the collar padding density immediately. The second version (V2) was approved instantly for lab testing.", "quote": "V2 sample fit perfectly. The comfort level was beyond expectation." },
+      "test": { "label": "Mass Production", "time": "Day 30-45", "title": "Rigorous ISO 20345 Validation", "desc": "Every batch underwent 15 critical tests in our in-house lab: Impact resistance, Antistatic discharge, and Flexing durability (50,000 cycles). We also sent samples to Intertek for third-party certification.", "quote": "Having an in-house lab saved us weeks of waiting for 3rd party reports." },
+      "delivery": { "label": "Global Delivery", "time": "Arrival", "title": "On-Time Delivery, Every Time", "desc": "Production lines ran at full capacity. We implemented a 5-checkpoint QC system. The final container was loaded with custom retail packaging, barcoded for their warehouse system, and shipped FOB Qingdao.", "quote": "Goods arrived in perfect condition. Packaging was retail-ready as promised." }
     }
   },
   "ProductQuickView": {

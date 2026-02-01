@@ -38,7 +38,7 @@ export function FAQAndContact() {
   };
 
   return (
-    <section id="contact" className="bg-slate-50 pt-24 pb-0 relative">
+    <section id="faq" className="bg-slate-50 pt-24 pb-0 relative">
       <div className="container mx-auto px-4 relative z-10">
         
         {/* Section Header */}

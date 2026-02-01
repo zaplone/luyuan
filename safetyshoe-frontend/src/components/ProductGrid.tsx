@@ -2,17 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { LayoutGrid, List, ArrowUpDown, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { ProductQuickView } from './ProductQuickView';
 import { fetchProducts, transformProduct } from '@/lib/strapi';
 
 interface ProductGridProps {
+  locale?: string;
   viewMode?: 'grid' | 'list';
   filters?: Record<string, string[]>;
   searchQuery?: string | null;
 }
 
-export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQuery = '' }: ProductGridProps) {
+export function ProductGrid({ locale = 'en', viewMode: initialViewMode, filters = {}, searchQuery = '' }: ProductGridProps) {
+  const t = useTranslations('ProductGrid');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(initialViewMode || 'grid');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState('newest');
@@ -32,12 +35,12 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
 
   const ITEMS_PER_PAGE = 12;
 
-  // Load products from API
+  // Load products from API (with locale for i18n content from Strapi)
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
       try {
-        const strapiProducts = await fetchProducts();
+        const strapiProducts = await fetchProducts(locale);
         if (strapiProducts && strapiProducts.length > 0) {
           const transformed = strapiProducts.map(transformProduct);
           setProducts(transformed);
@@ -52,54 +55,88 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
       }
     }
     loadData();
-  }, []);
+  }, [locale]);
 
-  // Filter & Sort logic
+  // 筛选值 → Strapi 数据对应（与数据库/API 一致）
+  const normalizeIndustry = (s: string) =>
+    s.toLowerCase().replace(/\s+/g, '').replace(/&/g, '');
+  const filterStandardToEnum: Record<string, string> = {
+    sb: 'SB', sbp: 'S1P', s1: 'S1', s1p: 'S1P', s2: 'S2', s3: 'S3', ob: 'OB',
+  };
+  const filterFeatureToCertsAndKeywords: Record<string, { certs?: string[]; keywords: string[] }> = {
+    'waterproof': { certs: ['WR'], keywords: ['waterproof', 'water resistant', 'water-resistant'] },
+    'slip-resistant': { certs: ['SRC'], keywords: ['slip', 'slip resistant', 'slip-resistant'] },
+    'metal-free': { keywords: ['metal free', 'metal-free', 'composite toe', 'non-metal'] },
+    'esd': { certs: ['ESD'], keywords: ['antistatic', 'anti-static', 'esd'] },
+    'heat-resistant': { certs: ['HRO'], keywords: ['heat', 'heat resistant', 'heat-resistant'] },
+    'cold-insulated': { certs: ['CI'], keywords: ['cold', 'insulated', 'insulation', 'ci'] },
+    'metatarsal': { certs: ['M', 'HI'], keywords: ['metatarsal', 'metatarsal guard'] },
+  };
+  const filterMaterialKeywords: Record<string, string[]> = {
+    'leather-full': ['full grain', 'full grain leather', 'full leather'],
+    'leather-split': ['split leather', 'split grain'],
+    'microfiber': ['microfiber', 'micro-fiber'],
+    'mesh': ['mesh', 'breathable mesh'],
+    'pvc-rubber': ['pvc', 'rubber'],
+  };
+
   const filteredProducts = products.filter(product => {
-    // 1. Search Query
+    // 1. 搜索：名称、描述、行业
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       const matchName = product.name?.toLowerCase().includes(q);
       const matchDesc = product.description?.toLowerCase().includes(q);
-      const matchCat = product.category?.toLowerCase().includes(q);
-      if (!matchName && !matchDesc && !matchCat) return false;
+      const matchIndustries = product.industries?.some((ind: unknown) =>
+        String(ind ?? '').toLowerCase().includes(q)
+      );
+      if (!matchName && !matchDesc && !matchIndustries) return false;
     }
 
-    // 2. Sidebar Filters
+    // 2. 侧栏筛选（对应 Strapi 表：industries, safety_standard, features, additional_certs, materials）
     for (const [key, values] of Object.entries(filters)) {
       if (!values || values.length === 0) continue;
 
-      // Handle each filter group
       if (key === 'category') {
-        // Simple string match for category (assuming product.category is string)
-        // Adjust logic if category mapping is different (e.g. slug vs label)
-        const productCat = product.category?.toLowerCase();
-        // Since the filter values are like 'construction', 'mining' etc.
-        // And product.category might be 'Safety Shoes' or specific industry.
-        // For now, let's assume loose matching or exact if structured data matches.
-        // If product data structure for category is simple string:
-        const hasMatch = values.some(v => productCat?.includes(v) || v.includes(productCat));
+        // 对应 product.industries (JSON 数组，如 ["Construction", "Mining"])
+        const productIndustryNorm = (product.industries || []).map((ind: unknown) =>
+          normalizeIndustry(String(ind))
+        );
+        const hasMatch = values.some((v: string) => {
+          const vNorm = normalizeIndustry(v.replace(/-/g, ''));
+          return productIndustryNorm.some((p: string) => p.includes(vNorm) || vNorm.includes(p));
+        });
         if (!hasMatch) return false;
       }
-      
+
       if (key === 'standard') {
-        // product.standards is string[]
-        const hasMatch = values.some(v => product.standards?.some((s: string) => s.toLowerCase().includes(v)));
+        // 对应 product.safety_standard (枚举: SB, S1, S1P, S2, S3, OB)
+        const hasMatch = values.some(v => {
+          const enumVal = filterStandardToEnum[v] || v.toUpperCase();
+          return product.safety_standard === enumVal;
+        });
         if (!hasMatch) return false;
       }
 
       if (key === 'feature') {
-         // product.features is string[]
-         // map filter values to feature strings if needed, or simple partial match
-         const hasMatch = values.some(v => product.features?.some((f: string) => f.toLowerCase().includes(v)));
-         if (!hasMatch) return false;
+        // 对应 product.features (字符串数组) + product.additional_certs (如 WR, SRC)
+        const certs = (product.additional_certs || []) as string[];
+        const featStrs = (product.features || []).map((f: string) => f.toLowerCase());
+        const hasMatch = values.some((v: string) => {
+          const map = filterFeatureToCertsAndKeywords[v];
+          if (!map) return featStrs.some((f: string) => f.includes(v.replace(/-/g, ' ')));
+          if (map.certs?.some(c => certs.includes(c))) return true;
+          return map.keywords.some(kw => featStrs.some((f: string) => f.includes(kw)));
+        });
+        if (!hasMatch) return false;
       }
 
       if (key === 'material') {
-        // product.material or product.materials object
-        // Let's check both simple string and detailed object
-        const matString = JSON.stringify(product.materials || {}).toLowerCase() + (product.material || '').toLowerCase();
-        const hasMatch = values.some(v => matString.includes(v.split('-')[0])); // simple heuristic
+        // 对应 product.materials (component: upper, outsole, toe_cap, midsole, lining)
+        const matStr = JSON.stringify(product.materials || {}).toLowerCase();
+        const hasMatch = values.some(v => {
+          const keywords = filterMaterialKeywords[v] || [v.replace(/-/g, ' ')];
+          return keywords.some(kw => matStr.includes(kw));
+        });
         if (!hasMatch) return false;
       }
     }
@@ -107,15 +144,19 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
     return true;
   });
 
+  const parsePrice = (p?: string) => {
+    if (!p) return 0;
+    const n = parseInt(String(p).replace(/\D/g, ''), 10);
+    return isNaN(n) ? 0 : n;
+  };
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case 'newest':
-        // Assuming id is roughly chronological, or use createdAt if available
         return b.id - a.id;
       case 'price-low':
-        return parseInt(a.price_range.replace(/\D/g, '')) - parseInt(b.price_range.replace(/\D/g, ''));
+        return parsePrice(a.price_range) - parsePrice(b.price_range);
       case 'price-high':
-        return parseInt(b.price_range.replace(/\D/g, '')) - parseInt(a.price_range.replace(/\D/g, ''));
+        return parsePrice(b.price_range) - parsePrice(a.price_range);
       default:
         return 0;
     }
@@ -136,7 +177,7 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
     return (
       <div className="flex-1 py-20 text-center">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-        <p className="text-slate-500">Loading products...</p>
+        <p className="text-slate-500">{t('loading')}</p>
       </div>
     );
   }
@@ -145,8 +186,8 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
     return (
       <div className="flex-1 py-20 text-center bg-white rounded-xl border border-dashed border-slate-300">
         <div className="text-4xl mb-4">📦</div>
-        <h3 className="text-lg font-bold text-slate-900">No products found</h3>
-        <p className="text-slate-500">Please check back later or contact us for catalog.</p>
+        <h3 className="text-lg font-bold text-slate-900">{t('noProducts')}</h3>
+        <p className="text-slate-500">{t('noProductsDesc')}</p>
       </div>
     );
   }
@@ -157,21 +198,25 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
       {/* Toolbar */}
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="text-sm text-slate-500 font-medium">
-          Showing <span className="text-slate-900 font-bold">{(currentPage - 1) * ITEMS_PER_PAGE + 1}-{Math.min(currentPage * ITEMS_PER_PAGE, sortedProducts.length)}</span> of <span className="text-slate-900 font-bold">{sortedProducts.length}</span> results
+          {t('showing', {
+            from: (currentPage - 1) * ITEMS_PER_PAGE + 1,
+            to: Math.min(currentPage * ITEMS_PER_PAGE, sortedProducts.length),
+            total: sortedProducts.length,
+          })}
         </div>
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-500 hidden sm:inline">Sort by:</span>
+            <span className="text-sm text-slate-500 hidden sm:inline">{t('sortBy')}</span>
             <div className="relative">
               <select 
                 className="appearance-none bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg pl-3 pr-8 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
-                <option value="newest">Newest Arrivals</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
+                <option value="newest">{t('newest')}</option>
+                <option value="price-low">{t('priceLow')}</option>
+                <option value="price-high">{t('priceHigh')}</option>
               </select>
               <ArrowUpDown className="w-4 h-4 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
@@ -183,7 +228,7 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
               className={`p-1.5 rounded-md transition-all ${
                 viewMode === 'grid' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-400 hover:text-slate-600'
               }`}
-              title="Grid View"
+              title={t('gridView')}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
@@ -192,7 +237,7 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
               className={`p-1.5 rounded-md transition-all ${
                 viewMode === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-400 hover:text-slate-600'
               }`}
-              title="List View"
+              title={t('listView')}
             >
               <List className="w-4 h-4" />
             </button>
@@ -227,7 +272,7 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
                 <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                   <button className="bg-white text-slate-900 font-bold px-4 py-2 rounded-lg shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform flex items-center gap-2">
                     <Eye className="w-4 h-4" />
-                    Quick View
+                    {t('quickView')}
                   </button>
                 </div>
               </div>
@@ -235,20 +280,20 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
               <div className="p-5">
                 <div className="flex items-start justify-between mb-2">
                   <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded capitalize">
-                    {product.category}
+                    {product.industries?.[0] ?? ''}
                   </span>
-                  {product.standards && product.standards.length > 0 && (
+                  {product.safety_standard && (
                     <span className="text-xs font-bold text-slate-500 border border-slate-200 px-1.5 py-0.5 rounded">
-                      {product.standards[0]}
+                      {product.safety_standard}
                     </span>
                   )}
                 </div>
-                <h3 className="font-bold text-slate-900 mb-2 truncate group-hover:text-primary-600 transition-colors">
+                <h3 className="text-base font-semibold text-slate-900 mb-2 truncate group-hover:text-primary-600 transition-colors">
                   {product.name}
                 </h3>
                 <div className="flex items-center justify-between text-sm text-slate-500">
                   <span>MOQ: <strong className="text-slate-700">{product.moq}</strong></span>
-                  <span>Est. {product.price_range}</span>
+                  {product.price_range ? <span>Est. {product.price_range}</span> : null}
                 </div>
               </div>
             </div>
@@ -274,16 +319,16 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
               <div className="p-6 flex flex-col justify-center flex-1">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded capitalize">
-                    {product.category}
+                    {product.industries?.[0] ?? ''}
                   </span>
-                  {product.standards && product.standards.length > 0 && (
+                  {product.safety_standard && (
                     <span className="text-xs font-bold text-slate-500 border border-slate-200 px-1.5 py-0.5 rounded">
-                      {product.standards[0]}
+                      {product.safety_standard}
                     </span>
                   )}
                   {product.is_new && <span className="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded">NEW</span>}
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-primary-600 transition-colors">
+                <h3 className="text-base font-bold text-slate-900 mb-2 group-hover:text-primary-600 transition-colors">
                   {product.name}
                 </h3>
                 <p className="text-sm text-slate-600 mb-4 line-clamp-2">
@@ -295,13 +340,13 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
                   </div>
                   <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
                   <div className="flex items-center gap-1 text-slate-500">
-                    <span className="font-semibold text-slate-900">Price:</span> {product.price_range}
+                    <span className="font-semibold text-slate-900">Price:</span> {product.price_range ?? '—'}
                   </div>
                 </div>
               </div>
               <div className="p-6 border-t sm:border-t-0 sm:border-l border-slate-100 flex items-center justify-center bg-slate-50 sm:w-40 flex-shrink-0">
                 <button className="w-full sm:w-auto bg-white border border-slate-200 hover:border-primary-500 hover:text-primary-600 text-slate-700 font-bold py-2 px-4 rounded-lg transition-all shadow-sm text-sm">
-                  View Details
+                  {t('viewDetails')}
                 </button>
               </div>
             </div>
@@ -316,6 +361,7 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
             disabled={currentPage === 1}
             className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            title={t('prev')}
           >
             <ChevronLeft className="w-5 h-5 text-slate-600" />
           </button>
@@ -338,6 +384,7 @@ export function ProductGrid({ viewMode: initialViewMode, filters = {}, searchQue
             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
             className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            title={t('next')}
           >
             <ChevronRight className="w-5 h-5 text-slate-600" />
           </button>
