@@ -15,16 +15,20 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const getFeatureIcons = () => {
     const icons = [];
     
-    if (product.slip_resistance) {
+    // Check safety standard or certifications for slip resistance
+    if (product.safety_standard === 'S3' || product.additional_certs?.includes('SRC')) {
       icons.push({ icon: Droplets, label: 'Slip Resistant', color: 'text-blue-600' });
     }
     
-    if (product.electrical_hazard) {
-      icons.push({ icon: Zap, label: 'Electrical Hazard', color: 'text-yellow-600' });
+    // Check certifications for electrical hazard/ESD
+    if (product.additional_certs?.includes('ESD')) {
+      icons.push({ icon: Zap, label: 'ESD Protection', color: 'text-yellow-600' });
     }
     
-    if (product.toe_type === 'steel_toe' || product.toe_type === 'composite_toe') {
-      icons.push({ icon: Shield, label: 'Toe Protection', color: 'text-gray-600' });
+    // Check toe cap type
+    const toeCap = product.materials?.toe_cap;
+    if (toeCap === 'Steel' || toeCap === 'Composite') {
+      icons.push({ icon: Shield, label: `${toeCap} Toe`, color: 'text-gray-600' });
     }
     
     return icons.slice(0, 3); // 最多显示3个图标
@@ -104,25 +108,24 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
         {/* Product Details */}
         <div className="space-y-2 mb-4 text-sm text-gray-600">
-          {product.material && (
+          {product.materials?.upper && (
             <div className="flex justify-between">
               <span>Material:</span>
-              <span className="font-medium">{product.material}</span>
+              <span className="font-medium">{product.materials.upper}</span>
             </div>
           )}
-          {product.weight && (
+          {product.style && (
             <div className="flex justify-between">
-              <span>Weight:</span>
-              <span className="font-medium">{product.weight} lbs</span>
+              <span>Style:</span>
+              <span className="font-medium">{product.style}</span>
             </div>
           )}
-          {/* Sizes - 暂时隐藏，等待产品数据完善 */}
-          {/* {product.sizes && product.sizes.length > 0 && (
+          {product.moq && (
             <div className="flex justify-between">
-              <span>Sizes:</span>
-              <span className="font-medium">{product.sizes.slice(0, 3).join(', ')}{product.sizes.length > 3 && '...'}</span>
+              <span>MOQ:</span>
+              <span className="font-medium">{product.moq}</span>
             </div>
-          )} */}
+          )}
         </div>
 
         {/* Action Buttons */}

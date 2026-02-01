@@ -379,10 +379,10 @@
   "CustomizationOptions": {
     "title": "Total Customization Freedom",
     "description": "Don't settle for generic off-the-shelf products. We give you full control over every detail of your safety footwear, ensuring it meets your specific market demands and price points.",
-    "logoBranding": { "title": "Logo & Branding", "desc": "Your brand, front and center. We offer various logo applications.", "items": ["Embroidery", "Rubber Patch", "Screen Print", "Metal Hardware"] },
-    "materialsColors": { "title": "Materials & Colors", "desc": "Choose from our premium library of leathers and textiles.", "items": ["Full Grain Leather", "Suede / Nubuck", "Microfiber", "Custom Pantone Colors"] },
-    "soleTech": { "title": "Sole Technology", "desc": "Select the right outsole for your market's terrain.", "items": ["Dual Density PU", "Rubber (300°C HRO)", "TPU", "ESD Compounds"] },
-    "packaging": { "title": "Packaging", "desc": "Retail-ready presentation that stands out on the shelf.", "items": ["Custom Shoe Box", "Hang Tags", "User Manuals", "Silica Gel"] }
+    "logoBranding": { "title": "Logo & Branding", "desc": "Your brand, front and center. We offer various logo applications.", "items": { "0": "Embroidery", "1": "Rubber Patch", "2": "Screen Print", "3": "Metal Hardware" } },
+    "materialsColors": { "title": "Materials & Colors", "desc": "Choose from our premium library of leathers and textiles.", "items": { "0": "Full Grain Leather", "1": "Suede / Nubuck", "2": "Microfiber", "3": "Custom Pantone Colors" } },
+    "soleTech": { "title": "Sole Technology", "desc": "Select the right outsole for your market's terrain.", "items": { "0": "Dual Density PU", "1": "Rubber (300°C HRO)", "2": "TPU", "3": "ESD Compounds" } },
+    "packaging": { "title": "Packaging", "desc": "Retail-ready presentation that stands out on the shelf.", "items": { "0": "Custom Shoe Box", "1": "Hang Tags", "2": "User Manuals", "3": "Silica Gel" } }
   },
   "InteractiveOemCase": {
     "badge": "Featured Case Study",

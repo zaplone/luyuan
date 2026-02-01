@@ -26,7 +26,9 @@ export function CustomizationOptions() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {OPTION_KEYS.map((key, idx) => {
                 const Icon = OPTION_ICONS[idx];
-                const items = (t.raw(`${key}.items`) as string[]) || [];
+                const rawItems = t.raw(`${key}.items`) as Record<string, string> | string[];
+                const items = Array.isArray(rawItems) ? rawItems : Object.values(rawItems || {});
+                
                 return (
                   <div key={key} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
                     <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center mb-4 text-primary-600">

@@ -83,3 +83,45 @@ export interface Category {
   image?: string;
   product_count: number;
 }
+
+// 询盘
+export interface Inquiry {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  country?: string;
+  message: string;
+  product_name?: string;
+  quantity?: number;
+  status?: string;
+  created_at?: string;
+}
+
+// API 响应类型
+export interface ProductsResponse extends ApiResponse<Product[]> {}
+export interface CategoriesResponse extends ApiResponse<Category[]> {}
+export interface CategoryResponse extends ApiResponse<Category> {}
+export interface InquiryResponse extends ApiResponse<Inquiry> {}
+
+// 询盘统计
+export interface InquiryStats {
+  total_products: number;
+  draft_products: number;
+  total_categories: number;
+  pending_inquiries: number;
+  today_inquiries: number;
+  week_inquiries: number;
+  month_inquiries: number;
+}
+
+// 搜索参数
+export interface SearchParams {
+  [key: string]: string | number | boolean | undefined;
+  page?: number;
+  limit?: number;
+  sort?: string;
+  category?: string;
+  search?: string;
+}

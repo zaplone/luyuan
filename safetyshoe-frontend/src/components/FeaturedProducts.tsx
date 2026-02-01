@@ -23,7 +23,7 @@ export function FeaturedProducts() {
           sort: 'created_at',
           order: 'desc'
         });
-        setProducts(response.products);
+        setProducts(response.data || []);
       } catch (err) {
         setError('Failed to load featured products');
         console.error('Error fetching featured products:', err);

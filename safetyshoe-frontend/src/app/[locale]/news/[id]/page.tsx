@@ -15,9 +15,9 @@ export const revalidate = 3600; // 每小时更新一次
 // 必修课：告诉 Next.js 有哪些新闻 ID 需要生成静态页面
 export async function generateStaticParams() {
   // 获取最新的 50 条新闻用于生成静态页
-  // (旧新闻可以使用动态参数或 ISR，但在 'output: export' 模式下必须列出所有)
   try {
-    const response = await fetch('http://127.0.0.1:1337/api/factory-updates?fields[0]=documentId&pagination[limit]=100');
+    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+    const response = await fetch(`${apiUrl}/api/factory-updates?fields[0]=documentId&pagination[limit]=100`);
     if (!response.ok) return [];
     
     const data = await response.json();
