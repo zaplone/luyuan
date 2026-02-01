@@ -7,6 +7,9 @@ const nextConfig = {
   // 静态导出配置
   output: 'export',
   
+  // 强制生成 index.html (例如 /en -> /en/index.html)，兼容 Cloudflare
+  trailingSlash: true,
+  
   // 图片配置
   images: {
     unoptimized: true, // 静态导出必须开启此项
@@ -57,28 +60,28 @@ const nextConfig = {
   //   ];
   // },
   
-  // 头部配置
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-        ],
-      },
-    ];
-  },
+  // 头部配置（静态导出不支持 headers，已注释以避免开发模式报错）
+  // async headers() {
+  //   return [
+  //     {
+  //       source: '/(.*)',
+  //       headers: [
+  //         {
+  //           key: 'X-Frame-Options',
+  //           value: 'DENY',
+  //         },
+  //         {
+  //           key: 'X-Content-Type-Options',
+  //           value: 'nosniff',
+  //         },
+  //         {
+  //           key: 'Referrer-Policy',
+  //           value: 'origin-when-cross-origin',
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = withNextIntl(nextConfig);
