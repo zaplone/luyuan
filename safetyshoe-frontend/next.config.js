@@ -4,6 +4,9 @@ const createNextIntlPlugin = require('next-intl/plugin');
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const nextConfig = {
+  // 静态导出配置
+  output: 'export',
+  
   // 图片配置
   images: {
     unoptimized: true, // 静态导出必须开启此项
@@ -26,16 +29,16 @@ const nextConfig = {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://dtwz.zhiyuansafety.com',
   },
   
-  // 重写规则（用于API代理，可选）
-  async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${apiUrl}/api/:path*`,
-      },
-    ];
-  },
+  // 重写规则（静态导出不支持 rewrites，已注释）
+  // async rewrites() {
+  //   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
+  //   return [
+  //     {
+  //       source: '/api/:path*',
+  //       destination: `${apiUrl}/api/:path*`,
+  //     },
+  //   ];
+  // },
   
   // 压缩配置
   compress: true,
