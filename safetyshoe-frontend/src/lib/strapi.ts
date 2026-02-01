@@ -85,6 +85,26 @@ export interface StrapiNews {
 }
 
 /**
+ * 获取所有新闻 ID 用于生成静态路径
+ */
+export async function fetchAllNewsIds(): Promise<string[]> {
+  try {
+    // 获取所有新闻，只查询 documentId 字段以提高性能
+    const response = await fetch(
+      `${STRAPI_URL}/api/factory-updates?fields[0]=documentId&pagination[limit]=100`,
+      { next: { revalidate: 60 } }
+    );
+
+    if (!response.ok) return [];
+    const data = await response.json();
+    return data.data.map((item: any) => item.documentId);
+  } catch (error) {
+    console.error('Error fetching all news IDs:', error);
+    return [];
+  }
+}
+
+/**
  * 获取最新的 3 条新闻
  */
 export async function fetchLatestNews(): Promise<StrapiNews[]> {
