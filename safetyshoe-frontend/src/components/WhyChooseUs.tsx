@@ -16,10 +16,10 @@ export function WhyChooseUs() {
       icon: Factory,
       iconColor: 'bg-accent-500 text-slate-900',
       desc: t('cards.manufacturing.desc'),
-      bgImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", // Demo video
+      bgImage: "/images/about/manufacturing.jpg",
+      videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1",
       points: [
-        { text: 'ISO 9001', color: 'text-accent-500' }, // Simplified for demo as point translation keys are needed
+        { text: 'ISO 9001', color: 'text-accent-500' },
         { text: '12 Lines', color: 'text-accent-500' }
       ]
     },
@@ -29,8 +29,8 @@ export function WhyChooseUs() {
       icon: Shield,
       iconColor: 'bg-blue-500 text-white',
       desc: t('cards.quality.desc'),
-      bgImage: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", 
+      bgImage: "/images/about/quality.jpg",
+      videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1", 
       points: [
         { text: 'Lab Testing', color: 'text-blue-400' },
         { text: 'SGS Reports', color: 'text-blue-400' },
@@ -43,8 +43,8 @@ export function WhyChooseUs() {
       icon: Truck,
       iconColor: 'bg-green-500 text-white',
       desc: t('cards.logistics.desc'),
-      bgImage: "https://images.unsplash.com/photo-1494412574643-35d324698420?q=80&w=2072&auto=format&fit=crop",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
+      bgImage: "/images/about/logistics.jpg",
+      videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1",
       points: [
         { text: 'On-Time', color: 'text-green-400' },
         { text: 'DDP Service', color: 'text-green-400' }

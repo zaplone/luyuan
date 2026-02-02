@@ -18,7 +18,7 @@ export default function OemServicePage() {
         <div className="absolute inset-0 opacity-20">
           <div 
             className="w-full h-full bg-cover bg-center"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581092921461-eab62e97a782?q=80&w=2070&auto=format&fit=crop')" }}
+            style={{ backgroundImage: "url('/images/oem/hero-bg.jpg')" }}
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-900/40" />
@@ -58,7 +58,7 @@ export default function OemServicePage() {
 
             <div className="relative hidden lg:block animate-fade-in delay-200">
                <div className="relative w-full aspect-[4/3] bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8 shadow-2xl">
-                  <div className="w-full h-full relative bg-[url('/images/products/steel-toe-boot.jpg')] bg-contain bg-no-repeat bg-center mix-blend-lighten opacity-90 grayscale hover:grayscale-0 transition-all duration-500">
+                  <div className="w-full h-full relative bg-[url('/images/oem/hero-shoe.jpg')] bg-contain bg-no-repeat bg-center mix-blend-lighten opacity-90 grayscale hover:grayscale-0 transition-all duration-500">
                   </div>
 
                   <div className="absolute top-[40%] right-[15%] group cursor-pointer">

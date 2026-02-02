@@ -9,11 +9,11 @@ import { cn } from '@/lib/utils';
 const STEP_IDS = ['design', 'mold', 'sample', 'test', 'delivery'] as const;
 const STEP_ICONS = [PenTool, Hammer, Package, FlaskConical, Ship] as const;
 const STEP_IMAGES = [
-  '/images/products/composite-shoe.jpg',
-  '/images/products/steel-toe-boot.jpg',
-  '/images/products/slip-resistant.jpg',
-  '/images/products/winter-boot.jpg',
-  '/images/products/composite-shoe.jpg',
+  '/images/oem/step1.png',
+  '/images/oem/step2.png',
+  '/images/oem/step3.png',
+  '/images/oem/step4.png',
+  '/images/oem/step5.png',
 ];
 
 export function InteractiveOemCase() {

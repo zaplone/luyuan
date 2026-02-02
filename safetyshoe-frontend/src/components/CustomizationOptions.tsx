@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Layers, Tag, Package, Palette } from 'lucide-react';
 
 const OPTION_KEYS = ['logoBranding', 'materialsColors', 'soleTech', 'packaging'] as const;
@@ -49,24 +50,32 @@ export function CustomizationOptions() {
             </div>
           </div>
 
-          {/* Right: Visual Exploded View (Placeholder) */}
+          {/* Right: Visual Exploded View */}
           <div className="relative">
             {/* Background Shape */}
             <div className="absolute inset-0 bg-slate-200 rounded-full blur-[100px] opacity-50 transform translate-x-10 translate-y-10"></div>
             
             {/* Main Image Container */}
             <div className="relative bg-white rounded-2xl p-4 shadow-2xl border-4 border-white rotate-1 hover:rotate-0 transition-transform duration-500">
-               <div className="aspect-[4/3] bg-slate-100 rounded-lg relative overflow-hidden flex items-center justify-center">
-                 {/* Replace with actual exploded view image */}
-                 <span className="text-slate-400 font-bold text-lg">Exploded Shoe Diagram Placeholder</span>
+               <div className="aspect-[4/3] bg-slate-100 rounded-lg relative overflow-hidden">
+                 <Image
+                   src="/images/oem/custom-options.png"
+                   alt="Customization details"
+                   fill
+                   className="object-cover"
+                 />
                  
-                 {/* Floating Hotspots (Demo) */}
-                 <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-accent-500 rounded-full shadow-lg ring-4 ring-white animate-pulse cursor-pointer">
-                   <div className="absolute left-6 top-0 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity">
-                     Steel Toe Cap
+                 {/* Floating Hotspots (Decorative) */}
+                 <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-accent-500 rounded-full shadow-lg ring-4 ring-white animate-pulse cursor-pointer group/spot">
+                   <div className="absolute left-6 top-0 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover/spot:opacity-100 transition-opacity">
+                     Premium Leather
                    </div>
                  </div>
-                 <div className="absolute bottom-1/3 right-1/3 w-4 h-4 bg-accent-500 rounded-full shadow-lg ring-4 ring-white animate-pulse cursor-pointer"></div>
+                 <div className="absolute bottom-1/3 right-1/3 w-4 h-4 bg-accent-500 rounded-full shadow-lg ring-4 ring-white animate-pulse cursor-pointer group/spot">
+                    <div className="absolute left-6 top-0 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover/spot:opacity-100 transition-opacity">
+                     Custom Sole
+                   </div>
+                 </div>
                </div>
                
                <div className="mt-4 flex justify-between items-center text-sm text-slate-500">

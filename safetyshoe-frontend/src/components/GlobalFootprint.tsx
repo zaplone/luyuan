@@ -16,7 +16,7 @@ export function GlobalFootprint() {
       challenge: t('cases.europe.challenge'),
       solution: t('cases.europe.solution'),
       icon: ShieldCheck,
-      image: '/images/products/composite-shoe.jpg', // Placeholder
+      image: '/images/footprint/europe.jpg',
       stats: t('cases.europe.stats')
     },
     {
@@ -27,7 +27,7 @@ export function GlobalFootprint() {
       challenge: t('cases.usa.challenge'),
       solution: t('cases.usa.solution'),
       icon: Truck,
-      image: '/images/products/slip-resistant.jpg', // Placeholder
+      image: '/images/footprint/usa.png',
       stats: t('cases.usa.stats')
     },
     {
@@ -38,7 +38,7 @@ export function GlobalFootprint() {
       challenge: t('cases.middleEast.challenge'),
       solution: t('cases.middleEast.solution'),
       icon: ThermometerSun,
-      image: '/images/products/steel-toe-boot.jpg', // Placeholder
+      image: '/images/footprint/middle-east.jpg',
       stats: t('cases.middleEast.stats')
     }
   ];
