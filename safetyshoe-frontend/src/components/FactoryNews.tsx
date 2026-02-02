@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Calendar, ArrowRight, User, Play, X } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { isValidImageUrl, getSafeImageUrl } from '@/lib/imageUtils';
 
 interface FactoryNewsProps {
   initialNews?: any[];
@@ -29,7 +30,12 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
     if (!initialNews || initialNews.length === 0) {
       fetchNews();
     } else {
-      setNewsItems(initialNews);
+      // 即使有初始数据，也要确保图片 URL 是安全的
+      const safeNews = initialNews.map(item => ({
+        ...item,
+        image: getSafeImageUrl(item.image)
+      }));
+      setNewsItems(safeNews);
     }
   }, [initialNews]);
 
@@ -44,8 +50,16 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
         const transformedNews = data.data.map((item: any) => {
           // 处理图片
           let imageUrl = 'https://images.unsplash.com/photo-1565514020176-db792f4b6d96?auto=format&fit=crop&q=80';
+          
           if (item.image?.url) {
-            const url = item.image.url;
+            let url = item.image.url;
+            
+            // 修复 undefined URL 问题 (从 strapi.ts 复制过来的逻辑)
+            if (url.includes('undefined/')) {
+              const R2_PUBLIC_URL = 'https://pub-9a6ce20adf6d44c499aad464d60190a1.r2.dev';
+              url = url.replace('undefined/', `${R2_PUBLIC_URL}/`);
+            }
+            
             imageUrl = url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
           }
 
@@ -56,7 +70,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
             date: item.date,
             author: item.author,
             category: item.category,
-            image: imageUrl,
+            image: getSafeImageUrl(imageUrl), // 使用安全 URL
             media_type: item.media_type,
             video_url: item.video_url
           };
@@ -138,7 +152,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
               
               {/* Image */}
               <div className="relative h-48 overflow-hidden group/image cursor-pointer" onClick={(e) => handleNewsClick(e, item)}>
-                {item.image && (item.image.startsWith('http') || item.image.startsWith('/')) ? (
+                {isValidImageUrl(item.image) ? (
                   <Image 
                     src={item.image} 
                     alt={item.title}

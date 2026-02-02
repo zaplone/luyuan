@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Shield, Thermometer, Hammer } from 'lucide-react';
+import { ArrowRight, Shield, Palette, Hammer } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
 export function Hero() {
@@ -29,7 +29,7 @@ export function Hero() {
     {
       id: 3,
       image: '/images/hero-slide3.png',
-      badgeIcon: Thermometer,
+      badgeIcon: Palette,
       translationKey: 'slide3'
     },
   ];

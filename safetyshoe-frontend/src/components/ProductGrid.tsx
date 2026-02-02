@@ -5,24 +5,20 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { LayoutGrid, List, ArrowUpDown, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { ProductQuickView } from './ProductQuickView';
-import { fetchProducts, transformProduct } from '@/lib/strapi';
 
 interface ProductGridProps {
+  products: any[];
   locale?: string;
   viewMode?: 'grid' | 'list';
   filters?: Record<string, string[]>;
   searchQuery?: string | null;
 }
 
-export function ProductGrid({ locale = 'en', viewMode: initialViewMode, filters = {}, searchQuery = '' }: ProductGridProps) {
+export function ProductGrid({ products, locale = 'en', viewMode: initialViewMode, filters = {}, searchQuery = '' }: ProductGridProps) {
   const t = useTranslations('ProductGrid');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(initialViewMode || 'grid');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState('newest');
-  
-  // Data State
-  const [products, setProducts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   
   // Quick View State
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -35,27 +31,7 @@ export function ProductGrid({ locale = 'en', viewMode: initialViewMode, filters 
 
   const ITEMS_PER_PAGE = 12;
 
-  // Load products from API (with locale for i18n content from Strapi)
-  useEffect(() => {
-    async function loadData() {
-      setIsLoading(true);
-      try {
-        const strapiProducts = await fetchProducts(locale);
-        if (strapiProducts && strapiProducts.length > 0) {
-          const transformed = strapiProducts.map(transformProduct);
-          setProducts(transformed);
-        } else {
-          setProducts([]);
-        }
-      } catch (error) {
-        console.error('Failed to load products:', error);
-        setProducts([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadData();
-  }, [locale]);
+  // 筛选值 → Strapi 数据对应（与数据库/API 一致）
 
   // 筛选值 → Strapi 数据对应（与数据库/API 一致）
   const normalizeIndustry = (s: string) =>
@@ -172,15 +148,6 @@ export function ProductGrid({ locale = 'en', viewMode: initialViewMode, filters 
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex-1 py-20 text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-        <p className="text-slate-500">{t('loading')}</p>
-      </div>
-    );
-  }
 
   if (products.length === 0) {
     return (

@@ -133,6 +133,8 @@ R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
 R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
 R2_BUCKET=${R2_BUCKET}
 R2_ENDPOINT=${R2_ENDPOINT}
+R2_ACCOUNT_ID=${R2_ACCOUNT_ID}
+R2_REGION=${R2_REGION}
 R2_PUBLIC_URL=${R2_PUBLIC_URL}
 EOF
 
@@ -166,7 +168,7 @@ sshpass -p "${SERVER_PASS}" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SER
     docker image prune -f
     
     echo "✅ 后端部署完成！"
-    echo "API 地址: http://${SERVER_IP}:3668"
+    echo "API 地址: http://${SERVER_IP}:3667"
 ENDSSH
 
 # 清理本地临时文件

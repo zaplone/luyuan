@@ -2,8 +2,8 @@
 // 服务端和客户端都能使用
 const STRAPI_URL = 
   typeof window !== 'undefined' 
-    ? (process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337')
-    : (process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337');
+    ? (process.env.NEXT_PUBLIC_STRAPI_URL || 'http://43.165.0.206:3667')
+    : (process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://43.165.0.206:3667');
 
 import { Product, SafetyStandard, Certification, MaterialSpec, ShoeStyle, Industry } from '@/types';
 
@@ -150,13 +150,22 @@ export function transformNews(item: StrapiNews) {
   
   const imgData = item.image;
   if (imgData) {
+     let rawUrl = '';
      if (Array.isArray(imgData) && imgData.length > 0) {
-        const url = imgData[0].url;
-        imageUrl = url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+        rawUrl = imgData[0].url || '';
      } 
      else if (imgData.url) {
-        const url = imgData.url;
-        imageUrl = url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+        rawUrl = imgData.url || '';
+     }
+
+     if (rawUrl) {
+       // 修复 undefined URL 问题
+       if (rawUrl.includes('undefined/')) {
+         const R2_PUBLIC_URL = 'https://pub-9a6ce20adf6d44c499aad464d60190a1.r2.dev';
+         rawUrl = rawUrl.replace('undefined/', `${R2_PUBLIC_URL}/`);
+       }
+       
+       imageUrl = rawUrl.startsWith('http') ? rawUrl : `${STRAPI_URL}${rawUrl}`;
      }
   }
 
