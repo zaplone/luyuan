@@ -1,15 +1,43 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { Calendar, Award, TrendingUp, Globe } from 'lucide-react';
+import { Calendar, Award, TrendingUp, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function BrandStory() {
   const t = useTranslations('BrandStory');
+  
+  // 图片轮播数据
+  const SLIDES = [
+    '/images/about/home-about.jpg',
+    '/images/about/factory-slide-1.png',
+    '/images/about/factory-slide-2.png',
+    '/images/about/factory-slide-3.png',
+    '/images/about/factory-slide-4.png'
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // 自动轮播
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    }, 4000); // 4秒切换一次
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+  };
 
   const milestones = [
     {
-      year: '1995',
+      year: '1990',
       title: t('milestones.founded.title'),
       desc: t('milestones.founded.desc'),
       icon: Calendar
@@ -57,18 +85,57 @@ export function BrandStory() {
             </div>
           </div>
 
-          {/* Image */}
-          <div className="order-1 lg:order-2 relative">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-               <Image
-                 src="https://images.unsplash.com/photo-1617720346867-0c2d338f0653?auto=format&fit=crop&q=80" 
-                 alt="Factory History"
-                 fill
-                 className="object-cover"
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-               <div className="absolute bottom-8 left-8 text-white">
-                 <div className="text-sm opacity-80 mb-1">Since 1995</div>
+          {/* Image Slider */}
+          <div className="order-1 lg:order-2 relative group">
+            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl bg-slate-100">
+               {SLIDES.map((slide, index) => (
+                 <div 
+                   key={index}
+                   className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                     index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                   }`}
+                 >
+                   <Image
+                     src={slide}
+                     alt={`Factory View ${index + 1}`}
+                     fill
+                     className="object-cover"
+                     priority={index === 0}
+                   />
+                   {/* Gradient Overlay */}
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                 </div>
+               ))}
+               
+               {/* Controls - Only show on hover */}
+               <button 
+                 onClick={prevSlide}
+                 className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+               >
+                 <ChevronLeft className="w-6 h-6" />
+               </button>
+               <button 
+                 onClick={nextSlide}
+                 className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+               >
+                 <ChevronRight className="w-6 h-6" />
+               </button>
+
+               {/* Dots Indicator */}
+               <div className="absolute bottom-24 left-8 z-20 flex gap-2">
+                 {SLIDES.map((_, idx) => (
+                   <button
+                     key={idx}
+                     onClick={() => setCurrentSlide(idx)}
+                     className={`w-2 h-2 rounded-full transition-all ${
+                       idx === currentSlide ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/80'
+                     }`}
+                   />
+                 ))}
+               </div>
+
+               <div className="absolute bottom-8 left-8 text-white z-20">
+                 <div className="text-sm opacity-80 mb-1">Since 1990</div>
                  <div className="text-2xl font-bold">Crafting Safety</div>
                </div>
             </div>

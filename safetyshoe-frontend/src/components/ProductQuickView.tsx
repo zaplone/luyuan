@@ -110,7 +110,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
         </button>
 
         {/* Left: Image Gallery (58%) */}
-        <div className="w-full md:w-7/12 bg-slate-100 relative h-1/2 md:h-full hidden md:block group cursor-zoom-in">
+        <div className="w-full md:w-7/12 bg-slate-100 relative h-1/2 md:h-full hidden md:block group">
           {isValidImageUrl(activeImage) ? (
             <ImageMagnifier
               src={activeImage}

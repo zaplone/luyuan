@@ -109,14 +109,14 @@ export function FAQAndContact() {
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center w-full max-w-lg">
                 <a 
-                  href="mailto:84082280@qq.com"
+                  href="mailto:sales@slsafetyshoes.com"
                   className="flex-1 bg-accent-500 hover:bg-accent-400 text-slate-900 font-bold py-4 px-8 rounded-xl transition-all transform hover:-translate-y-1 shadow-lg shadow-accent-500/20 flex items-center justify-center gap-3 text-lg"
                 >
                   <Mail className="w-6 h-6" />
                   {t('cta.email')}
                 </a>
                 <a 
-                  href="https://wa.me/8615610214670"
+                  href="https://wa.me/8615726062996"
                   target="_blank"
                   className="flex-1 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold py-4 px-8 rounded-xl transition-all flex items-center justify-center gap-3 text-lg backdrop-blur-sm"
                 >

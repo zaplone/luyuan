@@ -72,6 +72,8 @@ export function Hero() {
 
       {/* 2. Global Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent z-10" />
+      {/* 3. 顶部安全区 - 统一三张轮播图的 logo 区域，避免与 header 重叠 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/95 from-0% via-slate-950/70 via-[15%] to-transparent to-[30%] z-10 pointer-events-none" />
       
       {/* 3. Text Content */}
       <div className="container mx-auto px-4 z-20 relative h-full flex flex-col justify-center">

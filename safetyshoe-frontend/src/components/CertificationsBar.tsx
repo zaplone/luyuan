@@ -1,17 +1,17 @@
 'use client';
 
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { ShieldCheck, Zap, Droplets, Hammer } from 'lucide-react';
 
-const CERTIFICATIONS = [
+/* const CERTIFICATIONS = [
   { name: 'ISO 9001:2015', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/ISO_9001-2015_Logo.svg' },
   { name: 'CE Certification', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/CE_Logo.svg' },
   { name: 'ASTM International', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/80/ASTM_International_logo.svg' },
   { name: 'CSA Group', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/91/CSA_Group_logo.svg/1200px-CSA_Group_logo.svg.png' },
   { name: 'Intertek', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f6/Intertek_Logo.svg' },
   { name: 'SGS', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/67/SGS_Logo.svg' },
-];
+]; */
 
 export function CertificationsBar() {
   const t = useTranslations('Certifications');
@@ -61,8 +61,8 @@ export function CertificationsBar() {
           </p>
         </div>
 
-        {/* Logos Section */}
-        <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 mb-20">
+        {/* Logos Section - Hidden as per request */}
+        {/* <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500 mb-20">
           {CERTIFICATIONS.map((cert) => (
             <div key={cert.name} className="relative h-14 w-28 md:h-20 md:w-40 hover:scale-110 transition-transform cursor-help group">
               {cert.logo && cert.logo.startsWith('http') ? (
@@ -82,7 +82,7 @@ export function CertificationsBar() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Standards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

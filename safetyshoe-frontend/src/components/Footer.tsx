@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, Mail, MapPin, Clock, Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -18,11 +19,18 @@ export function Footer() {
           
           {/* Column 1: Brand & About */}
           <div className="space-y-6">
-            <Link href={`/${locale}`} className="flex items-center space-x-2 group">
-              <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
-                <span className="text-white font-bold text-xl">L</span>
+            <Link href={`/${locale}`} className="flex items-center space-x-2.5 group">
+              <Image
+                src="/images/logo-icon.png"
+                alt="SHENGLEI"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain"
+              />
+              <div className="flex flex-col leading-tight">
+                <span className="text-xl font-bold tracking-tight">SHENGLEI<sup className="text-[9px] ml-0.5 opacity-80">®</sup></span>
+                <span className="text-xs text-slate-400 font-medium">Safety Shoes</span>
               </div>
-              <span className="text-2xl font-bold tracking-tight">Luyuan</span>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
               {t('about')}
@@ -72,14 +80,14 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-accent-500 flex-shrink-0" />
-                <a href="tel:+8615610214670" className="hover:text-white transition-colors">
-                  +86 156 1021 4670
+                <a href="tel:+8615726062996" className="hover:text-white transition-colors">
+                  +86 157 2606 2996
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-accent-500 flex-shrink-0" />
-                <a href="mailto:84082280@qq.com" className="hover:text-white transition-colors">
-                  84082280@qq.com
+                <a href="mailto:sales@slsafetyshoes.com" className="hover:text-white transition-colors">
+                  sales@slsafetyshoes.com
                 </a>
               </li>
               <li className="flex items-center space-x-3">
@@ -98,7 +106,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             
             <div className="flex flex-col md:flex-row items-center gap-4">
-              <p>&copy; {currentYear} Luyuan Safety Shoes. {t('rights')}</p>
+              <p>&copy; {currentYear} Shenglei Safety Shoes. {t('rights')}</p>
               <span className="hidden md:inline text-slate-800">|</span>
               <div className="flex space-x-4">
                 <Link href={`/${locale}/privacy`} className="hover:text-white transition-colors">{t('privacy')}</Link>

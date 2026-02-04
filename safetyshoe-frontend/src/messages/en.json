@@ -11,24 +11,24 @@
   },
   "About": {
     "title": "About Our Factory",
-    "description": "Since 1995, we have been setting the standard for industrial safety footwear manufacturing. Learn more about our production capabilities and commitment to quality."
+    "description": "Shenglei Safety Shoes: Your Trusted Partner for Safety Footwear. Founded in 1990, we are a professional manufacturer dedicated to R&D, production, and sales of labor protection shoes."
   },
   "BrandStory": {
     "label": "Our Story",
-    "title": "From Humble Beginnings to Global Manufacturer",
-    "p1": "It started in 1995 with a simple vision: to make a pair of safety shoes that were actually comfortable and durable for local workers. Our founder, Mr. Li, realized that while safety shoes on the market were tough, they were often heavy and painful to wear. He began his quest in a small workshop in Gaomi with just one vintage sewing machine.",
-    "p2": "Thirty years later, while our factory has expanded to 6 automated Desma lines and over 300 skilled craftsmen, that original intention has never changed. We aren't just making shoes; we are protecting the feet of workers laboring in extreme environments.",
-    "quote": "Safety is not a luxury, but a fundamental right for every worker. Our job is to ensure their feet are as comfortable as when they started, even after a long shift.",
-    "p3": "Today, our safety shoes are exported to over 50 countries worldwide. From the scorching mines of Australia to the icy construction sites of Northern Europe, you can find our products. We combine traditional shoemaking craftsmanship with modern material technology to continuously redefine industrial protection standards.",
+    "title": "Your Trusted Partner for Safety Footwear",
+    "p1": "Founded in 1990, Shenglei Safety Shoes is a professional manufacturer and supplier dedicated to the R&D, production, and sales of labor protection shoes. With 30 years of focused experience, we have established ourselves as a reliable name in the industry, driven by the mission \"Safety is our mission.\"",
+    "p2": "Equipped with 8 efficient production lines (including 6 injection lines and 2 semi-automatic lines for high-end products), our factory boasts an annual output of 2 million pairs, supported by a team of over 200 professionals. We adhere to strict quality control, featuring advanced testing equipment to ensure all products meet functional standards.",
+    "quote": "Safety is our mission.",
+    "p3": "Widely applied in smelting, chemical industry, construction, machinery manufacturing, railways, and shipping, our products have gained trust globally. We serve clients across Europe, Southeast Asia, South America, Africa, and Russia, while maintaining solid partnerships with domestic listed companies. Committed to sincerity and quality, Shenglei Safety Shoes strives to be your reliable supplier and service provider.",
     "timelineTitle": "Our Journey",
     "milestones": {
       "founded": {
         "title": "Factory Founded",
-        "desc": "Established the first semi-automatic production line in Gaomi, serving the domestic construction market."
+        "desc": "Established in Gaomi, Shandong, dedicated to labor protection footwear for domestic and international markets."
       },
       "expansion": {
         "title": "Going Global",
-        "desc": "Obtained export license and shipped the first containers to Southeast Asian markets."
+        "desc": "Expanded exports to Southeast Asia, Europe, South America, Africa, and Russia."
       },
       "certification": {
         "title": "Quality Certification",
@@ -36,7 +36,7 @@
       },
       "global": {
         "title": "Global Scale",
-        "desc": "Introduced Desma intelligent injection equipment, annual capacity exceeded 1.5 million pairs, serving clients globally."
+        "desc": "8 production lines, 2 million pairs annual output, 200+ professionals, serving clients worldwide."
       }
     }
   },
@@ -249,11 +249,11 @@
     }
   },
   "Footer": {
-    "about": "Professional safety footwear manufacturer since 1990. We combine traditional craftsmanship with modern technology to protect workers worldwide.",
+    "about": "Shenglei Safety Shoes: Your Trusted Partner for Safety Footwear. Founded in 1990, we are a professional manufacturer of labor protection shoes with 30 years of experience and an annual output of 2 million pairs.",
     "quickLinks": "Quick Links",
     "products": "Our Products",
     "contact": "Contact Us",
-    "address": "No. 128, Industrial Park Road,<br />Gaomi City, Shandong, China",
+    "address": "261531, Zhanglusi Village,<br />Gaomi City, Shandong Province, China",
     "hours": "Mon - Sat: 8:00 - 18:00",
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
@@ -427,6 +427,59 @@
         "email": "Email Address",
         "company": "Company Name",
         "message": "Message"
+    }
+  },
+  "InquiryForm": {
+    "name": "Full Name *",
+    "email": "Email Address *",
+    "phone": "Phone Number",
+    "company": "Company Name",
+    "country": "Country",
+    "quantity": "Quantity Needed",
+    "targetPrice": "Target Price Range (USD)",
+    "message": "Message *",
+    "submit": "Submit Inquiry",
+    "submitting": "Submitting...",
+    "defaultTitle": "Get a Quote",
+    "defaultSubtitle": "Tell us about your requirements and we'll provide a customized quote",
+    "privacy": "By submitting this form, you agree to our",
+    "privacyLink": "Privacy Policy",
+    "privacySuffix": ". We'll use your information to provide you with a quote.",
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "messageRequired": "Message is required",
+      "messageMinLength": "Message must be at least 10 characters"
+    },
+    "success": {
+      "title": "Thank You!",
+      "desc": "Your inquiry has been submitted successfully. Our team will review your request and get back to you within 24 hours.",
+      "button": "Submit Another Inquiry"
+    },
+    "placeholders": {
+      "name": "Your full name",
+      "email": "your.email@company.com",
+      "phone": "+1 (555) 123-4567",
+      "company": "Your company name",
+      "quantity": "e.g., 1000",
+      "targetPrice": "e.g., 50-80",
+      "message": "Please describe your requirements, specifications, delivery timeline, and any other details..."
+    },
+    "countries": {
+      "select": "Select your country",
+      "US": "United States",
+      "CA": "Canada",
+      "GB": "United Kingdom",
+      "DE": "Germany",
+      "FR": "France",
+      "AU": "Australia",
+      "JP": "Japan",
+      "CN": "China",
+      "IN": "India",
+      "BR": "Brazil",
+      "MX": "Mexico",
+      "other": "Other"
     }
   }
 }

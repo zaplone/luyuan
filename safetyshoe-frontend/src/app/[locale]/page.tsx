@@ -7,11 +7,11 @@ import { FactoryNews } from '@/components/FactoryNews';
 import { fetchProducts, transformProduct, fetchLatestNews, transformNews } from '@/lib/strapi';
 
 export const metadata: Metadata = {
-  title: 'Luyuan Safety Shoes - Professional Industrial Footwear',
-  description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
+  title: 'Shenglei Safety Shoes - Your Trusted Partner for Safety Footwear',
+  description: 'Shenglei Safety Shoes: Professional manufacturer of labor protection shoes since 1990. 8 production lines, 2M pairs annual output. OEM/ODM available.',
   openGraph: {
-    title: 'Luyuan Safety Shoes - Professional Industrial Footwear',
-    description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
+    title: 'Shenglei Safety Shoes - Your Trusted Partner for Safety Footwear',
+    description: 'Shenglei Safety Shoes: Professional manufacturer of labor protection shoes since 1990. 8 production lines, 2M pairs annual output. OEM/ODM available.',
     images: ['/images/og-image.jpg'],
   },
 };

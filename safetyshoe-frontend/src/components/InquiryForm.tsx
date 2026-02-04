@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslations } from 'next-intl';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { inquiriesApi } from '@/lib/api';
@@ -22,9 +23,11 @@ interface InquiryFormData {
 interface InquiryFormProps {
   productName?: string;
   className?: string;
+  variant?: 'default' | 'simple';
 }
 
-export function InquiryForm({ productName, className }: InquiryFormProps) {
+export function InquiryForm({ productName, className, variant = 'default' }: InquiryFormProps) {
+  const t = useTranslations('InquiryForm');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -58,16 +61,15 @@ export function InquiryForm({ productName, className }: InquiryFormProps) {
     return (
       <div className={cn('text-center py-12', className)}>
         <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Thank You!</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('success.title')}</h3>
         <p className="text-gray-600 mb-6">
-          Your inquiry has been submitted successfully. Our team will review your request 
-          and get back to you within 24 hours.
+          {t('success.desc')}
         </p>
         <button
           onClick={() => setIsSubmitted(false)}
           className="btn btn-outline"
         >
-          Submit Another Inquiry
+          {t('success.button')}
         </button>
       </div>
     );
@@ -75,63 +77,65 @@ export function InquiryForm({ productName, className }: InquiryFormProps) {
 
   return (
     <div className={cn('bg-white rounded-lg shadow-soft p-6 md:p-8', className)}>
-      <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          Get a Quote
-        </h3>
-        <p className="text-gray-600">
-          Tell us about your requirements and we'll provide a customized quote
-        </p>
-      </div>
+      {variant === 'default' && (
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            {t('defaultTitle')}
+          </h3>
+          <p className="text-gray-600">
+            {t('defaultSubtitle')}
+          </p>
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Personal Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-              Full Name *
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              {t('name')}
             </label>
             <input
               type="text"
               id="name"
-              {...register('name', { required: 'Name is required' })}
+              {...register('name', { required: t('errors.nameRequired') })}
               className={cn(
-                'input w-full',
+                'input w-full px-3 py-2',
                 errors.name && 'border-red-500 focus:ring-red-500'
               )}
-              placeholder="Your full name"
+              placeholder={t('placeholders.name')}
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-600 flex items-center">
-                <AlertCircle className="h-4 w-4 mr-1" />
+              <p className="mt-1 text-xs text-red-600 flex items-center">
+                <AlertCircle className="h-3 w-3 mr-1" />
                 {errors.name.message}
               </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address *
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              {t('email')}
             </label>
             <input
               type="email"
               id="email"
               {...register('email', { 
-                required: 'Email is required',
+                required: t('errors.emailRequired'),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address'
+                  message: t('errors.emailInvalid')
                 }
               })}
               className={cn(
-                'input w-full',
+                'input w-full px-3 py-2',
                 errors.email && 'border-red-500 focus:ring-red-500'
               )}
-              placeholder="your.email@company.com"
+              placeholder={t('placeholders.email')}
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600 flex items-center">
-                <AlertCircle className="h-4 w-4 mr-1" />
+              <p className="mt-1 text-xs text-red-600 flex items-center">
+                <AlertCircle className="h-3 w-3 mr-1" />
                 {errors.email.message}
               </p>
             )}
@@ -140,87 +144,94 @@ export function InquiryForm({ productName, className }: InquiryFormProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+              {t('phone')}
             </label>
             <input
               type="tel"
               id="phone"
               {...register('phone')}
-              className="input w-full"
-              placeholder="+1 (555) 123-4567"
+              className="input w-full px-3 py-2"
+              placeholder={t('placeholders.phone')}
             />
           </div>
 
-          <div>
-            <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-              Company Name
-            </label>
-            <input
-              type="text"
-              id="company"
-              {...register('company')}
-              className="input w-full"
-              placeholder="Your company name"
-            />
-          </div>
+          {variant === 'default' && (
+            <div>
+              <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+                {t('company')}
+              </label>
+              <input
+                type="text"
+                id="company"
+                {...register('company')}
+                className="input w-full px-3 py-2"
+                placeholder={t('placeholders.company')}
+              />
+            </div>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
-              Country
-            </label>
-            <select
-              id="country"
-              {...register('country')}
-              className="select w-full"
-            >
-              <option value="">Select your country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="GB">United Kingdom</option>
-              <option value="DE">Germany</option>
-              <option value="FR">France</option>
-              <option value="AU">Australia</option>
-              <option value="JP">Japan</option>
-              <option value="CN">China</option>
-              <option value="IN">India</option>
-              <option value="BR">Brazil</option>
-              <option value="MX">Mexico</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
+        {variant === 'default' && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('country')}
+                </label>
+                <select
+                  id="country"
+                  {...register('country')}
+                  className="select w-full px-3 py-2"
+                >
+                  <option value="">{t('countries.select')}</option>
+                  <option value="US">{t('countries.US')}</option>
+                  {/* ... simplified options for brevity in logic ... */}
+                  <option value="CA">{t('countries.CA')}</option>
+                  <option value="GB">{t('countries.GB')}</option>
+                  <option value="DE">{t('countries.DE')}</option>
+                  <option value="FR">{t('countries.FR')}</option>
+                  <option value="AU">{t('countries.AU')}</option>
+                  <option value="JP">{t('countries.JP')}</option>
+                  <option value="CN">{t('countries.CN')}</option>
+                  <option value="IN">{t('countries.IN')}</option>
+                  <option value="BR">{t('countries.BR')}</option>
+                  <option value="MX">{t('countries.MX')}</option>
+                  <option value="other">{t('countries.other')}</option>
+                </select>
+              </div>
 
-          <div>
-            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
-              Quantity Needed
-            </label>
-            <input
-              type="number"
-              id="quantity"
-              {...register('quantity', { min: 1 })}
-              className="input w-full"
-              placeholder="e.g., 1000"
-              min="1"
-            />
-          </div>
-        </div>
+              <div>
+                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('quantity')}
+                </label>
+                <input
+                  type="number"
+                  id="quantity"
+                  {...register('quantity', { min: 1 })}
+                  className="input w-full px-3 py-2"
+                  placeholder={t('placeholders.quantity')}
+                  min="1"
+                />
+              </div>
+            </div>
 
-        <div>
-          <label htmlFor="target_price" className="block text-sm font-medium text-gray-700 mb-2">
-            Target Price Range (USD)
-          </label>
-          <input
-            type="number"
-            id="target_price"
-            {...register('target_price', { min: 0 })}
-            className="input w-full"
-            placeholder="e.g., 50-80"
-            min="0"
-            step="0.01"
-          />
-        </div>
+            <div>
+              <label htmlFor="target_price" className="block text-sm font-medium text-gray-700 mb-1">
+                {t('targetPrice')}
+              </label>
+              <input
+                type="number"
+                id="target_price"
+                {...register('target_price', { min: 0 })}
+                className="input w-full px-3 py-2"
+                placeholder={t('placeholders.targetPrice')}
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </>
+        )}
 
         {/* Product Name (hidden if provided) */}
         {productName && (
@@ -269,12 +280,12 @@ export function InquiryForm({ productName, className }: InquiryFormProps) {
             {isSubmitting ? (
               <>
                 <div className="loading h-4 w-4 mr-2" />
-                Submitting...
+                {t('submitting')}
               </>
             ) : (
               <>
                 <Send className="h-5 w-5 mr-2" />
-                Submit Inquiry
+                {t('submit')}
               </>
             )}
           </button>
@@ -283,12 +294,11 @@ export function InquiryForm({ productName, className }: InquiryFormProps) {
         {/* Privacy Notice */}
         <div className="text-center text-sm text-gray-500">
           <p>
-            By submitting this form, you agree to our{' '}
+            {t('privacy')}{' '}
             <a href="/privacy" className="text-primary-600 hover:text-primary-700">
-              Privacy Policy
+              {t('privacyLink')}
             </a>
-            . We'll use your information to provide you with a quote and may contact you 
-            about our products and services.
+            {t('privacySuffix')}
           </p>
         </div>
       </form>

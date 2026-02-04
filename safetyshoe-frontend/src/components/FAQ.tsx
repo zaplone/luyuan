@@ -117,7 +117,7 @@ export function FAQ() {
                 Contact Us
               </a>
               <a
-                href="mailto:info@safetyshoe.com"
+                href="mailto:sales@slsafetyshoes.com"
                 className="btn btn-outline"
               >
                 Email Support

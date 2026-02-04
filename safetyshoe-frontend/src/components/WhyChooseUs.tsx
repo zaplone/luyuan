@@ -16,7 +16,7 @@ export function WhyChooseUs() {
       icon: Factory,
       iconColor: 'bg-accent-500 text-slate-900',
       desc: t('cards.manufacturing.desc'),
-      bgImage: "/images/about/manufacturing.jpg",
+      bgImage: "/images/about/zhizao.png",
       videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1",
       points: [
         { text: 'ISO 9001', color: 'text-accent-500' },
@@ -29,7 +29,7 @@ export function WhyChooseUs() {
       icon: Shield,
       iconColor: 'bg-blue-500 text-white',
       desc: t('cards.quality.desc'),
-      bgImage: "/images/about/quality.jpg",
+      bgImage: "/images/about/shiyan.png",
       videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1", 
       points: [
         { text: 'Lab Testing', color: 'text-blue-400' },
@@ -43,7 +43,7 @@ export function WhyChooseUs() {
       icon: Truck,
       iconColor: 'bg-green-500 text-white',
       desc: t('cards.logistics.desc'),
-      bgImage: "/images/about/logistics.jpg",
+      bgImage: "/images/about/fahuo.png",
       videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1",
       points: [
         { text: 'On-Time', color: 'text-green-400' },
@@ -102,15 +102,15 @@ export function WhyChooseUs() {
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
                 
-                {/* Play Button Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Play Button Overlay - Removed as per request */}
+                {/* <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <button 
                     onClick={() => setActiveVideo(pillar.videoUrl)}
                     className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 group/btn"
                   >
                     <Play className="w-6 h-6 text-white fill-white group-hover/btn:text-slate-900 group-hover/btn:fill-slate-900" />
                   </button>
-                </div>
+                </div> */}
 
                 <div className="relative z-10 p-8 h-full flex flex-col justify-end">
                   <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-lg", pillar.iconColor)}>

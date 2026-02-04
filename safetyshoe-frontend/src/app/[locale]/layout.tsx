@@ -12,10 +12,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Luyuan Safety Shoes - Professional Industrial Footwear',
-    template: '%s | Luyuan Safety Shoes'
+    default: 'Shenglei Safety Shoes - Your Trusted Partner for Safety Footwear',
+    template: '%s | Shenglei Safety Shoes'
   },
-  description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
+  description: 'Shenglei Safety Shoes: Professional manufacturer of labor protection shoes since 1990. 8 production lines, 2M pairs annual output. Europe, Asia, Africa, Russia. OEM/ODM available.',
   keywords: [
     'safety shoes',
     'steel toe boots',
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     'safety footwear',
     'construction boots'
   ],
-  authors: [{ name: 'Luyuan Safety Shoes' }],
-  creator: 'Luyuan Safety Shoes',
-  publisher: 'Luyuan Safety Shoes',
+  authors: [{ name: 'Shenglei Safety Shoes' }],
+  creator: 'Shenglei Safety Shoes',
+  publisher: 'Shenglei Safety Shoes',
   formatDetection: {
     email: false,
     address: false,
@@ -51,22 +51,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: '/',
-    title: 'Luyuan Safety Shoes - Professional Industrial Footwear',
-    description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
-    siteName: 'Luyuan Safety Shoes',
+    title: 'Shenglei Safety Shoes - Your Trusted Partner for Safety Footwear',
+    description: 'Shenglei Safety Shoes: Professional manufacturer of labor protection shoes since 1990. 8 production lines, 2M pairs annual output. OEM/ODM available.',
+    siteName: 'Shenglei Safety Shoes',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Luyuan Safety Shoes',
+        alt: 'Shenglei Safety Shoes',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Luyuan Safety Shoes - Professional Industrial Footwear',
-    description: 'Professional safety footwear for industrial workers. Steel toe boots, composite toe shoes, slip-resistant boots, and winter safety boots. OEM manufacturing available.',
+    title: 'Shenglei Safety Shoes - Your Trusted Partner for Safety Footwear',
+    description: 'Shenglei Safety Shoes: Professional manufacturer of labor protection shoes since 1990. 8 production lines, 2M pairs annual output. OEM/ODM available.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -122,22 +122,23 @@ export default async function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'Luyuan Safety Shoes',
-              description: 'Professional safety footwear manufacturer specializing in industrial work boots and safety shoes.',
+              name: 'Shenglei Safety Shoes',
+              description: 'Shenglei Safety Shoes: Professional manufacturer of labor protection shoes since 1990. 8 production lines, 2 million pairs annual output.',
               url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
               logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/images/logo.png`,
               contactPoint: {
                 '@type': 'ContactPoint',
-                telephone: '+86 156 1021 4670',
+                telephone: '+86 157 2606 2996',
+                email: 'sales@slsafetyshoes.com',
                 contactType: 'customer service',
                 availableLanguage: ['English', 'Chinese', 'German', 'Russian', 'Arabic'],
               },
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: 'No. 128, Industrial Park Road',
+                streetAddress: '261531, Zhanglusi Village',
                 addressLocality: 'Gaomi City',
-                addressRegion: 'Shandong',
-                postalCode: '261500',
+                addressRegion: 'Shandong Province',
+                postalCode: '261531',
                 addressCountry: 'CN',
               },
               sameAs: [
@@ -158,7 +159,7 @@ export default async function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Luyuan Safety Shoes" />
+        <meta name="apple-mobile-web-app-title" content="Shenglei Safety Shoes" />
         
         {/* Security Headers */}
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
