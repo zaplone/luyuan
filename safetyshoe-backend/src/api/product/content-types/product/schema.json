@@ -72,7 +72,11 @@
         "S1P",
         "S2",
         "S3",
-        "OB"
+        "OB",
+        "ASTM",
+        "CSA",
+        "AS/NZS",
+        "Other"
       ],
       "required": true,
       "pluginOptions": {
@@ -82,12 +86,10 @@
       }
     },
     "additional_certs": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::certification.certification",
+      "inversedBy": "products"
     },
     "style": {
       "type": "enumeration",
@@ -105,12 +107,10 @@
       }
     },
     "industries": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::industry.industry",
+      "inversedBy": "products"
     },
     "materials": {
       "type": "component",
@@ -123,12 +123,10 @@
       }
     },
     "features": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::feature.feature",
+      "inversedBy": "products"
     },
     "is_hot": {
       "type": "boolean",

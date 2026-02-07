@@ -4,14 +4,37 @@ import {getRequestConfig} from 'next-intl/server';
 // 静态导入所有翻译文件（避免动态 import 路径解析问题）
 import enMessages from './messages/en.json';
 import zhMessages from './messages/zh.json';
+import ruMessages from './messages/ru.json';
 
-// 1. 定义支持的语言
-const locales = ['en', 'zh'] as const;
+type Messages = Record<string, any>;
 
-// 2. 翻译文件映射表
+function deepMerge(base: Messages, override: Messages): Messages {
+  const result: Messages = {...base};
+  for (const key of Object.keys(override)) {
+    const value = override[key];
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      typeof base[key] === 'object' &&
+      base[key] !== null &&
+      !Array.isArray(base[key])
+    ) {
+      result[key] = deepMerge(base[key], value);
+    } else {
+      result[key] = value;
+    }
+  }
+  return result;
+}
+
+import { locales } from './locales';
+
+// 1. 翻译文件映射表
 const messages = {
   en: enMessages,
   zh: zhMessages,
+  ru: deepMerge(enMessages as Messages, ruMessages as Messages),
 } as const;
 
 export default getRequestConfig(async ({locale}) => {

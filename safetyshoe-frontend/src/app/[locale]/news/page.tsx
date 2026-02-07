@@ -2,12 +2,13 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, User, ArrowRight, Play } from 'lucide-react';
+import { locales } from '@/locales';
 import { fetchLatestNews, transformNews } from '@/lib/strapi';
 import { notFound } from 'next/navigation';
 
-// 强制生成静态路径
+// 强制生成静态路径（与 i18n.locales 一致）
 export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'zh' }];
+  return locales.map((locale) => ({ locale }));
 }
 
 export default async function NewsPage() {

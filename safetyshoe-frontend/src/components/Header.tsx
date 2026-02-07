@@ -43,6 +43,7 @@ export function Header() {
   const languages = [
     { code: 'en', label: 'English' },
     { code: 'zh', label: '中文' },
+    { code: 'ru', label: 'Русский' },
   ];
 
   // Close search when clicking outside

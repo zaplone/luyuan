@@ -1,3 +1,4 @@
+import { locales } from '@/locales';
 import { fetchNewsItem, transformNews, fetchAllNewsIds } from '@/lib/strapi';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,8 +11,7 @@ export const dynamicParams = false;
 // 生成所有静态路径
 export async function generateStaticParams() {
   const newsIds = await fetchAllNewsIds();
-  const locales = ['en', 'zh'];
-  
+
   const params = [];
   for (const locale of locales) {
     for (const id of newsIds) {

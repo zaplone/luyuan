@@ -273,6 +273,26 @@ export function transformProduct(product: StrapiProduct): Product {
 
 
   // 2. 构建符合 TypeScript 接口的 Product 对象
+  // Helper to safely extract names from relations or arrays
+  const extractNames = (data: any): any[] => {
+    if (!data) return [];
+    if (Array.isArray(data)) {
+      // Handle array of relations (Strapi v4)
+      if (data.length > 0 && typeof data[0] === 'object' && data[0] !== null) {
+        return data.map((item: any) => item.name || item.attributes?.name || '');
+      }
+      // Handle simple string array (Legacy JSON)
+      return data;
+    }
+    // Handle single relation object (simplified) or Relation wrapper
+    if (typeof data === 'object' && data.data) {
+        if (Array.isArray(data.data)) {
+             return data.data.map((item: any) => item.attributes?.name || item.name || '');
+        }
+    }
+    return [];
+  };
+
   return {
     id: product.id,
     documentId: product.documentId,
@@ -283,16 +303,16 @@ export function transformProduct(product: StrapiProduct): Product {
     
     // 核心结构化字段
     safety_standard: product.safety_standard,
-    additional_certs: product.additional_certs || [],
+    additional_certs: extractNames(product.additional_certs) as any[],
     style: product.style,
-    industries: product.industries || [],
+    industries: extractNames(product.industries) as any[],
     
     materials: product.materials || {},
     
     // 业务字段
     moq: product.moq || '500 Pairs',
     price_range: product.price_range || '',
-    features: product.features || [],
+    features: extractNames(product.features) as any[],
     
     // 图片
     image: mainImage,

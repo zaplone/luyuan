@@ -4,6 +4,7 @@ import { ProductCategories } from '@/components/ProductCategories';
 import { WhyChooseUs } from '@/components/WhyChooseUs';
 import { FAQAndContact } from '@/components/FAQAndContact';
 import { FactoryNews } from '@/components/FactoryNews';
+import { locales } from '@/locales';
 import { fetchProducts, transformProduct, fetchLatestNews, transformNews } from '@/lib/strapi';
 
 export const metadata: Metadata = {
@@ -18,9 +19,9 @@ export const metadata: Metadata = {
 
 type HomePageProps = { params: Promise<{ locale: string }> };
 
-// 强制生成静态路径
+// 强制生成静态路径（与 i18n.locales 一致）
 export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'zh' }];
+  return locales.map((locale) => ({ locale }));
 }
 
 export default async function HomePage({ params }: HomePageProps) {
