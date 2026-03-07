@@ -101,7 +101,7 @@ export default async function RootLayout({
 }) {
   // Await params to get locale
   const { locale } = await params;
-  
+
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages({ locale });
@@ -115,7 +115,7 @@ export default async function RootLayout({
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        
+
         {/* Structured Data */}
         <script
           type="application/ld+json"
@@ -150,24 +150,24 @@ export default async function RootLayout({
             }),
           }}
         />
-        
+
         {/* Theme Color */}
         <meta name="theme-color" content="#3b82f6" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
-        
+
         {/* Mobile Optimization */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Shenglei Safety Shoes" />
-        
+
         {/* Security Headers */}
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
         <meta httpEquiv="X-Frame-Options" content="DENY" />
         <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
         <meta httpEquiv="Referrer-Policy" content="origin-when-cross-origin" />
-        
+
         {/* Performance Optimization */}
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
       </head>
@@ -181,10 +181,10 @@ export default async function RootLayout({
             </main>
             <Footer />
           </div>
-          
+
           {/* Cookie Consent */}
           <CookieConsent />
-          
+
           {/* Toast Notifications */}
           <Toaster
             position="top-right"
@@ -210,14 +210,14 @@ export default async function RootLayout({
               },
             }}
           />
-          
+
           {/* Analytics (Production Only) */}
-          {process.env.NODE_ENV === 'production' && (
+          {process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_GA_ID && (
             <>
               {/* Google Analytics */}
               <script
                 async
-                src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
               />
               <script
                 dangerouslySetInnerHTML={{
@@ -225,7 +225,7 @@ export default async function RootLayout({
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
-                    gtag('config', 'GA_MEASUREMENT_ID', {
+                    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
                       page_title: document.title,
                       page_location: window.location.href,
                     });
