@@ -1,26 +1,26 @@
-import { 
-  Product, 
-  Category, 
-  Inquiry, 
-  ProductsResponse, 
-  CategoriesResponse, 
+import {
+  Product,
+  Category,
+  Inquiry,
+  ProductsResponse,
+  CategoriesResponse,
   CategoryResponse,
   InquiryResponse,
   InquiryStats,
   SearchParams,
-  ApiResponse 
+  ApiResponse
 } from '@/types';
 
 // API基础URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_STRAPI_URL || process.env.NEXT_PUBLIC_API_URL || 'https://dtwz.zhiyuansafety.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_STRAPI_URL || process.env.NEXT_PUBLIC_API_URL || 'https://www.slsafetyshoes.com';
 
 // 通用API请求函数
 async function apiRequest<T>(
-  endpoint: string, 
+  endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
-  
+
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
@@ -29,12 +29,12 @@ async function apiRequest<T>(
   };
 
   const response = await fetch(url, { ...defaultOptions, ...options });
-  
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
   }
-  
+
   return response.json();
 }
 
@@ -43,16 +43,16 @@ export const productsApi = {
   // 获取产品列表
   async getProducts(params: SearchParams = {}): Promise<ProductsResponse> {
     const searchParams = new URLSearchParams();
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         searchParams.append(key, String(value));
       }
     });
-    
+
     const queryString = searchParams.toString();
     const endpoint = `/api/products${queryString ? `?${queryString}` : ''}`;
-    
+
     // 使用缓存API请求
     return cachedApiRequest<ProductsResponse>(endpoint, {}, 5 * 60 * 1000); // 5分钟缓存
   },
@@ -71,10 +71,10 @@ export const productsApi = {
   async checkSlug(slug: string, exclude?: number): Promise<{ available: boolean; slug: string }> {
     const params = new URLSearchParams();
     if (exclude) params.append('exclude', String(exclude));
-    
+
     const queryString = params.toString();
     const endpoint = `/api/products/slug/${slug}${queryString ? `?${queryString}` : ''}`;
-    
+
     return apiRequest<{ available: boolean; slug: string }>(endpoint);
   },
 };
@@ -84,23 +84,23 @@ export const categoriesApi = {
   // 获取所有分类
   async getCategories(includeProducts = false): Promise<Category[]> {
     const params = includeProducts ? '?include_products=true' : '';
-    const response = await cachedApiRequest<{categories: Category[]}>(`/api/categories${params}`, {}, 10 * 60 * 1000); // 10分钟缓存
+    const response = await cachedApiRequest<{ categories: Category[] }>(`/api/categories${params}`, {}, 10 * 60 * 1000); // 10分钟缓存
     return response.categories;
   },
 
   // 获取单个分类及其产品
   async getCategory(slug: string, params: SearchParams = {}): Promise<CategoryResponse> {
     const searchParams = new URLSearchParams();
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         searchParams.append(key, String(value));
       }
     });
-    
+
     const queryString = searchParams.toString();
     const endpoint = `/api/categories/${slug}${queryString ? `?${queryString}` : ''}`;
-    
+
     return apiRequest<CategoryResponse>(endpoint);
   },
 };
@@ -222,16 +222,16 @@ export const adminApi = {
   // 获取产品列表（管理后台）
   async getProducts(token: string, params: SearchParams = {}): Promise<ProductsResponse> {
     const searchParams = new URLSearchParams();
-    
+
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         searchParams.append(key, String(value));
       }
     });
-    
+
     const queryString = searchParams.toString();
     const endpoint = `/api/admin/products${queryString ? `?${queryString}` : ''}`;
-    
+
     return apiRequest<ProductsResponse>(endpoint, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -330,7 +330,7 @@ export async function retryRequest<T>(
   delay = 1000
 ): Promise<T> {
   let lastError: Error;
-  
+
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await requestFn();
@@ -341,7 +341,7 @@ export async function retryRequest<T>(
       }
     }
   }
-  
+
   throw lastError!;
 }
 
@@ -373,11 +373,11 @@ export async function cachedApiRequest<T>(
 ): Promise<T> {
   const cacheKey = `${endpoint}_${JSON.stringify(options)}`;
   const cached = getCachedData<T>(cacheKey);
-  
+
   if (cached) {
     return cached;
   }
-  
+
   const data = await apiRequest<T>(endpoint, options);
   setCachedData(cacheKey, data, ttl);
   return data;
