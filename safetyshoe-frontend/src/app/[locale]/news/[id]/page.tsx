@@ -26,9 +26,9 @@ type NewsPageProps = {
 };
 
 export default async function NewsDetailPage({ params }: NewsPageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const newsData = await fetchNewsItem(id);
-  
+
   if (!newsData) {
     notFound();
   }
@@ -51,15 +51,15 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
       {/* Hero Header */}
       <div className="bg-slate-900 py-12 md:py-20">
         <div className="container mx-auto px-4">
-          <Link href="/news" className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
+          <Link href={`/${locale}/news`} className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to News
           </Link>
-          
+
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight max-w-4xl">
             {news.title}
           </h1>
-          
+
           <div className="flex items-center text-slate-400 space-x-6">
             <div className="flex items-center">
               <Calendar className="w-4 h-4 mr-2" />

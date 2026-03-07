@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Calendar, ArrowRight, User, Play, X } from 'lucide-react';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { isValidImageUrl, getSafeImageUrl } from '@/lib/imageUtils';
 
 interface FactoryNewsProps {
@@ -15,6 +15,7 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:1337';
 
 export function FactoryNews({ initialNews }: FactoryNewsProps) {
   const t = useTranslations('FactoryNews');
+  const locale = useLocale();
   const [newsItems, setNewsItems] = useState<any[]>(initialNews || []);
   const [loading, setLoading] = useState(!initialNews || initialNews.length === 0);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
@@ -43,23 +44,23 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
     try {
       console.log('[FactoryNews] Fetching from:', `${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=3`);
       const response = await fetch(`${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=3`);
-      
+
       if (response.ok) {
         const data = await response.json();
-        
+
         const transformedNews = data.data.map((item: any) => {
           // 处理图片
           let imageUrl = 'https://images.unsplash.com/photo-1565514020176-db792f4b6d96?auto=format&fit=crop&q=80';
-          
+
           if (item.image?.url) {
             let url = item.image.url;
-            
+
             // 修复 undefined URL 问题 (从 strapi.ts 复制过来的逻辑)
             if (url.includes('undefined/')) {
               const R2_PUBLIC_URL = 'https://pub-9a6ce20adf6d44c499aad464d60190a1.r2.dev';
               url = url.replace('undefined/', `${R2_PUBLIC_URL}/`);
             }
-            
+
             imageUrl = url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
           }
 
@@ -89,21 +90,21 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
   // Helper to get YouTube ID
   const getYouTubeId = (url: string) => {
     if (!url) return null;
-    
+
     // Handle standard YouTube URLs
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     if (match && match[2].length === 11) {
       return match[2];
     }
-    
+
     // Handle YouTube Shorts
     const shortsRegExp = /youtube\.com\/shorts\/([^#&?]*)/;
     const shortsMatch = url.match(shortsRegExp);
     if (shortsMatch && shortsMatch[1]) {
       return shortsMatch[1];
     }
-    
+
     return null;
   };
 
@@ -134,27 +135,27 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
   return (
     <section className="py-24 bg-slate-50">
       <div className="container mx-auto px-4">
-        
+
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-           <div>
-             <span className="text-primary-600 font-bold uppercase tracking-wider text-sm">{t('label')}</span>
-             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">{t('title')}</h2>
-           </div>
-           
-           <Link href="/news" className="hidden md:inline-flex items-center font-bold text-slate-600 hover:text-primary-600 transition-colors">
-             {t('viewAll')} <ArrowRight className="w-4 h-4 ml-2" />
-           </Link>
+          <div>
+            <span className="text-primary-600 font-bold uppercase tracking-wider text-sm">{t('label')}</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">{t('title')}</h2>
+          </div>
+
+          <Link href={`/${locale}/news`} className="hidden md:inline-flex items-center font-bold text-slate-600 hover:text-primary-600 transition-colors">
+            {t('viewAll')} <ArrowRight className="w-4 h-4 ml-2" />
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {newsItems.map((item) => (
             <article key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col h-full border border-slate-100">
-              
+
               {/* Image */}
               <div className="relative h-48 overflow-hidden group/image cursor-pointer" onClick={(e) => handleNewsClick(e, item)}>
                 {isValidImageUrl(item.image) ? (
-                  <Image 
-                    src={item.image} 
+                  <Image
+                    src={item.image}
                     alt={item.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -164,7 +165,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
                     <span className="text-sm">No Image</span>
                   </div>
                 )}
-                
+
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-slate-900 shadow-sm z-10">
                   {item.category}
@@ -194,21 +195,21 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
                 </div>
 
                 <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
-                  <Link href={`/news/${item.id}`} onClick={(e) => handleNewsClick(e, item)}>
+                  <Link href={`/${locale}/news/${item.id}`} onClick={(e) => handleNewsClick(e, item)}>
                     {item.title}
                   </Link>
                 </h3>
-                
+
                 <p className="text-slate-600 text-sm leading-relaxed mb-6 flex-1 line-clamp-3">
                   {item.excerpt}
                 </p>
-                
-                <Link 
-                  href={`/news/${item.id}`} 
+
+                <Link
+                  href={`/${locale}/news/${item.id}`}
                   className="inline-flex items-center text-sm font-bold text-primary-600 hover:underline mt-auto"
                   onClick={(e) => handleNewsClick(e, item)}
                 >
-                  {item.media_type === 'Video' && item.video_url ? 'Watch Video' : t('readMore')} 
+                  {item.media_type === 'Video' && item.video_url ? 'Watch Video' : t('readMore')}
                   {item.media_type === 'Video' && item.video_url ? <Play className="w-3.5 h-3.5 ml-1 fill-current" /> : <ArrowRight className="w-3.5 h-3.5 ml-1" />}
                 </Link>
               </div>
@@ -217,7 +218,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
         </div>
 
         <div className="mt-8 text-center md:hidden">
-          <Link href="/news" className="inline-block bg-white border border-slate-200 text-slate-700 px-6 py-3 rounded-lg font-bold">
+          <Link href={`/${locale}/news`} className="inline-block bg-white border border-slate-200 text-slate-700 px-6 py-3 rounded-lg font-bold">
             {t('viewAll')}
           </Link>
         </div>
@@ -225,20 +226,19 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
         {/* Video Modal */}
         {playingVideo && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm" onClick={() => setPlayingVideo(null)}>
-            <div className={`relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl ${
-              isVertical 
-                ? 'max-w-md aspect-[9/16] max-h-[90vh]' 
-                : 'max-w-4xl aspect-video'
-            }`}>
-              <button 
+            <div className={`relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl ${isVertical
+              ? 'max-w-md aspect-[9/16] max-h-[90vh]'
+              : 'max-w-4xl aspect-video'
+              }`}>
+              <button
                 onClick={() => setPlayingVideo(null)}
                 className="absolute top-4 right-4 text-white/80 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all z-10"
               >
                 <X className="w-6 h-6" />
               </button>
-              
+
               {getYouTubeId(playingVideo) ? (
-                <iframe 
+                <iframe
                   className="w-full h-full"
                   src={`https://www.youtube.com/embed/${getYouTubeId(playingVideo)}?autoplay=1`}
                   title="Video Player"
@@ -248,10 +248,10 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
               ) : (
                 <div className="w-full h-full flex items-center justify-center flex-col text-white">
                   <p className="mb-4">Video format not supported for direct embed.</p>
-                  <a 
-                    href={playingVideo} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href={playingVideo}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-primary-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >

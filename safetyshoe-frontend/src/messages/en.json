@@ -253,7 +253,7 @@
     "quickLinks": "Quick Links",
     "products": "Our Products",
     "contact": "Contact Us",
-    "address": "261531, Zhanglusi Village,<br />Gaomi City, Shandong Province, China",
+    "address": "261531, Zhanglusi Village, Gaomi City, Shandong Province, China",
     "hours": "Mon - Sat: 8:00 - 18:00",
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
@@ -365,24 +365,90 @@
       "outsoleTechDesc": "Dual-density PU/PU or Rubber. Oil & Slip resistant (SRC)."
     },
     "infinitePossibilities": "Infinite Possibilities",
-    "montage": { "logos": "Logos", "materials": "Materials", "soles": "Soles", "boxes": "Boxes" },
+    "montage": {
+      "logos": "Logos",
+      "materials": "Materials",
+      "soles": "Soles",
+      "boxes": "Boxes"
+    },
     "cooperation": {
       "title": "Flexible Cooperation Models",
       "subtitle": "Choose the level of customization that fits your business stage.",
       "pairsStyle": "pairs / style",
       "pairsMold": "pairs / mold",
-      "tier1": { "name": "Private Label", "subtitle": "Best for startups & distributors", "moq": "500", "item1": "Use our existing molds", "item2": "Custom Logo & Box", "item3": "Standard Materials", "button": "Select Plan" },
-      "tier2": { "badge": "Most Popular", "name": "ODM Customization", "subtitle": "For established brands", "moq": "1,000", "item1": "Modify Upper Design", "item2": "Custom Materials & Colors", "item3": "Upgraded Insoles", "button": "Get Started" },
-      "tier3": { "name": "Full OEM", "subtitle": "For unique market leaders", "moq": "3,000+", "item1": "New Outsole Mold", "item2": "Exclusive Design Rights", "item3": "Lab Testing Included", "button": "Contact Sales" }
+      "tier1": {
+        "name": "Private Label",
+        "subtitle": "Best for startups & distributors",
+        "moq": "500",
+        "item1": "Use our existing molds",
+        "item2": "Custom Logo & Box",
+        "item3": "Standard Materials",
+        "button": "Select Plan"
+      },
+      "tier2": {
+        "badge": "Most Popular",
+        "name": "ODM Customization",
+        "subtitle": "For established brands",
+        "moq": "1,000",
+        "item1": "Modify Upper Design",
+        "item2": "Custom Materials & Colors",
+        "item3": "Upgraded Insoles",
+        "button": "Get Started"
+      },
+      "tier3": {
+        "name": "Full OEM",
+        "subtitle": "For unique market leaders",
+        "moq": "3,000+",
+        "item1": "New Outsole Mold",
+        "item2": "Exclusive Design Rights",
+        "item3": "Lab Testing Included",
+        "button": "Contact Sales"
+      }
     }
   },
   "CustomizationOptions": {
     "title": "Total Customization Freedom",
     "description": "Don't settle for generic off-the-shelf products. We give you full control over every detail of your safety footwear, ensuring it meets your specific market demands and price points.",
-    "logoBranding": { "title": "Logo & Branding", "desc": "Your brand, front and center. We offer various logo applications.", "items": { "0": "Embroidery", "1": "Rubber Patch", "2": "Screen Print", "3": "Metal Hardware" } },
-    "materialsColors": { "title": "Materials & Colors", "desc": "Choose from our premium library of leathers and textiles.", "items": { "0": "Full Grain Leather", "1": "Suede / Nubuck", "2": "Microfiber", "3": "Custom Pantone Colors" } },
-    "soleTech": { "title": "Sole Technology", "desc": "Select the right outsole for your market's terrain.", "items": { "0": "Dual Density PU", "1": "Rubber (300°C HRO)", "2": "TPU", "3": "ESD Compounds" } },
-    "packaging": { "title": "Packaging", "desc": "Retail-ready presentation that stands out on the shelf.", "items": { "0": "Custom Shoe Box", "1": "Hang Tags", "2": "User Manuals", "3": "Silica Gel" } }
+    "logoBranding": {
+      "title": "Logo & Branding",
+      "desc": "Your brand, front and center. We offer various logo applications.",
+      "items": {
+        "0": "Embroidery",
+        "1": "Rubber Patch",
+        "2": "Screen Print",
+        "3": "Metal Hardware"
+      }
+    },
+    "materialsColors": {
+      "title": "Materials & Colors",
+      "desc": "Choose from our premium library of leathers and textiles.",
+      "items": {
+        "0": "Full Grain Leather",
+        "1": "Suede / Nubuck",
+        "2": "Microfiber",
+        "3": "Custom Pantone Colors"
+      }
+    },
+    "soleTech": {
+      "title": "Sole Technology",
+      "desc": "Select the right outsole for your market's terrain.",
+      "items": {
+        "0": "Dual Density PU",
+        "1": "Rubber (300°C HRO)",
+        "2": "TPU",
+        "3": "ESD Compounds"
+      }
+    },
+    "packaging": {
+      "title": "Packaging",
+      "desc": "Retail-ready presentation that stands out on the shelf.",
+      "items": {
+        "0": "Custom Shoe Box",
+        "1": "Hang Tags",
+        "2": "User Manuals",
+        "3": "Silica Gel"
+      }
+    }
   },
   "InteractiveOemCase": {
     "badge": "Featured Case Study",
@@ -393,13 +459,50 @@
     "nextPhase": "Next Phase",
     "clientFeedback": "Client Feedback",
     "summary": "A 6-month journey from a rough sketch to 50,000 pairs delivered. Solving the challenge of extreme heat resistance and metatarsal protection.",
-    "stats": { "devTime": "Development Time", "devValue": "45 Days", "defectRate": "Defect Rate", "defectValue": "< 0.1%", "firstOrder": "First Order", "firstValue": "50,000 Pairs" },
+    "stats": {
+      "devTime": "Development Time",
+      "devValue": "45 Days",
+      "defectRate": "Defect Rate",
+      "defectValue": "< 0.1%",
+      "firstOrder": "First Order",
+      "firstValue": "50,000 Pairs"
+    },
     "steps": {
-      "design": { "label": "Consultation", "time": "Day 1", "title": "Translating Requirements into Blueprints", "desc": "The client needed a boot that could withstand 300°C surfaces and 200J impacts. Our R&D team spent 3 days analyzing the mining terrain in Pilbara. We proposed a hybrid Kevlar-Leather upper design that reduced weight by 15% without compromising safety.", "quote": "The 3D rendering was spot on. They understood our safety needs better than we did." },
-      "mold": { "label": "Design & CAD", "time": "Day 2-3", "title": "Precision Tooling for Custom Outsoles", "desc": "To ensure maximum grip on loose gravel, we opened a new dual-density PU/Rubber mold. The tread pattern was engineered with self-cleaning channels. The mold opening took just 12 days, 30% faster than industry average.", "quote": "Fastest mold opening we've seen in 10 years of sourcing." },
-      "sample": { "label": "Prototyping", "time": "Day 7-10", "title": "From Digital to Physical", "desc": "First samples were produced within 7 days. We identified a potential pressure point on the ankle and adjusted the collar padding density immediately. The second version (V2) was approved instantly for lab testing.", "quote": "V2 sample fit perfectly. The comfort level was beyond expectation." },
-      "test": { "label": "Mass Production", "time": "Day 30-45", "title": "Rigorous ISO 20345 Validation", "desc": "Every batch underwent 15 critical tests in our in-house lab: Impact resistance, Antistatic discharge, and Flexing durability (50,000 cycles). We also sent samples to Intertek for third-party certification.", "quote": "Having an in-house lab saved us weeks of waiting for 3rd party reports." },
-      "delivery": { "label": "Global Delivery", "time": "Arrival", "title": "On-Time Delivery, Every Time", "desc": "Production lines ran at full capacity. We implemented a 5-checkpoint QC system. The final container was loaded with custom retail packaging, barcoded for their warehouse system, and shipped FOB Qingdao.", "quote": "Goods arrived in perfect condition. Packaging was retail-ready as promised." }
+      "design": {
+        "label": "Consultation",
+        "time": "Day 1",
+        "title": "Translating Requirements into Blueprints",
+        "desc": "The client needed a boot that could withstand 300°C surfaces and 200J impacts. Our R&D team spent 3 days analyzing the mining terrain in Pilbara. We proposed a hybrid Kevlar-Leather upper design that reduced weight by 15% without compromising safety.",
+        "quote": "The 3D rendering was spot on. They understood our safety needs better than we did."
+      },
+      "mold": {
+        "label": "Design & CAD",
+        "time": "Day 2-3",
+        "title": "Precision Tooling for Custom Outsoles",
+        "desc": "To ensure maximum grip on loose gravel, we opened a new dual-density PU/Rubber mold. The tread pattern was engineered with self-cleaning channels. The mold opening took just 12 days, 30% faster than industry average.",
+        "quote": "Fastest mold opening we've seen in 10 years of sourcing."
+      },
+      "sample": {
+        "label": "Prototyping",
+        "time": "Day 7-10",
+        "title": "From Digital to Physical",
+        "desc": "First samples were produced within 7 days. We identified a potential pressure point on the ankle and adjusted the collar padding density immediately. The second version (V2) was approved instantly for lab testing.",
+        "quote": "V2 sample fit perfectly. The comfort level was beyond expectation."
+      },
+      "test": {
+        "label": "Mass Production",
+        "time": "Day 30-45",
+        "title": "Rigorous ISO 20345 Validation",
+        "desc": "Every batch underwent 15 critical tests in our in-house lab: Impact resistance, Antistatic discharge, and Flexing durability (50,000 cycles). We also sent samples to Intertek for third-party certification.",
+        "quote": "Having an in-house lab saved us weeks of waiting for 3rd party reports."
+      },
+      "delivery": {
+        "label": "Global Delivery",
+        "time": "Arrival",
+        "title": "On-Time Delivery, Every Time",
+        "desc": "Production lines ran at full capacity. We implemented a 5-checkpoint QC system. The final container was loaded with custom retail packaging, barcoded for their warehouse system, and shipped FOB Qingdao.",
+        "quote": "Goods arrived in perfect condition. Packaging was retail-ready as promised."
+      }
     }
   },
   "ProductQuickView": {
@@ -423,10 +526,10 @@
     "moq": "MOQ",
     "sizes": "Sizes",
     "form": {
-        "name": "Full Name",
-        "email": "Email Address",
-        "company": "Company Name",
-        "message": "Message"
+      "name": "Full Name",
+      "email": "Email Address",
+      "company": "Company Name",
+      "message": "Message"
     }
   },
   "InquiryForm": {

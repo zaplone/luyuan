@@ -42,8 +42,6 @@ export function Header() {
 
   const languages = [
     { code: 'en', label: 'English' },
-    { code: 'zh', label: '中文' },
-    { code: 'ru', label: 'Русский' },
   ];
 
   // Close search when clicking outside
@@ -242,7 +240,8 @@ export function Header() {
               </div>
 
               {/* Language Switcher */}
-              <div className="relative">
+                {/* Language Switcher - Hidden since only English is available */}
+                {/* 
                 <button
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                   className={cn(
@@ -272,22 +271,16 @@ export function Header() {
                     ))}
                   </div>
                 )}
-              </div>
+                */}
 
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center gap-4">
                {/* Mobile Lang Switcher (Simplified) */}
-               <button
-                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className={cn(
-                    "text-sm font-bold uppercase",
-                    isTransparent ? "text-white" : "text-slate-900"
-                  )}
-                >
+               <div className="text-sm font-bold uppercase hidden">
                   {locale}
-                </button>
+                </div>
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -321,6 +314,8 @@ export function Header() {
               ))}
               
               {/* Mobile Language Selection List */}
+              {/* Mobile Language Selection List - Hidden */}
+              {/* 
               <div className="border-t border-slate-100 pt-4 px-4">
                 <p className="text-xs font-bold text-slate-400 mb-2 uppercase">Select Language</p>
                 <div className="grid grid-cols-3 gap-2">
@@ -343,6 +338,7 @@ export function Header() {
                   ))}
                 </div>
               </div>
+              */}
 
             </div>
           )}

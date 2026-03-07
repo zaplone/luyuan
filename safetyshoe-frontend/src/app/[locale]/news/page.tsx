@@ -11,7 +11,8 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export default async function NewsPage() {
+export default async function NewsPage(props: { params: Promise<{ locale: string }> }) {
+  const { locale } = await props.params;
   // 由于这是一个服务端组件，我们直接获取数据
   const newsData = await fetchLatestNews();
   const news = newsData.map(transformNews).filter(Boolean);
@@ -40,8 +41,8 @@ export default async function NewsPage() {
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">
                   {item.image && (item.image.startsWith('http') || item.image.startsWith('/')) ? (
-                    <Image 
-                      src={item.image} 
+                    <Image
+                      src={item.image}
                       alt={item.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -51,7 +52,7 @@ export default async function NewsPage() {
                       No Image
                     </div>
                   )}
-                  
+
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-slate-900 shadow-sm z-10">
                     {item.category}
@@ -81,17 +82,17 @@ export default async function NewsPage() {
                   </div>
 
                   <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    <Link href={`/news/${item.id}`}>
+                    <Link href={`/${locale}/news/${item.id}`}>
                       {item.title}
                     </Link>
                   </h3>
-                  
+
                   <p className="text-slate-600 text-sm leading-relaxed mb-6 flex-1 line-clamp-3">
                     {item.excerpt}
                   </p>
-                  
-                  <Link 
-                    href={`/news/${item.id}`} 
+
+                  <Link
+                    href={`/${locale}/news/${item.id}`}
                     className="inline-flex items-center text-sm font-bold text-primary-600 hover:underline mt-auto"
                   >
                     Read Full Story <ArrowRight className="w-3.5 h-3.5 ml-1" />
