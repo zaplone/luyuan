@@ -31,8 +31,8 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
     if (!initialNews || initialNews.length === 0) {
       fetchNews();
     } else {
-      // 即使有初始数据，也要确保图片 URL 是安全的
-      const safeNews = initialNews.map(item => ({
+      // 首页固定只显示最新 4 条，并确保图片 URL 安全
+      const safeNews = initialNews.slice(0, 4).map(item => ({
         ...item,
         image: getSafeImageUrl(item.image)
       }));
@@ -42,13 +42,13 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
 
   const fetchNews = async () => {
     try {
-      console.log('[FactoryNews] Fetching from:', `${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=3`);
-      const response = await fetch(`${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=3`);
+      console.log('[FactoryNews] Fetching from:', `${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=4`);
+      const response = await fetch(`${STRAPI_URL}/api/factory-updates?populate=*&sort=date:desc&pagination[limit]=4`);
 
       if (response.ok) {
         const data = await response.json();
 
-        const transformedNews = data.data.map((item: any) => {
+        const transformedNews = (data.data || []).slice(0, 4).map((item: any) => {
           // 处理图片
           let imageUrl = 'https://images.unsplash.com/photo-1565514020176-db792f4b6d96?auto=format&fit=crop&q=80';
 
@@ -147,7 +147,7 @@ export function FactoryNews({ initialNews }: FactoryNewsProps) {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {newsItems.map((item) => (
             <article key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col h-full border border-slate-100">
 

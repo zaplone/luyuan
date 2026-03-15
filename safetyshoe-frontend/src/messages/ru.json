@@ -160,6 +160,7 @@
     },
     "viewDetails": "Подробнее",
     "loadMore": "Посмотреть все товары",
+    "allProductsGallery": "Все товары",
     "filter": {
       "label": "Фильтр:",
       "reset": "Сбросить",

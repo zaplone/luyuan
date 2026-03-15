@@ -93,6 +93,8 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  /** 首页底部画廊用：全部产品（与顶部 6 款精选分开） */
+  const [galleryProducts, setGalleryProducts] = useState<Product[]>([]);
 
   // Data Loading
   useEffect(() => {
@@ -122,6 +124,22 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
     }
     loadData();
   }, [locale, initialProducts]); // Add initialProducts dependency
+
+  // 首页时：画廊展示「全部产品」，单独拉取
+  useEffect(() => {
+    if (!hideFilters) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const strapiProducts = await fetchProducts(locale);
+        if (cancelled) return;
+        setGalleryProducts(strapiProducts.map(transformProduct));
+      } catch (e) {
+        if (!cancelled) setGalleryProducts([]);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [hideFilters, locale]);
 
   // Filter Logic (Updated for new Schema)
   const filteredProducts = products.filter(p => {
@@ -286,96 +304,163 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
             </div>
           ) : filteredProducts.length > 0 ? (
             hideFilters ? (
-              /* 首页精选：自动流动画廊条（仅本区块，不影响页面其它 section） */
-              <div className="w-full overflow-hidden">
+              <>
+                {/* 顶部：6 款精选，错落布局 + 交错入场 + 首卡放大 */}
                 <motion.div
-                  className="relative w-full overflow-hidden"
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"
                   initial="hidden"
                   animate="visible"
-                  variants={{ visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } }, hidden: {} }}
+                  variants={{
+                    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+                    hidden: {},
+                  }}
                 >
-                  <motion.div
-                    className="flex"
-                    style={{ width: '200%' }}
-                    animate={{ x: ['0%', '-50%'] }}
-                    transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
-                  >
-                    {[1, 2].map((copy) => (
-                      <div
-                        key={copy}
-                        className="flex flex-shrink-0 gap-6 pr-6"
-                        style={{ width: '50%' }}
+                  {filteredProducts.map((product, index) => {
+                    const isHero = index === 0;
+                    const isWide = index === 5;
+                    return (
+                      <motion.div
+                        key={product.id}
+                        variants={{
+                          visible: { opacity: 1, y: 0 },
+                          hidden: { opacity: 0, y: 24 },
+                        }}
+                        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        className={`
+                          group relative rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100
+                          transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/80
+                          ${isHero ? 'md:col-span-2 md:row-span-2 min-h-[320px] lg:min-h-[420px]' : 'h-[320px] lg:h-[360px]'}
+                          ${isWide ? 'md:col-span-3' : ''}
+                        `}
+                        onMouseEnter={() => setHoveredProduct(product.id)}
+                        onMouseLeave={() => setHoveredProduct(null)}
+                        onClick={() => handleProductClick(product)}
                       >
-                        {filteredProducts.map((product, index) => (
-                          <motion.div
-                            key={`${copy}-${product.id}`}
-                            variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 16 } }}
-                            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                            className="group relative flex-shrink-0 flex-[0_0_calc((100%-7.5rem)/6)] min-w-[200px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/80 h-[340px]"
-                            onMouseEnter={() => setHoveredProduct(product.id)}
-                            onMouseLeave={() => setHoveredProduct(null)}
-                            onClick={() => handleProductClick(product)}
-                          >
-                            <div className="relative h-3/4 w-full bg-slate-100">
-                              {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
-                                <Image
-                                  src={product.image}
-                                  alt={product.name}
-                                  fill
-                                  className={`object-cover transition-transform duration-700 ${hoveredProduct === product.id ? 'scale-110' : 'scale-100'}`}
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-slate-400">
-                                  <span className="text-sm">No Image</span>
+                        <div className={`relative w-full bg-slate-100 ${isHero ? 'h-[70%]' : 'h-3/4'}`}>
+                          {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              className={`object-cover transition-transform duration-700 ${hoveredProduct === product.id ? 'scale-110' : 'scale-100'}`}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-400">
+                              <span className="text-sm">No Image</span>
+                            </div>
+                          )}
+                          <div className="absolute top-4 left-4 flex flex-col gap-2">
+                            {product.safety_standard && (
+                              <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-primary-500">
+                                {product.safety_standard}
+                              </span>
+                            )}
+                            {product.additional_certs?.map((cert, idx) => (
+                              <span key={idx} className="bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-slate-200">
+                                {cert}
+                              </span>
+                            ))}
+                          </div>
+                          <div className={`absolute inset-0 bg-slate-900/95 flex flex-col justify-center items-center p-8 text-center transition-all duration-300 ${hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <div className="space-y-3 mb-6">
+                              {product.materials?.toe_cap && (
+                                <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
+                                  Toe: {product.materials.toe_cap}
                                 </div>
                               )}
-                              <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                                {product.safety_standard && (
-                                  <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-primary-500">
-                                    {product.safety_standard}
-                                  </span>
-                                )}
-                                {product.additional_certs?.slice(0, 2).map((cert, idx) => (
-                                  <span key={idx} className="bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-slate-200">
-                                    {cert}
-                                  </span>
-                                ))}
-                              </div>
-                              <div className={`absolute inset-0 bg-slate-900/90 flex flex-col justify-center items-center p-4 text-center transition-all duration-300 ${hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
-                                <div className="flex flex-wrap gap-1.5 justify-center mb-4">
-                                  {product.materials?.toe_cap && (
-                                    <span className="bg-white/10 border border-white/20 text-white px-2 py-0.5 rounded-full text-[10px]">
-                                      Toe: {product.materials.toe_cap}
-                                    </span>
-                                  )}
-                                  {product.materials?.upper && (
-                                    <span className="bg-white/10 border border-white/20 text-white px-2 py-0.5 rounded-full text-[10px] line-clamp-1">
-                                      {product.materials.upper}
-                                    </span>
-                                  )}
+                              {product.materials?.upper && (
+                                <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
+                                  {product.materials.upper}
                                 </div>
-                                <span className="py-2.5 px-4 bg-accent-500 text-slate-900 font-bold rounded-lg text-xs pointer-events-none">
-                                  {t('viewDetails')} <ChevronRight className="inline w-3.5 h-3.5 ml-0.5" />
-                                </span>
-                              </div>
+                              )}
                             </div>
-                            <div className="h-1/4 p-4 bg-white flex flex-col justify-center relative z-10">
-                              <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{product.name}</h3>
-                              <div className="flex justify-between items-center text-xs mt-1">
-                                <span className="text-slate-500">MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
-                                <span className="text-primary-600 font-medium bg-primary-50 px-1.5 py-0.5 rounded">Wholesale</span>
-                              </div>
+                            <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
+                              <span className="w-full py-3 bg-accent-500 hover:bg-accent-400 text-slate-900 font-bold rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-accent-500/20 text-sm pointer-events-none">
+                                {t('viewDetails')}
+                                <ChevronRight className="ml-2 w-4 h-4" />
+                              </span>
                             </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    ))}
-                  </motion.div>
-                  {/* 两侧渐变遮罩，增强画廊感 */}
-                  <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
-                  <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
+                          </div>
+                        </div>
+                        <div className={`p-5 bg-white flex flex-col justify-between relative z-10 ${isHero ? 'h-[30%]' : 'h-1/4'}`}>
+                          <div className="flex justify-between items-start">
+                            <h3 className={`font-bold text-slate-900 line-clamp-1 ${isHero ? 'text-xl lg:text-2xl' : 'text-lg'}`}>{product.name}</h3>
+                            <ArrowRight className={`w-5 h-5 text-primary-600 transition-transform duration-300 flex-shrink-0 ml-2 ${hoveredProduct === product.id ? 'translate-x-1' : ''}`} />
+                          </div>
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-slate-500">MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
+                            <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-1 rounded">Wholesale</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </motion.div>
-              </div>
+
+                {/* 下方：全部产品横向流动画廊（无 hover 遮罩，卡片不重叠） */}
+                {galleryProducts.length > 0 && (
+                  <div className="mt-20 w-full overflow-hidden">
+                    <p className="text-center text-slate-600 font-medium mb-8">{t('allProductsGallery')}</p>
+                    <motion.div
+                      className="relative w-full overflow-hidden"
+                      initial="hidden"
+                      animate="visible"
+                      variants={{ visible: { transition: { staggerChildren: 0.03 } }, hidden: {} }}
+                    >
+                      <motion.div
+                        className="flex gap-6"
+                        style={{ width: 'max-content' }}
+                        animate={{ x: [0, '-50%'] }}
+                        transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+                      >
+                        {[1, 2].map((copy) => (
+                          <div key={copy} className="flex flex-shrink-0 gap-6">
+                            {galleryProducts.map((product) => (
+                              <motion.div
+                                key={`${copy}-${product.id}`}
+                                variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
+                                transition={{ duration: 0.3 }}
+                                className="group flex-shrink-0 w-[240px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm transition-shadow duration-300 hover:shadow-lg h-[300px]"
+                                onClick={() => handleProductClick(product)}
+                              >
+                                <div className="relative h-[200px] w-full bg-slate-100">
+                                  {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                                    <Image
+                                      src={product.image}
+                                      alt={product.name}
+                                      fill
+                                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No Image</div>
+                                  )}
+                                  <div className="absolute top-2 left-2 flex flex-col gap-1">
+                                    {product.safety_standard && (
+                                      <span className="bg-primary-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{product.safety_standard}</span>
+                                    )}
+                                    {product.additional_certs?.slice(0, 1).map((cert, idx) => (
+                                      <span key={idx} className="bg-white/90 text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded border border-slate-200">{cert}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="p-3 bg-white">
+                                  <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{product.name}</h3>
+                                  <div className="flex justify-between items-center text-xs mt-1 text-slate-500">
+                                    <span>MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
+                                    <span className="text-primary-600 font-medium">Wholesale</span>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        ))}
+                      </motion.div>
+                      <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
+                      <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
+                    </motion.div>
+                  </div>
+                )}
+              </>
             ) : (
               /* 产品页：标准网格 + 交错 + 更强 hover */
               <motion.div

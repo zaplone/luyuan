@@ -53,12 +53,12 @@ export default async function HomePage({ params }: HomePageProps) {
     console.error('Failed to fetch products for homepage:', error);
   }
 
-  // 2. 获取新闻数据
+  // 2. 获取新闻数据（首页只展示最新 4 条）
   let latestNews: any[] = [];
   try {
     const newsData = await fetchLatestNews();
     if (newsData.length > 0) {
-      latestNews = newsData.map(transformNews).filter(Boolean);
+      latestNews = newsData.map(transformNews).filter(Boolean).slice(0, 4);
     }
   } catch (error) {
     console.error('Failed to fetch news:', error);
