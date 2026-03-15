@@ -145,28 +145,6 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
     return () => { cancelled = true; };
   }, [hideFilters, locale]);
 
-  // 首页产品卡片多图轮播：每 4 秒切换一张
-  useEffect(() => {
-    if (!hideFilters || filteredProducts.length === 0) return;
-    const multiImageIds = filteredProducts
-      .filter(p => p.images && p.images.length > 1)
-      .map(p => p.id);
-    if (multiImageIds.length === 0) return;
-    const timer = setInterval(() => {
-      setCardImageIndices(prev => {
-        const next = { ...prev };
-        multiImageIds.forEach(id => {
-          const product = filteredProducts.find(p => p.id === id);
-          const len = product?.images?.length ?? 0;
-          if (len <= 1) return;
-          next[id] = ((prev[id] ?? 0) + 1) % len;
-        });
-        return next;
-      });
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [hideFilters, filteredProducts]);
-
   // Filter Logic (Updated for new Schema)
   const filteredProducts = products.filter(p => {
     // 1. Industry Filter (Active Tab)
@@ -199,6 +177,28 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
     return true;
   });
+
+  // 首页产品卡片多图轮播：每 4 秒切换一张（须在 filteredProducts 定义之后）
+  useEffect(() => {
+    if (!hideFilters || filteredProducts.length === 0) return;
+    const multiImageIds = filteredProducts
+      .filter(p => p.images && p.images.length > 1)
+      .map(p => p.id);
+    if (multiImageIds.length === 0) return;
+    const timer = setInterval(() => {
+      setCardImageIndices(prev => {
+        const next = { ...prev };
+        multiImageIds.forEach(id => {
+          const product = filteredProducts.find(p => p.id === id);
+          const len = product?.images?.length ?? 0;
+          if (len <= 1) return;
+          next[id] = ((prev[id] ?? 0) + 1) % len;
+        });
+        return next;
+      });
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [hideFilters, filteredProducts]);
 
   const handleProductClick = (product: Product) => {
     // 移动端：直接跳到详情页
