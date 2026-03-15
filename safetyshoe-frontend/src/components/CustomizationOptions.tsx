@@ -1,0 +1,93 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { Layers, Tag, Package, Palette } from 'lucide-react';
+
+const OPTION_KEYS = ['logoBranding', 'materialsColors', 'soleTech', 'packaging'] as const;
+const OPTION_ICONS = [Tag, Palette, Layers, Package];
+
+export function CustomizationOptions() {
+  const t = useTranslations('CustomizationOptions');
+
+  return (
+    <section className="py-24 bg-slate-50">
+      <div className="container mx-auto px-4">
+        
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+              {t('title')}
+            </h2>
+            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              {t('description')}
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {OPTION_KEYS.map((key, idx) => {
+                const Icon = OPTION_ICONS[idx];
+                const rawItems = t.raw(`${key}.items`) as Record<string, string> | string[];
+                const items = Array.isArray(rawItems) ? rawItems : Object.values(rawItems || {});
+                
+                return (
+                  <div key={key} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center mb-4 text-primary-600">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-bold text-slate-900 mb-2">{t(`${key}.title`)}</h3>
+                    <ul className="space-y-2">
+                      {items.map((item, i) => (
+                        <li key={i} className="flex items-center text-xs text-slate-500">
+                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right: Visual Exploded View */}
+          <div className="relative">
+            {/* Background Shape */}
+            <div className="absolute inset-0 bg-slate-200 rounded-full blur-[100px] opacity-50 transform translate-x-10 translate-y-10"></div>
+            
+            {/* Main Image Container */}
+            <div className="relative bg-white rounded-2xl p-4 shadow-2xl border-4 border-white rotate-1 hover:rotate-0 transition-transform duration-500">
+               <div className="aspect-[4/3] bg-slate-100 rounded-lg relative overflow-hidden">
+                 <Image
+                   src="/images/oem/custom-options.png"
+                   alt="Customization details"
+                   fill
+                   className="object-cover"
+                 />
+                 
+                 {/* Floating Hotspots (Decorative) */}
+                 <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-accent-500 rounded-full shadow-lg ring-4 ring-white animate-pulse cursor-pointer group/spot">
+                   <div className="absolute left-6 top-0 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover/spot:opacity-100 transition-opacity">
+                     Premium Leather
+                   </div>
+                 </div>
+                 <div className="absolute bottom-1/3 right-1/3 w-4 h-4 bg-accent-500 rounded-full shadow-lg ring-4 ring-white animate-pulse cursor-pointer group/spot">
+                    <div className="absolute left-6 top-0 bg-slate-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover/spot:opacity-100 transition-opacity">
+                     Custom Sole
+                   </div>
+                 </div>
+               </div>
+               
+               <div className="mt-4 flex justify-between items-center text-sm text-slate-500">
+                 <span>Schematic View</span>
+                 <span className="font-mono">Ref: OEM-2024</span>
+               </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
