@@ -392,19 +392,16 @@ export function ProductCategories({ initialProducts, initialGalleryProducts, hid
                   })}
                 </motion.div>
 
-                {/* 下方：产品画廊（横向滚动，hover 暂停） */}
+                {/* 画廊：整行从左到右，无外框、无两侧渐变 */}
                 {displayGalleryProducts.length > 0 && (
                   <div
-                    className={`mt-20 w-full overflow-hidden rounded-2xl bg-white/80 border border-slate-200/80 py-10 px-4 sm:px-6 ${galleryHovered ? 'gallery-scroll-paused' : ''}`}
+                    className={`mt-20 w-screen overflow-hidden ${galleryHovered ? 'gallery-scroll-paused' : ''}`}
+                    style={{ marginLeft: 'calc(-50vw + 50%)' }}
                     onMouseEnter={() => setGalleryHovered(true)}
                     onMouseLeave={() => setGalleryHovered(false)}
                   >
-                    <div className="flex items-center justify-center gap-3 mb-8">
-                      <span className="h-px w-8 bg-primary-500/60 rounded-full" aria-hidden />
-                      <h3 className="text-xl font-bold text-slate-800">{t('allProductsGallery')}</h3>
-                      <span className="h-px w-8 bg-primary-500/60 rounded-full" aria-hidden />
-                    </div>
-                    <div className="relative w-full overflow-hidden">
+                    <h3 className="text-center text-xl font-bold text-slate-800 mb-6">{t('allProductsGallery')}</h3>
+                    <div className="overflow-hidden">
                       <div className="flex gap-6 gallery-scroll-track" style={{ width: 'max-content' }}>
                         {[1, 2].map((copy) => (
                           <div key={copy} className="flex flex-shrink-0 gap-6">
@@ -446,8 +443,6 @@ export function ProductCategories({ initialProducts, initialGalleryProducts, hid
                           </div>
                         ))}
                       </div>
-                      <div className="absolute inset-y-0 left-0 w-16 sm:w-24 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10" aria-hidden />
-                      <div className="absolute inset-y-0 right-0 w-16 sm:w-24 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10" aria-hidden />
                     </div>
                   </div>
                 )}
