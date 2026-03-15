@@ -207,14 +207,26 @@ export async function submitInquiry(data: {
 }
 
 /**
- * 从 Strapi 获取所有产品
+ * 从 Strapi 获取产品
  * @param locale 前端 locale（'en', 'zh'）
+ * @param options.limit 可选，限制条数（用于首页等场景，避免拉全量）
  */
-export async function fetchProducts(locale: string = 'en'): Promise<StrapiProduct[]> {
+export async function fetchProducts(
+  locale: string = 'en',
+  options?: { limit?: number }
+): Promise<StrapiProduct[]> {
   try {
-    // 直接使用前端的 locale，因为后端现在使用 'zh' 而不是 'zh-Hant'
+    const params = new URLSearchParams({
+      populate: '*',
+      sort: 'createdAt:desc',
+      locale,
+    });
+    if (options?.limit != null) {
+      params.set('pagination[pageSize]', String(options.limit));
+      params.set('pagination[page]', '1');
+    }
     const response = await fetch(
-      `${STRAPI_URL}/api/products?populate=*&sort=createdAt:desc&locale=${locale}`,
+      `${STRAPI_URL}/api/products?${params.toString()}`,
       { next: { revalidate: 60 } }
     );
 

@@ -153,6 +153,14 @@
           "localized": false
         }
       }
+    },
+    "specs_extra": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

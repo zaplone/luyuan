@@ -29,25 +29,22 @@ export default async function HomePage({ params }: HomePageProps) {
   console.log('>>> Generating HomePage for locale:', locale);
 
 
-  // 1. 获取产品数据（按当前语言）
+  // 1. 首页产品：就这一条接口，带上数量，拉一次。前 6 条给上面卡片，整批给下面画廊
+  const HOMEPAGE_PRODUCT_LIMIT = 30; // 接口里改数量即可，上面 6 条 + 画廊用
   let featuredProducts: any[] | undefined = undefined;
+  let galleryProducts: any[] = [];
   try {
-    const strapiProducts = await fetchProducts(locale);
+    const strapiProducts = await fetchProducts(locale, { limit: HOMEPAGE_PRODUCT_LIMIT });
     if (strapiProducts.length > 0) {
       const transformed = strapiProducts
         .map(transformProduct)
         .sort((a, b) => {
-          // 排序权重：Hot > New > 普通
-          // 如果 a 是 Hot (10分)，b 不是 (0分) -> b-a = -10 -> a 排前面
-          const scoreA = (a.featured ? 10 : 0) + (a.is_new ? 5 : 0); // 注意：transformProduct 把 is_hot 映射为了 featured
+          const scoreA = (a.featured ? 10 : 0) + (a.is_new ? 5 : 0);
           const scoreB = (b.featured ? 10 : 0) + (b.is_new ? 5 : 0);
           return scoreB - scoreA;
-        })
-        .slice(0, 6); // 始终取前 6 个最优质的产品
-      
-      featuredProducts = transformed.length > 0 
-        ? transformed 
-        : strapiProducts.slice(0, 6).map(transformProduct);
+        });
+      featuredProducts = transformed.slice(0, 6);           // 上面 6 张卡片
+      galleryProducts = transformed;                         // 下面画廊用同一批（最多 30 条）
     }
   } catch (error) {
     console.error('Failed to fetch products for homepage:', error);
@@ -73,7 +70,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <WhyChooseUs />
 
       {/* Safety Shoe Categories - 传入预加载的产品数据（如果 API 成功） */}
-      <ProductCategories initialProducts={featuredProducts} hideFilters={true} />
+      <ProductCategories initialProducts={featuredProducts} initialGalleryProducts={galleryProducts} hideFilters={true} />
 
       {/* Factory News - 传入真实新闻数据 */}
       <FactoryNews initialNews={latestNews} />

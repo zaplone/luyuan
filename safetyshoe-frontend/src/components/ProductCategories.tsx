@@ -12,11 +12,13 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Product } from '@/types'; // Import the new type
 
 interface ProductCategoriesProps {
-  initialProducts?: any[]; // Keep any[] for compatibility with raw Strapi response for now
-  hideFilters?: boolean; // New prop to hide filters on homepage
+  initialProducts?: any[];
+  /** 首页画廊用产品列表，与产品页一致由服务端传入，不依赖客户端请求 */
+  initialGalleryProducts?: any[];
+  hideFilters?: boolean;
 }
 
-export function ProductCategories({ initialProducts, hideFilters = false }: ProductCategoriesProps = {}) {
+export function ProductCategories({ initialProducts, initialGalleryProducts, hideFilters = false }: ProductCategoriesProps = {}) {
   const t = useTranslations('ProductCategories');
   const locale = useLocale();
   const router = useRouter();
@@ -93,9 +95,10 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  /** 首页底部画廊用：全部产品（与顶部 6 款精选分开） */
-  const [galleryProducts, setGalleryProducts] = useState<Product[]>([]);
-  /** 画廊区域鼠标悬停时暂停横向滚动 */
+  /** 首页画廊用：优先用服务端传入的 initialGalleryProducts，否则用客户端拉取结果 */
+  const [galleryProducts, setGalleryProducts] = useState<Product[]>(
+    initialGalleryProducts ? initialGalleryProducts.map((p: any) => p.id ? p : transformProduct(p)) : []
+  );
   const [galleryHovered, setGalleryHovered] = useState(false);
 
   // Data Loading
@@ -127,9 +130,16 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
     loadData();
   }, [locale, initialProducts]); // Add initialProducts dependency
 
-  // 首页时：画廊展示「全部产品」，单独拉取
+  // 服务端传入画廊数据时同步到 state（如切换语言后）
   useEffect(() => {
-    if (!hideFilters) return;
+    if (initialGalleryProducts && initialGalleryProducts.length > 0) {
+      setGalleryProducts(initialGalleryProducts.map((p: any) => p.id ? p : transformProduct(p)));
+    }
+  }, [initialGalleryProducts]);
+
+  // 首页且未从服务端传入画廊数据时，才在客户端请求（兜底）
+  useEffect(() => {
+    if (!hideFilters || (initialGalleryProducts && initialGalleryProducts.length > 0)) return;
     let cancelled = false;
     (async () => {
       try {
@@ -141,7 +151,12 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
       }
     })();
     return () => { cancelled = true; };
-  }, [hideFilters, locale]);
+  }, [hideFilters, locale, initialGalleryProducts]);
+
+  // 画廊展示用：服务端传入或客户端拉取；都没有则用顶部 6 款兜底
+  const displayGalleryProducts = hideFilters
+    ? (galleryProducts.length > 0 ? galleryProducts : products)
+    : [];
 
   // Filter Logic (Updated for new Schema)
   const filteredProducts = products.filter(p => {
@@ -377,19 +392,23 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                   })}
                 </motion.div>
 
-                {/* 下方：全部产品横向流动画廊（无 hover 遮罩，卡片不重叠） */}
-                {galleryProducts.length > 0 && (
+                {/* 下方：产品画廊（横向滚动，hover 暂停） */}
+                {displayGalleryProducts.length > 0 && (
                   <div
-                    className={`mt-20 w-full overflow-hidden ${galleryHovered ? 'gallery-scroll-paused' : ''}`}
+                    className={`mt-20 w-full overflow-hidden rounded-2xl bg-white/80 border border-slate-200/80 py-10 px-4 sm:px-6 ${galleryHovered ? 'gallery-scroll-paused' : ''}`}
                     onMouseEnter={() => setGalleryHovered(true)}
                     onMouseLeave={() => setGalleryHovered(false)}
                   >
-                    <h3 className="text-center text-xl font-bold text-slate-800 mb-8">{t('allProductsGallery')}</h3>
+                    <div className="flex items-center justify-center gap-3 mb-8">
+                      <span className="h-px w-8 bg-primary-500/60 rounded-full" aria-hidden />
+                      <h3 className="text-xl font-bold text-slate-800">{t('allProductsGallery')}</h3>
+                      <span className="h-px w-8 bg-primary-500/60 rounded-full" aria-hidden />
+                    </div>
                     <div className="relative w-full overflow-hidden">
                       <div className="flex gap-6 gallery-scroll-track" style={{ width: 'max-content' }}>
                         {[1, 2].map((copy) => (
                           <div key={copy} className="flex flex-shrink-0 gap-6">
-                            {galleryProducts.map((product) => (
+                            {displayGalleryProducts.map((product) => (
                               <div
                                 key={`${copy}-${product.id}`}
                                 className="group flex-shrink-0 w-[280px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm hover:shadow-lg h-[360px] transition-shadow"
@@ -427,8 +446,8 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                           </div>
                         ))}
                       </div>
-                      <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
-                      <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
+                      <div className="absolute inset-y-0 left-0 w-16 sm:w-24 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10" aria-hidden />
+                      <div className="absolute inset-y-0 right-0 w-16 sm:w-24 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10" aria-hidden />
                     </div>
                   </div>
                 )}
