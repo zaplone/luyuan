@@ -392,12 +392,11 @@ export function ProductCategories({ initialProducts, initialGalleryProducts, hid
                   })}
                 </motion.div>
 
-                {/* 画廊：整行从左到右，无外框、无两侧渐变 */}
+                {/* 画廊：整行从左到右；仅鼠标移入产品卡片时暂停，移出卡片或离开画廊区域继续滚动 */}
                 {displayGalleryProducts.length > 0 && (
                   <div
                     className={`mt-20 w-screen overflow-hidden ${galleryHovered ? 'gallery-scroll-paused' : ''}`}
                     style={{ marginLeft: 'calc(-50vw + 50%)' }}
-                    onMouseEnter={() => setGalleryHovered(true)}
                     onMouseLeave={() => setGalleryHovered(false)}
                   >
                     <h3 className="text-center text-xl font-bold text-slate-800 mb-6">{t('allProductsGallery')}</h3>
@@ -410,6 +409,8 @@ export function ProductCategories({ initialProducts, initialGalleryProducts, hid
                                 key={`${copy}-${product.id}`}
                                 className="group flex-shrink-0 w-[280px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm hover:shadow-lg h-[360px] transition-shadow"
                                 onClick={() => handleProductClick(product)}
+                                onMouseEnter={() => setGalleryHovered(true)}
+                                onMouseLeave={() => setGalleryHovered(false)}
                               >
                                 <div className="relative h-[240px] w-full bg-slate-100">
                                   {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (

@@ -30,7 +30,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
 
   // 1. 首页产品：就这一条接口，带上数量，拉一次。前 6 条给上面卡片，整批给下面画廊
-  const HOMEPAGE_PRODUCT_LIMIT = 30; // 接口里改数量即可，上面 6 条 + 画廊用
+  const HOMEPAGE_PRODUCT_LIMIT = 20; // 接口里改数量即可，上面 6 条 + 画廊用
   let featuredProducts: any[] | undefined = undefined;
   let galleryProducts: any[] = [];
   try {
@@ -44,7 +44,7 @@ export default async function HomePage({ params }: HomePageProps) {
           return scoreB - scoreA;
         });
       featuredProducts = transformed.slice(0, 6);           // 上面 6 张卡片
-      galleryProducts = transformed;                         // 下面画廊用同一批（最多 30 条）
+      galleryProducts = transformed;                         // 下面画廊用同一批（最多 20 条）
     }
   } catch (error) {
     console.error('Failed to fetch products for homepage:', error);

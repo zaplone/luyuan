@@ -162,9 +162,8 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Shenglei Safety Shoes" />
 
-        {/* Security Headers */}
+        {/* Security: X-Frame-Options 必须通过 HTTP 响应头设置（如 Cloudflare 规则），不能放在 meta */}
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
         <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
         <meta httpEquiv="Referrer-Policy" content="origin-when-cross-origin" />
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import {
@@ -85,6 +85,11 @@ export function ProductDetailClient({ product, locale }: ProductDetailClientProp
       : getSafeImageUrl(product.image || '')
   );
   const [openFaq, setOpenFaq] = useState<string | null>(null);
+
+  // 从弹窗或列表进入详情时始终从顶部开始，避免“像没跳转”的错觉
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',

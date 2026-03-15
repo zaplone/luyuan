@@ -257,9 +257,13 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                   </button>
                   
                   <Link 
-                    href={`/${locale}/products/${product.slug}`}
+                    href={`/${locale}/products/${product.slug}/`}
+                    prefetch={true}
                     className="w-full sm:flex-1 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 hover:bg-slate-50"
-                    onClick={() => onClose()}
+                    onClick={() => {
+                      onClose();
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     View Full Details
                   </Link>

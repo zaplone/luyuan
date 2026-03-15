@@ -303,7 +303,7 @@ html {
     100% { transform: translateX(-50%); }
   }
   .gallery-scroll-track {
-    animation: galleryScroll 50s linear infinite;
+    animation: galleryScroll 80s linear infinite;
   }
   .gallery-scroll-paused .gallery-scroll-track {
     animation-play-state: paused;
