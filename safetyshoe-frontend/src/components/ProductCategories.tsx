@@ -169,13 +169,13 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
   return (
     <>
-      <section className="py-24 bg-slate-50 relative" id="products">
+      <section className="py-24 bg-slate-50 relative overflow-x-hidden" id="products">
         {/* ... Background ... */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-10 max-w-7xl">
 
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -286,8 +286,8 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
             </div>
           ) : filteredProducts.length > 0 ? (
             hideFilters ? (
-              /* 首页精选：自动流动画廊条 + 交错入场 */
-              <>
+              /* 首页精选：自动流动画廊条（仅本区块，不影响页面其它 section） */
+              <div className="w-full overflow-hidden">
                 <motion.div
                   className="relative w-full overflow-hidden"
                   initial="hidden"
@@ -375,7 +375,7 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                   <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
                   <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
                 </motion.div>
-              </>
+              </div>
             ) : (
               /* 产品页：标准网格 + 交错 + 更强 hover */
               <motion.div
