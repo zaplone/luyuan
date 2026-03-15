@@ -297,7 +297,7 @@ html {
     animation: scroll 30s linear infinite;
   }
 
-  /* 首页产品画廊横向滚动（支持 hover 暂停） */
+  /* 首页产品画廊横向滚动（hover 暂停） */
   @keyframes galleryScroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }

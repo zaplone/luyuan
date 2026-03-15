@@ -95,8 +95,6 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
   const [isModalOpen, setIsModalOpen] = useState(false);
   /** 首页底部画廊用：全部产品（与顶部 6 款精选分开） */
   const [galleryProducts, setGalleryProducts] = useState<Product[]>([]);
-  /** 首页每个产品卡片内多图轮播的当前索引（仅多图产品使用） */
-  const [cardImageIndices, setCardImageIndices] = useState<Record<number, number>>({});
   /** 画廊区域鼠标悬停时暂停横向滚动 */
   const [galleryHovered, setGalleryHovered] = useState(false);
 
@@ -177,28 +175,6 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
     return true;
   });
-
-  // 首页产品卡片多图轮播：每 4 秒切换一张（须在 filteredProducts 定义之后）
-  useEffect(() => {
-    if (!hideFilters || filteredProducts.length === 0) return;
-    const multiImageIds = filteredProducts
-      .filter(p => p.images && p.images.length > 1)
-      .map(p => p.id);
-    if (multiImageIds.length === 0) return;
-    const timer = setInterval(() => {
-      setCardImageIndices(prev => {
-        const next = { ...prev };
-        multiImageIds.forEach(id => {
-          const product = filteredProducts.find(p => p.id === id);
-          const len = product?.images?.length ?? 0;
-          if (len <= 1) return;
-          next[id] = ((prev[id] ?? 0) + 1) % len;
-        });
-        return next;
-      });
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [hideFilters, filteredProducts]);
 
   const handleProductClick = (product: Product) => {
     // 移动端：直接跳到详情页
@@ -343,7 +319,6 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                 >
                   {filteredProducts.map((product, index) => {
                     const isHero = index === 0;
-                    const isWide = index === 5;
                     return (
                       <motion.div
                         key={product.id}
@@ -356,32 +331,24 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                           group relative rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100
                           transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/80
                           ${isHero ? 'md:col-span-2 md:row-span-2 min-h-[320px] lg:min-h-[420px]' : 'h-[320px] lg:h-[360px]'}
-                          ${isWide ? 'md:col-span-3' : ''}
                         `}
                         onMouseEnter={() => setHoveredProduct(product.id)}
                         onMouseLeave={() => setHoveredProduct(null)}
                         onClick={() => handleProductClick(product)}
                       >
                         <div className={`relative w-full bg-slate-100 ${isHero ? 'h-[70%]' : 'h-3/4'}`}>
-                          {(() => {
-                            const urls = product.images?.length ? product.images : (product.image ? [product.image] : []);
-                            const currentIdx = urls.length > 1 ? (cardImageIndices[product.id] ?? 0) % urls.length : 0;
-                            const displayUrl = urls[currentIdx];
-                            const isValid = displayUrl && (displayUrl.startsWith('http') || displayUrl.startsWith('/'));
-                            return isValid ? (
-                              <Image
-                                key={`${product.id}-${currentIdx}`}
-                                src={displayUrl}
-                                alt={product.name}
-                                fill
-                                className={`object-cover transition-all duration-700 ${urls.length > 1 ? 'animate-fade-in' : ''} ${hoveredProduct === product.id && !isHero ? 'scale-110' : 'scale-100'}`}
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-slate-400">
-                                <span className="text-sm">No Image</span>
-                              </div>
-                            );
-                          })()}
+                          {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              className={`object-cover transition-transform duration-500 ease-out ${hoveredProduct === product.id && !isHero ? 'scale-105' : 'scale-100'}`}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-400">
+                              <span className="text-sm">No Image</span>
+                            </div>
+                          )}
                           <div className="absolute top-4 left-4 flex flex-col gap-2">
                             {product.safety_standard && (
                               <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-primary-500">
@@ -394,29 +361,6 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                               </span>
                             ))}
                           </div>
-                          {/* 首页大图(hero)不显示 hover 遮罩与按钮，仅小格保留 */}
-                          {!isHero && (
-                            <div className={`absolute inset-0 bg-slate-900/95 flex flex-col justify-center items-center p-8 text-center transition-all duration-300 ${hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                              <div className="space-y-3 mb-6">
-                                {product.materials?.toe_cap && (
-                                  <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
-                                    Toe: {product.materials.toe_cap}
-                                  </div>
-                                )}
-                                {product.materials?.upper && (
-                                  <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
-                                    {product.materials.upper}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
-                                <span className="w-full py-3 bg-accent-500 hover:bg-accent-400 text-slate-900 font-bold rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-accent-500/20 text-sm pointer-events-none">
-                                  {t('viewDetails')}
-                                  <ChevronRight className="ml-2 w-4 h-4" />
-                                </span>
-                              </div>
-                            </div>
-                          )}
                         </div>
                         <div className={`p-5 bg-white flex flex-col justify-between relative z-10 ${isHero ? 'h-[30%]' : 'h-1/4'}`}>
                           <div className="flex justify-between items-start">
@@ -441,21 +385,14 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                     onMouseLeave={() => setGalleryHovered(false)}
                   >
                     <h3 className="text-center text-xl font-bold text-slate-800 mb-8">{t('allProductsGallery')}</h3>
-                    <motion.div
-                      className="relative w-full overflow-hidden"
-                      initial="hidden"
-                      animate="visible"
-                      variants={{ visible: { transition: { staggerChildren: 0.03 } }, hidden: {} }}
-                    >
+                    <div className="relative w-full overflow-hidden">
                       <div className="flex gap-6 gallery-scroll-track" style={{ width: 'max-content' }}>
                         {[1, 2].map((copy) => (
                           <div key={copy} className="flex flex-shrink-0 gap-6">
                             {galleryProducts.map((product) => (
-                              <motion.div
+                              <div
                                 key={`${copy}-${product.id}`}
-                                variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
-                                transition={{ duration: 0.3 }}
-                                className="group flex-shrink-0 w-[280px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm transition-shadow duration-300 hover:shadow-lg h-[360px]"
+                                className="group flex-shrink-0 w-[280px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm hover:shadow-lg h-[360px] transition-shadow"
                                 onClick={() => handleProductClick(product)}
                               >
                                 <div className="relative h-[240px] w-full bg-slate-100">
@@ -464,7 +401,7 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                                       src={product.image}
                                       alt={product.name}
                                       fill
-                                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">No Image</div>
@@ -485,14 +422,14 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
                                     <span className="text-primary-600 font-medium">Wholesale</span>
                                   </div>
                                 </div>
-                              </motion.div>
+                              </div>
                             ))}
                           </div>
                         ))}
                       </div>
                       <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
                       <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
-                    </motion.div>
+                    </div>
                   </div>
                 )}
               </>
