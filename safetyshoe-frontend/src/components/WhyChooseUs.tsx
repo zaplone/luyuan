@@ -133,12 +133,11 @@ export function WhyChooseUs() {
           })}
         </div>
 
-        {/* 3. Factory Tour Banner (Restored "See It To Believe It" Style) */}
+        {/* 3. Factory Tour Banner - 暂时隐藏 */}
+        {false && (
         <div className="relative rounded-3xl overflow-hidden h-[300px] flex items-center group shadow-2xl">
-          {/* Background Image */}
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80')] bg-cover bg-fixed bg-center opacity-40 group-hover:opacity-50 transition-opacity duration-700"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
-          
           <div className="relative z-10 w-full px-8 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-xl text-center md:text-left">
                <div className="inline-flex items-center space-x-2 bg-accent-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold mb-4">
@@ -153,7 +152,6 @@ export function WhyChooseUs() {
                  {t('videoBanner.desc')}
                </p>
             </div>
-            
             <button 
               onClick={() => setActiveVideo('https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1')}
               className="flex-shrink-0 px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-accent-500 hover:text-slate-900 transition-all shadow-xl hover:scale-105 flex items-center group/btn"
@@ -165,6 +163,7 @@ export function WhyChooseUs() {
             </button>
           </div>
         </div>
+        )}
 
       </div>
 

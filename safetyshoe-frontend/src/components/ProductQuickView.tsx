@@ -1,5 +1,6 @@
 import { X, Check, Truck, Layers, Activity, Ruler, ChevronLeft, Send, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { submitInquiry } from '@/lib/strapi';
 import { ImageMagnifier } from './ImageMagnifier';
@@ -100,7 +101,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
       />
 
       {/* Modal Content - 移动端：上图下文；桌面端：左图右文 */}
-      <div className="relative w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh] md:max-h-[85vh] md:h-[80vh] animate-scale-in">
+      <div className="relative w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh] max-h-[90vh] animate-scale-in">
         
         {/* Close Button */}
         <button 
@@ -255,12 +256,13 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
                     <Send className="w-4 h-4" />
                   </button>
                   
-                  <a 
+                  <Link 
                     href={`/${locale}/products/${product.slug}`}
                     className="w-full sm:flex-1 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 hover:bg-slate-50"
+                    onClick={() => onClose()}
                   >
                     View Full Details
-                  </a>
+                  </Link>
                 </div>
               </div>
             </>

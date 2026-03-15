@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, ChevronRight, Shield, Zap, Droplets, Snowflake, HardHat, Factory, Utensils, Hammer, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, ChevronRight, Shield, Zap, Droplets, Snowflake, HardHat, Factory, Utensils, Hammer, Filter, Sparkles } from 'lucide-react';
 import { ProductQuickView } from './ProductQuickView';
 import { fetchProducts, transformProduct } from '@/lib/strapi';
 import { useTranslations, useLocale } from 'next-intl';
@@ -177,7 +179,8 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block px-3 py-1 bg-white border border-slate-200 text-slate-500 rounded-full text-sm font-semibold mb-4 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 text-slate-500 rounded-full text-sm font-semibold mb-4 shadow-sm">
+              {hideFilters && <Sparkles className="w-4 h-4 text-amber-500" aria-hidden />}
               {t('label')}
             </div>
             <h2 className="text-4xl font-bold text-slate-900 mb-4">
@@ -282,87 +285,181 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
               <p className="text-slate-600">Loading products...</p>
             </div>
           ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="group relative h-[420px] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer bg-white border border-slate-100"
-                  onMouseEnter={() => setHoveredProduct(product.id)}
-                  onMouseLeave={() => setHoveredProduct(null)}
-                  onClick={() => handleProductClick(product)}
+            hideFilters ? (
+              /* 首页精选：自动流动画廊条 + 交错入场 */
+              <>
+                <motion.div
+                  className="relative w-full overflow-hidden"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{ visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } }, hidden: {} }}
                 >
-                  {/* Product Image */}
-                  <div className="relative h-3/4 w-full bg-slate-100">
-                    {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className={`object-cover transition-transform duration-700 ${hoveredProduct === product.id ? 'scale-110' : 'scale-100'
-                          }`}
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400">
-                        <span className="text-sm">No Image</span>
+                  <motion.div
+                    className="flex"
+                    style={{ width: '200%' }}
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
+                  >
+                    {[1, 2].map((copy) => (
+                      <div
+                        key={copy}
+                        className="flex flex-shrink-0 gap-6 pr-6"
+                        style={{ width: '50%' }}
+                      >
+                        {filteredProducts.map((product, index) => (
+                          <motion.div
+                            key={`${copy}-${product.id}`}
+                            variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 16 } }}
+                            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            className="group relative flex-shrink-0 flex-[0_0_calc((100%-7.5rem)/6)] min-w-[200px] rounded-2xl overflow-hidden cursor-pointer bg-white border border-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/80 h-[340px]"
+                            onMouseEnter={() => setHoveredProduct(product.id)}
+                            onMouseLeave={() => setHoveredProduct(null)}
+                            onClick={() => handleProductClick(product)}
+                          >
+                            <div className="relative h-3/4 w-full bg-slate-100">
+                              {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  fill
+                                  className={`object-cover transition-transform duration-700 ${hoveredProduct === product.id ? 'scale-110' : 'scale-100'}`}
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                  <span className="text-sm">No Image</span>
+                                </div>
+                              )}
+                              <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                                {product.safety_standard && (
+                                  <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-primary-500">
+                                    {product.safety_standard}
+                                  </span>
+                                )}
+                                {product.additional_certs?.slice(0, 2).map((cert, idx) => (
+                                  <span key={idx} className="bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm border border-slate-200">
+                                    {cert}
+                                  </span>
+                                ))}
+                              </div>
+                              <div className={`absolute inset-0 bg-slate-900/90 flex flex-col justify-center items-center p-4 text-center transition-all duration-300 ${hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
+                                <div className="flex flex-wrap gap-1.5 justify-center mb-4">
+                                  {product.materials?.toe_cap && (
+                                    <span className="bg-white/10 border border-white/20 text-white px-2 py-0.5 rounded-full text-[10px]">
+                                      Toe: {product.materials.toe_cap}
+                                    </span>
+                                  )}
+                                  {product.materials?.upper && (
+                                    <span className="bg-white/10 border border-white/20 text-white px-2 py-0.5 rounded-full text-[10px] line-clamp-1">
+                                      {product.materials.upper}
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="py-2.5 px-4 bg-accent-500 text-slate-900 font-bold rounded-lg text-xs pointer-events-none">
+                                  {t('viewDetails')} <ChevronRight className="inline w-3.5 h-3.5 ml-0.5" />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="h-1/4 p-4 bg-white flex flex-col justify-center relative z-10">
+                              <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{product.name}</h3>
+                              <div className="flex justify-between items-center text-xs mt-1">
+                                <span className="text-slate-500">MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
+                                <span className="text-primary-600 font-medium bg-primary-50 px-1.5 py-0.5 rounded">Wholesale</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
                       </div>
-                    )}
-
-                    {/* Standards Badges (UPDATED) */}
-                    <div className="absolute top-4 left-4 flex flex-col gap-2">
-                      {/* Safety Standard Badge */}
-                      {product.safety_standard && (
-                        <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-primary-500">
-                          {product.safety_standard}
-                        </span>
+                    ))}
+                  </motion.div>
+                  {/* 两侧渐变遮罩，增强画廊感 */}
+                  <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
+                  <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none z-10" aria-hidden />
+                </motion.div>
+              </>
+            ) : (
+              /* 产品页：标准网格 + 交错 + 更强 hover */
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+                  hidden: {},
+                }}
+              >
+                {filteredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    variants={{
+                      visible: { opacity: 1, y: 0 },
+                      hidden: { opacity: 0, y: 20 },
+                    }}
+                    transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    className="group relative h-[420px] rounded-2xl overflow-hidden shadow-sm transition-all duration-500 cursor-pointer bg-white border border-slate-100 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/80"
+                    onMouseEnter={() => setHoveredProduct(product.id)}
+                    onMouseLeave={() => setHoveredProduct(null)}
+                    onClick={() => handleProductClick(product)}
+                  >
+                    <div className="relative h-3/4 w-full bg-slate-100">
+                      {product.image && (product.image.startsWith('http') || product.image.startsWith('/')) ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className={`object-cover transition-transform duration-700 ${hoveredProduct === product.id ? 'scale-110' : 'scale-100'}`}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-400">
+                          <span className="text-sm">No Image</span>
+                        </div>
                       )}
-                      {/* Additional Certs Badges */}
-                      {product.additional_certs?.map((cert, idx) => (
-                        <span key={idx} className="bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-slate-200">
-                          {cert}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Hover Overlay (UPDATED) */}
-                    <div className={`absolute inset-0 bg-slate-900/95 flex flex-col justify-center items-center p-8 text-center transition-all duration-300 ${hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                      }`}>
-                      <div className="space-y-3 mb-6">
-                        {/* Display core materials instead of random features */}
-                        {product.materials?.toe_cap && (
-                          <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
-                            Toe: {product.materials.toe_cap}
-                          </div>
+                      <div className="absolute top-4 left-4 flex flex-col gap-2">
+                        {product.safety_standard && (
+                          <span className="bg-primary-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-primary-500">
+                            {product.safety_standard}
+                          </span>
                         )}
-                        {product.materials?.upper && (
-                          <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
-                            {product.materials.upper}
-                          </div>
-                        )}
+                        {product.additional_certs?.map((cert, idx) => (
+                          <span key={idx} className="bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm border border-slate-200">
+                            {cert}
+                          </span>
+                        ))}
                       </div>
-
-                      <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
-                        <button className="w-full py-3 bg-accent-500 hover:bg-accent-400 text-slate-900 font-bold rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-accent-500/20 text-sm">
-                          {t('viewDetails')}
-                          <ChevronRight className="ml-2 w-4 h-4" />
-                        </button>
+                      <div className={`absolute inset-0 bg-slate-900/95 flex flex-col justify-center items-center p-8 text-center transition-all duration-300 ${hoveredProduct === product.id ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                        <div className="space-y-3 mb-6">
+                          {product.materials?.toe_cap && (
+                            <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
+                              Toe: {product.materials.toe_cap}
+                            </div>
+                          )}
+                          {product.materials?.upper && (
+                            <div className="inline-block bg-white/10 border border-white/20 text-white px-3 py-1 rounded-full text-xs mr-2 mb-2">
+                              {product.materials.upper}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
+                          <button className="w-full py-3 bg-accent-500 hover:bg-accent-400 text-slate-900 font-bold rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-accent-500/20 text-sm">
+                            {t('viewDetails')}
+                            <ChevronRight className="ml-2 w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="h-1/4 p-5 bg-white flex flex-col justify-between relative z-10">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-lg font-bold text-slate-900 line-clamp-1">{product.name}</h3>
-                      <ArrowRight className={`w-5 h-5 text-primary-600 transition-transform duration-300 ${hoveredProduct === product.id ? 'translate-x-1' : ''}`} />
+                    <div className="h-1/4 p-5 bg-white flex flex-col justify-between relative z-10">
+                      <div className="flex justify-between items-start">
+                        <h3 className="text-lg font-bold text-slate-900 line-clamp-1">{product.name}</h3>
+                        <ArrowRight className={`w-5 h-5 text-primary-600 transition-transform duration-300 ${hoveredProduct === product.id ? 'translate-x-1' : ''}`} />
+                      </div>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-slate-500">MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
+                        <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-1 rounded">Wholesale</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-500">MOQ: <span className="text-slate-900 font-semibold">{product.moq}</span></span>
-                      <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-1 rounded">Wholesale</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )
           ) : (
             <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
               <div className="text-4xl mb-4">🔍</div>
@@ -382,10 +479,10 @@ export function ProductCategories({ initialProducts, hideFilters = false }: Prod
 
           {filteredProducts.length > 0 && (
             <div className="mt-16 text-center">
-              <a href={`/${locale}/products`} className="inline-flex items-center px-8 py-3 border-2 border-slate-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white text-slate-600 font-bold rounded-lg transition-all">
+              <Link href={`/${locale}/products`} className="inline-flex items-center px-8 py-3 border-2 border-slate-300 hover:border-slate-900 hover:bg-slate-900 hover:text-white text-slate-600 font-bold rounded-lg transition-all">
                 {t('loadMore')}
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
+              </Link>
             </div>
           )}
         </div>
