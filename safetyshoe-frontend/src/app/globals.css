@@ -297,6 +297,18 @@ html {
     animation: scroll 30s linear infinite;
   }
 
+  /* 首页产品画廊横向滚动（支持 hover 暂停） */
+  @keyframes galleryScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .gallery-scroll-track {
+    animation: galleryScroll 50s linear infinite;
+  }
+  .gallery-scroll-paused .gallery-scroll-track {
+    animation-play-state: paused;
+  }
+
   /* 自定义滚动条样式 */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
